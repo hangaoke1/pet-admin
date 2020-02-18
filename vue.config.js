@@ -37,6 +37,10 @@ module.exports = {
       errors: true
     },
     proxy: {
+      '/pet/uploadFile': {
+        target: `https://api.bbbhr.cn`,
+        changeOrigin: true
+      },
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {

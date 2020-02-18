@@ -24,8 +24,8 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Element Admin',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: '小黄兜宠物管理端',
+      logo: 'http://pet-agatha.oss-cn-hangzhou.aliyuncs.com/20200218/44b2d7a1c42946828ae8e220ecdc7d78.jpg'
     }
   }
 }

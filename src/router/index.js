@@ -84,6 +84,45 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/banner',
+    component: Layout,
+    redirect: '/banner',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/banner/index'),
+        name: '轮播管理',
+        meta: { title: '轮播管理', icon: 'dashboard', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/product',
+    component: Layout,
+    redirect: '/product',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/product/index'),
+        name: '商品管理',
+        meta: { title: '商品管理', icon: 'dashboard', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/device',
+    component: Layout,
+    redirect: '/device',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/device/index'),
+        name: '监控管理',
+        meta: { title: '监控管理', icon: 'dashboard', affix: false }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
@@ -102,24 +141,6 @@ export const asyncRoutes = [
         meta: {
           title: '页面权限',
           roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'directivePermission',
-        meta: {
-          title: '指令权限'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'rolePermission',
-        meta: {
-          title: '角色权限',
-          roles: ['admin']
         }
       }
     ]
