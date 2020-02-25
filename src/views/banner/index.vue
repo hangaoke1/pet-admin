@@ -1,7 +1,7 @@
 <template>
   <div class="u-banner">
     <div class="u-title">
-      <el-button type="primary" @click="addBanner">新增轮播</el-button>
+      <el-button type="primary" @click="handleAdd">新增轮播</el-button>
     </div>
     <el-table :data="list" style="width: 100%" border>
       <el-table-column type="index" width="50"></el-table-column>
@@ -49,7 +49,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleSubmit">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -57,41 +57,53 @@
 
 <script>
 import _ from 'lodash'
+import * as bannerApi from '@/api/banner'
 export default {
   data() {
     return {
       type: 'add',
       form: {},
       dialogVisible: false,
-      list: [
-        {
-          id: 1,
-          imgUrl:
-            'https://hgkcdn.oss-cn-shanghai.aliyuncs.com/pet/banner1.jpeg',
-          detail: '店铺1',
-          createTime: '2020-01-19 08:53:30',
-          state: 0
-        },
-        {
-          id: 2,
-          imgUrl:
-            'https://hgkcdn.oss-cn-shanghai.aliyuncs.com/pet/banner2.jpeg',
-          detail: '店铺2',
-          createTime: '2020-01-19 14:49:31',
-          state: 0
-        },
-        {
-          id: 3,
-          imgUrl: 'https://hgkcdn.oss-cn-shanghai.aliyuncs.com/pet/banner3.jpg',
-          detail: '店铺3',
-          createTime: '2020-01-19 14:49:40',
-          state: 0
-        }
-      ]
+      list: []
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
-    addBanner() {
+    init() {
+      this.queryBanners()
+    },
+    queryBanners() {
+      bannerApi.queryBanners().then(res => {
+        this.list = res || []
+      })
+    },
+    insertBanner(data) {
+      bannerApi.insertBanner(data).then(() => {
+        this.$message.success('添加成功')
+        this.dialogVisible = false
+        this.queryBanners()
+      })
+    },
+    updateBanner(data) {
+      bannerApi.updateBanner(data).then(() => {
+        this.$message.success('修改成功')
+        this.dialogVisible = false
+        this.queryBanners()
+      })
+    },
+    handleSubmit() {
+      if (!this.form.imgUrl) {
+        return this.$message.error('图片不能为空')
+      }
+      if (this.type === 'add') {
+        this.insertBanner(this.form)
+      } else {
+        this.updateBanner(this.form)
+      }
+    },
+    handleAdd() {
       this.type = 'add'
       this.form = {
         imgUrl: '',
@@ -133,7 +145,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang='less' scoped>
 .u-title {
   display: flex;
   justify-content: flex-end;

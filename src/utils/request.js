@@ -4,7 +4,8 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  // baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: 'https://api.bbbhr.cn',
   withCredentials: true,
   timeout: 5000
 })
@@ -50,7 +51,7 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      return res
+      return res.data
     }
   },
   error => {
