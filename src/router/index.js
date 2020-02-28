@@ -119,6 +119,13 @@ export const asyncRoutes = [
         component: () => import('@/views/device/index'),
         name: '监控管理',
         meta: { title: '监控管理', icon: 'dashboard', affix: false }
+      },
+      {
+        path: 'manage',
+        component: () => import('@/views/deviceManage/index'),
+        name: '用户管理',
+        hidden: true,
+        meta: { title: '监控管理', icon: 'dashboard', affix: false }
       }
     ]
   },

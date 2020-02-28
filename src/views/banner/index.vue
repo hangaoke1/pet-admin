@@ -7,7 +7,7 @@
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="name" label="图片">
         <template slot-scope="scope">
-          <el-image style="width: 187px; height: 100px" :src="scope.row.imgUrl" fit="fill" lazy />
+          <el-image style="width: 187px; height: 100px" :src="scope.row.imgUrl" fit="fill" lazy :preview-src-list="[scope.row.imgUrl]" />
         </template>
       </el-table-column>
       <el-table-column prop="detail" label="描述"></el-table-column>
@@ -28,6 +28,7 @@
             :src="form.imgUrl"
             fit="fill"
             lazy
+            :preview-src-list="[form.imgUrl]"
           />
           <div>
             <el-upload
