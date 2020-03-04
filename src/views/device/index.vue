@@ -3,10 +3,9 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.title"
-        placeholder="Title"
+        placeholder="请输入设备编号 "
         style="width: 200px;"
         class="filter-item"
-        @keyup.enter.native="handleFilter"
       />
       <el-button
         v-waves
@@ -39,7 +38,7 @@
       <el-table-column label="操作" align="center" width="250">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleModifyStatus(row, 'edit')">编辑</el-button>
-          <el-button type="success" size="mini" @click="handleModifyStatus(row, 'bind')">管理用户</el-button>
+          <el-button type="success" size="mini" @click="handleModifyStatus(row, 'manage')">管理用户</el-button>
           <el-button type="danger" size="mini" @click="handleModifyStatus(row,'deleted')">删除</el-button>
         </template>
       </el-table-column>
@@ -90,17 +89,17 @@
           <el-button type="success" size="mini" @click="searchVisible = true">添加用户</el-button>
         </div>
         <div class="u-manage__title">已绑定用户</div>
-        <el-table :data="userList" style="width: 100%">
+        <el-table v-loading="bindUserListLoading" :data="bindUserList" style="width: 100%" height="550px">
           <el-table-column label="头像" align="center">
             <template slot-scope="{row}">
-              <img class="u-manage__avatar" :src="config.petAvatar" :alts="row.name" />
+              <img class="u-manage__avatar" :src="row.wechatAvatar" :alts="row.nickName" />
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="姓名"></el-table-column>
+          <el-table-column prop="nickName" label="姓名"></el-table-column>
           <el-table-column prop="mobile" label="手机号"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="{row}">
-              <el-button type="danger" size="mini" @click="handleModifyStatus(row,'deleted')">删除</el-button>
+              <el-button type="danger" size="mini" @click="handleBindUserDebounce(row, 1)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -108,7 +107,27 @@
     </el-drawer>
 
     <el-dialog title="用户搜索" :visible.sync="searchVisible" width="30%">
-      <span>这是一段信息</span>
+      <div class="u-search">
+        <div class="u-search__header">
+          <el-input v-model="searchKeyword" placeholder="请输入查询关键字"></el-input>
+          <el-button class="u-search__btn" type="primary" icon="el-icon-search" @click="searchUser">搜索</el-button>
+        </div>
+        <el-table :data="searchList" style="width: 100%" height="250">
+          <el-table-column label="头像" align="center">
+            <template slot-scope="{row}">
+              <img class="u-manage__avatar" :src="row.wechatAvatar" :alts="row.name" />
+            </template>
+          </el-table-column>
+          <el-table-column prop="nickName" label="姓名"></el-table-column>
+          <el-table-column prop="mobile" label="手机号"></el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="{row}">
+              <el-button v-if="!isAreadyBind(row)" type="success" size="mini" @click="handleBindUserDebounce(row, 0)">绑定</el-button>
+              <div v-else>已绑定</div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="searchVisible = false">取 消</el-button>
         <el-button type="primary" @click="searchVisible = false">确 定</el-button>
@@ -120,7 +139,9 @@
 <script>
 import waves from '@/directive/waves'
 import * as deviceApi from '@/api/device'
+import * as userApi from '@/api/user'
 import config from '@/config'
+import _ from 'lodash'
 
 export default {
   directives: { waves },
@@ -128,29 +149,11 @@ export default {
     return {
       config,
       searchVisible: false,
-      userList: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          mobile: '15557007893'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          mobile: '15557007894'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          mobile: '15557007895'
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          mobile: '15557007896'
-        }
-      ],
-      drawer: true,
+      searchKeyword: '',
+      searchList: [],
+      bindUserListLoading: true,
+      bindUserList: [],
+      drawer: false,
       dialogStatus: 'create', // create edit
       dialogFormVisible: false,
       listQuery: {},
@@ -159,6 +162,7 @@ export default {
       totalCount: 0,
       loading: true,
       list: [],
+      currentDevice: '',
       form: {
         id: '',
         cameraNo: '',
@@ -176,15 +180,67 @@ export default {
       }
     }
   },
+  beforeMount() {
+    this.handleBindUserDebounce = _.debounce(this.handleBindUser, 500, { leading: true, trailing: false })
+  },
   mounted() {
     this.getDevice()
   },
   methods: {
+    isAreadyBind(row) {
+      const { uid } = row
+      return !!this.bindUserList.filter(item => item.uid === uid).length
+    },
+    queryBindUserList(id) {
+      this.bindUserListLoading = true
+      return deviceApi.queryUserByCameraId({
+        id
+      }).then(res => {
+        this.bindUserListLoading = false
+        this.bindUserList = res || []
+      }).catch(err => {
+        this.bindUserListLoading = false
+        this.bindUserList = []
+        console.log(err)
+      })
+    },
+    // 绑定用户
+    handleBindUser(row, bindFlag) {
+      const { uid } = row
+      const { id } = this.current
+      deviceApi.bindCameraByUid({
+        uid,
+        id,
+        bindFlag
+      }).then(res => {
+        this.$message.success(bindFlag === 0 ? '绑定成功' : '解绑成功')
+        this.queryBindUserList(id)
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
+    searchUser() {
+      const keyword = this.searchKeyword.trim()
+      userApi.queryUserList({
+        keyword,
+        pageSize: 20,
+        pageNo: 1
+      }).then(res => {
+        this.searchList = res.items
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     handleModifyStatus(row, type) {
-      if (type === 'bind') {
+      // 管理用户
+      if (type === 'manage') {
+        this.queryBindUserList(row.id)
+        this.current = row
         this.drawer = true
       }
+      // 编辑设备
       if (type === 'edit') {
+        this.dialogStatus = 'edit'
         this.form = {
           id: row.id,
           cameraNo: row.cameraNo,
@@ -196,6 +252,7 @@ export default {
           this.$refs['dataForm'].clearValidate()
         })
       }
+      // 删除设备
       if (type === 'deleted') {
         this.$confirm(
           `此操作将删除设备【${row.cameraName}】, 是否继续?`,
@@ -225,6 +282,7 @@ export default {
         })
     },
     handleAddClick() {
+      this.dialogStatus = 'create'
       this.form = {
         id: '',
         cameraNo: '',
@@ -295,8 +353,14 @@ export default {
           this.loading = false
         })
     },
-    handleSizeChange() {},
-    handleCurrentChange() {}
+    handleSizeChange(pageSize) {
+      this.pageSize = pageSize
+      this.getDevice()
+    },
+    handleCurrentChange(pageNo) {
+      this.pageNo = pageNo
+      this.getDevice()
+    }
   }
 }
 </script>
@@ -321,6 +385,15 @@ export default {
   &__avatar {
     width: 50px;
     height: 50px;
+  }
+}
+.u-search {
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+  &__btn {
+    margin-left: 10px;
   }
 }
 </style>

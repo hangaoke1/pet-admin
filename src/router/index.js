@@ -92,7 +92,7 @@ export const asyncRoutes = [
         path: '',
         component: () => import('@/views/banner/index'),
         name: '轮播管理',
-        meta: { title: '轮播管理', icon: 'dashboard', affix: false }
+        meta: { title: '轮播管理', icon: 'example', affix: false }
       }
     ]
   },
@@ -105,7 +105,33 @@ export const asyncRoutes = [
         path: '',
         component: () => import('@/views/product/index'),
         name: '商品管理',
-        meta: { title: '商品管理', icon: 'dashboard', affix: false }
+        meta: { title: '商品管理', icon: 'shopping', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/shopOrder',
+    component: Layout,
+    redirect: '/shopOrder',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/shopOrder/index'),
+        name: '商城订单',
+        meta: { title: '商城订单', icon: 'form', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/storeOrder',
+    component: Layout,
+    redirect: '/storeOrder',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/storeOrder/index'),
+        name: '门店订单',
+        meta: { title: '门店订单', icon: 'form', affix: false }
       }
     ]
   },
@@ -118,7 +144,7 @@ export const asyncRoutes = [
         path: '',
         component: () => import('@/views/device/index'),
         name: '监控管理',
-        meta: { title: '监控管理', icon: 'dashboard', affix: false }
+        meta: { title: '监控管理', icon: 'eye-open', affix: false }
       },
       {
         path: 'manage',

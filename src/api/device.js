@@ -34,3 +34,21 @@ export function deleteCamera(data) {
     data
   })
 }
+
+// 查询设备绑定用户
+export function queryUserByCameraId(data) {
+  return request({
+    url: '/admin/queryUserByCameraId',
+    method: 'post',
+    data
+  })
+}
+
+// 设备用户绑定操作 bindFlag 0表示绑定，1表示解绑
+export function bindCameraByUid(data) {
+  return request({
+    url: '/admin/bindCameraByUid',
+    method: 'post',
+    data
+  })
+}

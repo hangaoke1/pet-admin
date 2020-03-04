@@ -14,3 +14,11 @@ export function getInfo() {
     method: 'get'
   })
 }
+
+export function queryUserList(data) {
+  return request({
+    url: '/admin/queryUserList',
+    method: 'post',
+    data
+  })
+}
