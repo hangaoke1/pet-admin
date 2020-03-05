@@ -110,6 +110,20 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/productAdd',
+    component: Layout,
+    redirect: '/productAdd',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/productAdd/index'),
+        name: '商品编辑',
+        hidden: true,
+        meta: { title: '商品编辑', icon: 'shopping', affix: false }
+      }
+    ]
+  },
+  {
     path: '/shopOrder',
     component: Layout,
     redirect: '/shopOrder',
@@ -145,13 +159,6 @@ export const asyncRoutes = [
         component: () => import('@/views/device/index'),
         name: '监控管理',
         meta: { title: '监控管理', icon: 'eye-open', affix: false }
-      },
-      {
-        path: 'manage',
-        component: () => import('@/views/deviceManage/index'),
-        name: '用户管理',
-        hidden: true,
-        meta: { title: '监控管理', icon: 'dashboard', affix: false }
       }
     ]
   },

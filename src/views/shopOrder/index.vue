@@ -7,7 +7,8 @@
         placeholder="请输入订单号"
         style="width: 200px;"
         class="filter-item"
-        @keyup.enter.native="handleFilter"
+        clearable=""
+        @keyup.enter.native="getList"
       />
       <el-select
         v-model="listQuery.orderStatus"
@@ -23,6 +24,17 @@
           :value="item.value"
         ></el-option>
       </el-select>
+      <el-date-picker
+        v-model="listQuery.date"
+        class="filter-item"
+        type="datetimerange"
+        :picker-options="pickerOptions"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        align="right"
+        :default-time="['00:00:00', '23:59:59']"
+      ></el-date-picker>
       <el-button
         v-waves
         class="filter-item"
@@ -30,7 +42,7 @@
         icon="el-icon-search"
         @click="getList"
       >查询</el-button>
-      <el-button
+      <!-- <el-button
         class="filter-item"
         type="text"
         size="mini"
@@ -47,8 +59,9 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           align="right"
+          :default-time="['00:00:00', '23:59:59']"
         ></el-date-picker>
-      </div>
+      </div> -->
     </div>
 
     <!-- 数据表格 -->
@@ -157,9 +170,12 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+import waves from '@/directive/waves'
 import * as shopOrderApi from '@/api/shopOrder'
 
 export default {
+  directives: { waves },
   data() {
     return {
       textMap: {
@@ -261,8 +277,17 @@ export default {
     },
     getList() {
       this.loading = true
+      let startTime = ''
+      let endTitme = ''
+      if (this.listQuery.date) {
+        startTime = dayjs(this.listQuery.date[0]).format('YYYY-MM-DD HH:mm:ss')
+        endTitme = dayjs(this.listQuery.date[1]).format('YYYY-MM-DD HH:mm:ss')
+      }
       shopOrderApi
         .queryOrder({
+          startTime,
+          endTitme,
+          orderId: this.listQuery.orderId,
           orderStatus: this.listQuery.orderStatus,
           pageNo: this.pageNo,
           pageSize: this.pageSize

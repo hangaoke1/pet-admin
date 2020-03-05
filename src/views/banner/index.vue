@@ -3,7 +3,7 @@
     <div class="u-title">
       <el-button type="primary" @click="handleAdd">新增轮播</el-button>
     </div>
-    <el-table :data="list" style="width: 100%" border>
+    <el-table v-loading="loading" :data="list" style="width: 100%" border>
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="name" label="图片">
         <template slot-scope="scope">
@@ -65,6 +65,7 @@ export default {
       type: 'add',
       form: {},
       dialogVisible: false,
+      loading: true,
       list: []
     }
   },
@@ -76,7 +77,9 @@ export default {
       this.queryBanners()
     },
     queryBanners() {
+      this.loading = true
       bannerApi.queryBanners().then(res => {
+        this.loading = false
         this.list = res || []
       })
     },

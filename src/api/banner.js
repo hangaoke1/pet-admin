@@ -5,7 +5,7 @@ import request from '@/utils/request'
 
 export function queryBanners() {
   return request({
-    url: '/pet/queryBanners',
+    url: '/admin/queryBanners',
     method: 'get'
   })
 }
