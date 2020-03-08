@@ -70,9 +70,22 @@
           <span>{{ row.reserveWash.reserveTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="预留电话" align="center" width="150">
+      <el-table-column label="宠物种类" width="100" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.reserveWash.mobile }}</span>
+          <el-tag v-if="row.petRecord.petType == 1" size="medium">狗</el-tag>
+          <el-tag v-else size="medium" type="danger">猫</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="服务对象" width="200" align="center">
+        <template slot-scope="{row}">
+          <div>{{ row.petRecord.petName }}  {{ sexMap[row.petRecord.sex] || '未知' }} {{ getPetYear(row.petRecord.birthday) }}</div>
+          <div>{{ row.petRecord.petBreed }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="预约人" align="center" width="150">
+        <template slot-scope="{row}">
+          <div>{{ row.user.nickName }}</div>
+          <div>{{ row.reserveWash.mobile }}</div>
         </template>
       </el-table-column>
       <el-table-column label="订单状态" width="150" align="center">
@@ -85,7 +98,7 @@
           <span>{{ row.reserveWash.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="250" fixed="right" align="center">
+      <el-table-column label="操作" width="200" fixed="right" align="center">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini">查看详情</el-button>
           <el-button
@@ -118,11 +131,16 @@
 import dayjs from 'dayjs'
 import waves from '@/directive/waves'
 import * as storeOrderApi from '@/api/storeOrder'
+import getPetYear from '@/lib/getPetYear'
 
 export default {
   directives: { waves },
   data() {
     return {
+      sexMap: {
+        0: '公',
+        1: '母'
+      },
       textMap: {
         0: '待支付',
         100: '已预约',
@@ -188,6 +206,9 @@ export default {
     this.getList()
   },
   methods: {
+    getPetYear(br) {
+      return getPetYear(br)
+    },
     // 发货
     sendOrder(row) {
       const orderId = row.reserveWash.id
