@@ -97,6 +97,19 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/notice',
+    component: Layout,
+    redirect: '/notice',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/notice/index'),
+        name: '公告管理',
+        meta: { title: '公告管理', icon: 'star', affix: false }
+      }
+    ]
+  },
+  {
     path: '/product',
     component: Layout,
     redirect: '/product',

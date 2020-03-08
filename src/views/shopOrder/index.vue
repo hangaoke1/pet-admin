@@ -34,6 +34,7 @@
         end-placeholder="结束日期"
         align="right"
         :default-time="['00:00:00', '23:59:59']"
+        @change="getList"
       ></el-date-picker>
       <el-button
         v-waves

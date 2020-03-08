@@ -16,7 +16,7 @@
         icon="el-icon-search"
         @click="getList"
       >查询</el-button>
-      <el-button v-waves class="filter-item" type="success">创建新商品</el-button>
+      <el-button v-waves class="filter-item" type="success" @click="doAdd">创建新商品</el-button>
       <el-button v-waves class="filter-item" type="danger">批量删除商品</el-button>
       <!-- <el-button
         class="filter-item"
@@ -62,7 +62,23 @@
             </el-table-column>
             <el-table-column prop="skuName" label="sku名称" width="180"></el-table-column>
             <el-table-column prop="price" label="价格" width="100" align="center"></el-table-column>
-            <el-table-column prop="stock" label="库存" width="100" align="center"></el-table-column>
+            <el-table-column label="库存" width="200" align="center">
+              <template slot-scope="{row}">
+                <div v-if="row.edit" class="u-stock__action">
+                  <el-input v-model="row.stock" size="small" />
+                  <el-button
+                    class="u-stock__cancel"
+                    size="mini"
+                    icon="el-icon-refresh"
+                    type="warning"
+                    @click="cancelSkuStock(row)"
+                  >
+                    取消
+                  </el-button>
+                </div>
+                <span v-else>{{ row.originalStock }}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="详情图片" width="100" align="center">
               <template slot-scope="{row}">
                 <el-image
@@ -75,6 +91,12 @@
                   webp
                   :preview-src-list="[row.skuDetailImgUrl]"
                 />
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="200" align="center">
+              <template slot-scope="{row}">
+                <el-button v-show="!row.edit" @click="editSkuStock(row)">修改库存</el-button>
+                <el-button v-show="row.edit" type="success" @click="saveSkuStock(row)">确认修改</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -128,7 +150,7 @@
       </el-table-column>
       <el-table-column label="库存(总)" width="150" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.productSkuList.reduce((sum, item) => sum += item.stock, 0) }}</span>
+          <span>{{ row.productSkuList.reduce((sum, item) => sum += item.originalStock, 0) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="适用对象" width="150" align="center">
@@ -154,8 +176,8 @@
       </el-table-column>
       <el-table-column label="操作" width="250" fixed="right" align="center">
         <template slot-scope="{row}">
-          <el-button :id="row.product.createTime" size="mini">编辑</el-button>
-          <el-button type="danger" size="mini">删除</el-button>
+          <el-button size="mini" @click="doEdit(row)">编辑</el-button>
+          <el-button type="danger" size="mini" @click="doDelete(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -177,6 +199,7 @@
 
 <script>
 import _ from 'lodash'
+import store from 'store'
 import config from '@/config'
 import waves from '@/directive/waves'
 import * as productApi from '@/api/product'
@@ -201,6 +224,39 @@ export default {
     this.getList()
   },
   methods: {
+    doAdd() {
+      store.set('product_edit', '')
+      this.$router.push({
+        path: '/productAdd'
+      })
+    },
+    doEdit(product) {
+      store.set('product_edit', product)
+      this.$router.push({
+        path: '/productAdd?edit=1'
+      })
+    },
+    doDelete(item) {
+      productApi.deleteProduct({
+        productId: item.product.productId
+      }).then(res => {
+        this.$message.success('删除成功')
+        this.getList()
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
+    editSkuStock(sku) {
+      sku.edit = true
+    },
+    cancelSkuStock(sku) {
+      sku.edit = false
+      sku.stock = sku.originalStock
+    },
+    saveSkuStock(sku) {
+      sku.edit = false
+      sku.originalStock = Number(sku.stock)
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -234,9 +290,14 @@ export default {
         })
         .then(res => {
           this.loading = false
+          res.items.forEach(pd => {
+            pd.productSkuList.forEach(sku => {
+              sku.edit = false
+              sku.originalStock = sku.stock
+            })
+          })
           this.list = res.items
           this.totalCount = res.totalCount
-          console.log('>>> 获取商品列表', res)
         })
         .catch(err => {
           this.loading = false
@@ -268,6 +329,15 @@ export default {
   }
   &__img {
     margin-right: 5px;
+  }
+  .u-stock {
+    &__action {
+      display: flex;
+      align-items: center;
+    }
+    &__cancel {
+      margin-left: 5px;
+    }
   }
 }
 </style>

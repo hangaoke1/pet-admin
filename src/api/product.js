@@ -10,3 +10,35 @@ export function queryProducts(data) {
     data
   })
 }
+
+export function queryProductCategory(data) {
+  return request({
+    url: '/admin/queryProductCategory',
+    method: 'post',
+    data
+  })
+}
+
+export function insertProduct(data) {
+  return request({
+    url: '/admin/insertProduct',
+    method: 'post',
+    data
+  })
+}
+
+export function updateProduct(data) {
+  return request({
+    url: '/admin/updateProduct',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteProduct(data) {
+  return request({
+    url: '/admin/deleteProduct',
+    method: 'post',
+    data
+  })
+}

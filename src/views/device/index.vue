@@ -33,7 +33,12 @@
     >
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="cameraNo" label="设备编号" width="180"></el-table-column>
-      <el-table-column prop="cameraName" label="设备名称" width="180"></el-table-column>
+      <el-table-column prop="cameraName" label="设备名称" width="180">
+        <template slot-scope="{row}">
+          <span>{{ row.cameraName }}</span>
+          <el-button type="success" size="mini" @click="preview(row)">预览</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="url" label="设备地址"></el-table-column>
       <el-table-column label="操作" align="center" width="250">
         <template slot-scope="{row}">
@@ -187,6 +192,14 @@ export default {
     this.getDevice()
   },
   methods: {
+    preview(row) {
+      if (row.url.indexOf('hls01open.ys7.com') === -1) {
+        this.$message.error('请填写正确的设备地址')
+      } else {
+        const id = row.url.slice(34, 66)
+        window.open(`https://open.ys7.com/view/h5/${id}`)
+      }
+    },
     isAreadyBind(row) {
       const { uid } = row
       return !!this.bindUserList.filter(item => item.uid === uid).length
