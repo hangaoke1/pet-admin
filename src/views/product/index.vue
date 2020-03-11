@@ -17,7 +17,7 @@
         @click="getList"
       >查询</el-button>
       <el-button v-waves class="filter-item" type="success" @click="doAdd">创建新商品</el-button>
-      <el-button v-waves class="filter-item" type="danger">批量删除商品</el-button>
+      <el-button v-waves class="filter-item" type="danger" @click="doDeleteMulti">批量删除商品</el-button>
       <!-- <el-button
         class="filter-item"
         type="text"
@@ -209,6 +209,7 @@ export default {
   data() {
     return {
       config,
+      multipleSelection: [],
       filterMore: false,
       listQuery: {
         keyword: ''
@@ -236,15 +237,47 @@ export default {
         path: '/productAdd?edit=1'
       })
     },
-    doDelete(item) {
-      productApi.deleteProduct({
-        productId: item.product.productId
-      }).then(res => {
-        this.$message.success('删除成功')
-        this.getList()
-      }).catch(err => {
-        this.$message.error(err.message)
+    // 批量删除
+    doDeleteMulti() {
+      const ids = this.multipleSelection.map(item => item.product.productId)
+      if (!ids.length) {
+        return this.$message.warning('请选择需要删除的商品')
+      }
+      this.$confirm(`此操作将删除${ids.length}个商品, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(() => {
+          const productId = ids.join('-')
+          productApi.deleteProduct({
+            productId
+          }).then(res => {
+            this.$message.success('删除成功')
+            this.getList()
+          }).catch(err => {
+            this.$message.error(err.message)
+          })
+        })
+        .catch(() => {})
+    },
+    doDelete(item) {
+      this.$confirm(`此操作将删除商品【${item.product.name}】, 是否继续?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          productApi.deleteProduct({
+            productId: item.product.productId
+          }).then(res => {
+            this.$message.success('删除成功')
+            this.getList()
+          }).catch(err => {
+            this.$message.error(err.message)
+          })
+        })
+        .catch(() => {})
     },
     editSkuStock(sku) {
       sku.edit = true
