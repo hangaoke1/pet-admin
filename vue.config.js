@@ -38,11 +38,11 @@ module.exports = {
     },
     proxy: {
       '/pet/uploadFile': {
-        target: `https://api.bbbhr.cn`,
+        target: `https://api.jinqiuqiu.top`,
         changeOrigin: true
       },
       [process.env.VUE_APP_BASE_API]: {
-        target: `https://api.bbbhr.cn`,
+        target: `https://api.jinqiuqiu.top`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
