@@ -64,8 +64,10 @@ export default {
     }
     return {
       loginForm: {
-        username: '米老糍',
-        password: 'xiaohan'
+        // username: '米老糍',
+        // password: 'xiaohan'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true }],
