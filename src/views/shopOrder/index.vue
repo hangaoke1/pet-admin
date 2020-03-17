@@ -174,6 +174,7 @@
 import dayjs from 'dayjs'
 import waves from '@/directive/waves'
 import * as shopOrderApi from '@/api/shopOrder'
+import { recentWeek, recentMonth } from '@/utils/date'
 
 export default {
   directives: { waves },
@@ -198,28 +199,19 @@ export default {
           {
             text: '最近一周',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
+              picker.$emit('pick', recentWeek())
             }
           },
           {
             text: '最近一个月',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
+              picker.$emit('pick', recentMonth())
             }
           },
           {
             text: '最近三个月',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
+              picker.$emit('pick', recentMonth(-3))
             }
           }
         ]
