@@ -30,6 +30,7 @@
       border
       highlight-current-row
       style="width: 100%"
+      header-row-class-name="u-tabel__header"
     >
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="cameraNo" label="设备编号" width="180"></el-table-column>
