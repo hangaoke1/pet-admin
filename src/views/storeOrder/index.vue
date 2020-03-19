@@ -7,7 +7,8 @@
         placeholder="请输入订单号"
         style="width: 200px;"
         class="filter-item"
-        clearable=""
+        clearable
+        size="small"
         @keyup.enter.native="getList"
       />
       <el-select
@@ -15,6 +16,7 @@
         class="filter-item"
         placeholder="订单状态"
         clearable
+        size="small"
         @change="getList"
       >
         <el-option
@@ -33,6 +35,7 @@
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         align="right"
+        size="small"
         :default-time="['00:00:00', '23:59:59']"
         @change="getList"
       ></el-date-picker>
@@ -41,6 +44,7 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
+        size="small"
         @click="getList"
       >查询</el-button>
     </div>

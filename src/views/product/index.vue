@@ -7,6 +7,7 @@
         placeholder="请输入关键字"
         style="width: 200px;"
         class="filter-item"
+        size="small"
         @keyup.enter.native="getList"
       />
       <el-button
@@ -14,10 +15,10 @@
         class="filter-item"
         type="primary"
         icon="el-icon-search"
+        size="small"
         @click="getList"
       >查询</el-button>
-      <el-button v-waves class="filter-item" type="success" @click="doAdd">创建新商品</el-button>
-      <el-button v-waves class="filter-item" type="danger" @click="doDeleteMulti">批量删除商品</el-button>
+      <el-button v-waves class="filter-item" type="success" size="small" @click="doAdd">创建新商品</el-button>
       <!-- <el-button
         class="filter-item"
         type="text"
@@ -27,6 +28,8 @@
       >展开更多筛选条件</el-button>
       <div v-show="filterMore" class="filter-more"></div>-->
     </div>
+
+    <div style="margin-bottom: 10px"><el-button v-waves class="filter-item" size="small" @click="doDeleteMulti">删除</el-button></div>
 
     <!-- 数据表格 -->
     <el-table

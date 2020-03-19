@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    首页
+    欢迎使用小黄兜宠物管理后台
   </div>
 </template>
 

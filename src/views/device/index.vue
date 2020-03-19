@@ -6,12 +6,14 @@
         placeholder="请输入设备编号 "
         style="width: 200px;"
         class="filter-item"
+        size="small"
       />
       <el-button
         v-waves
         class="filter-item"
         type="primary"
         icon="el-icon-search"
+        size="small"
         @click="getDevice"
       >查询</el-button>
       <el-button
@@ -20,6 +22,7 @@
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-edit"
+        size="small"
         @click="handleAddClick"
       >新增设备</el-button>
     </div>

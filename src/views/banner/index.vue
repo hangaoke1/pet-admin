@@ -1,7 +1,7 @@
 <template>
   <div class="u-banner">
     <div class="u-title">
-      <el-button type="primary" @click="handleAdd">新增轮播</el-button>
+      <el-button type="primary" size="small" @click="handleAdd">新增轮播</el-button>
     </div>
     <el-table v-loading="loading" :data="list" style="width: 100%" border header-row-class-name="u-tabel__header">
       <el-table-column type="index" width="50"></el-table-column>
