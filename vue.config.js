@@ -37,10 +37,10 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/pet/uploadFile': {
-        target: `https://api.jinqiuqiu.top`,
-        changeOrigin: true
-      },
+      // '/pet/uploadFile': {
+      //   target: `https://api.jinqiuqiu.top`,
+      //   changeOrigin: true
+      // },
       [process.env.VUE_APP_BASE_API]: {
         target: `https://api.jinqiuqiu.top`,
         changeOrigin: true,

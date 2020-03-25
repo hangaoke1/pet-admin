@@ -50,7 +50,7 @@
         </el-form-item>
         <el-form-item label="商品轮播" prop="productImgUrl">
           <el-upload
-            action="/pet/uploadFile"
+            :action="uploadUrl"
             list-type="picture-card"
             :on-preview="handleBannerPreview"
             :on-remove="handleBannerRemove"
@@ -173,7 +173,7 @@
         <el-table-column label-class-name="u-require" label="sku小图(400x400)" align="center">
           <template slot-scope="{row}">
             <el-upload
-              action="/pet/uploadFile"
+              :action="uploadUrl"
               :show-file-list="false"
               :on-success="handleSmallSuccess.bind(this, row)"
               :before-upload="beforeUpload"
@@ -196,7 +196,7 @@
         <el-table-column label-class-name="u-require" label="sku详情图(750x2000)" align="center">
           <template slot-scope="{row}">
             <el-upload
-              action="/pet/uploadFile"
+              :action="uploadUrl"
               :show-file-list="false"
               :on-success="handleDetailSuccess.bind(this, row)"
               :before-upload="beforeUpload"

@@ -32,7 +32,7 @@
           />
           <div>
             <el-upload
-              action="/pet/uploadFile"
+              :action="uploadUrl"
               :show-file-list="false"
               :on-success="handleUploadSuccess"
               :before-upload="beforeUpload"
