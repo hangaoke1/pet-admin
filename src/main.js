@@ -8,6 +8,8 @@ import Element from 'element-ui'
 import './styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css
+import '@/styles/base.css'
+import '@/styles/animate.min.css'
 
 import App from './App'
 import store from './store'
@@ -51,7 +53,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 
-new Vue({
+window.gvm = new Vue({
   el: '#app',
   router,
   store,

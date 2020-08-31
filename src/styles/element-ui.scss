@@ -1,7 +1,11 @@
 // cover some element-ui styles
-.el-image-viewer__close {
-  color: #fff !important;
+.el-table__header {
+  th {
+    background-color: #fafafa;
+    color: #333;
+  }
 }
+
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
   font-weight: 400 !important;
@@ -33,7 +37,7 @@
 .fixed-width {
   .el-button--mini {
     padding: 7px 10px;
-    min-width: 60px;
+    width: 60px;
   }
 }
 
@@ -83,10 +87,4 @@
 // to fix el-date-picker css style
 .el-range-separator {
   box-sizing: content-box;
-}
-
-.u-tabel__header {
-  th {
-    background-color: #f2f3f5;
-  }
 }

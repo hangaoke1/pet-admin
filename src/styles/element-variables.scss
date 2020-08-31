@@ -4,7 +4,7 @@
 **/
 
 /* theme color */
-$--color-primary: #1890ff;
+$--color-primary: #5757d9;
 $--color-success: #13ce66;
 $--color-warning: #FFBA00;
 $--color-danger: #ff4949;
@@ -18,6 +18,8 @@ $--border-color-light: #dfe4ed;
 $--border-color-lighter: #e6ebf5;
 
 $--table-border:1px solid#dfe6ec;
+
+$--input-border-radius: 2px;
 
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';

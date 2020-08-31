@@ -13,11 +13,7 @@
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
         {{ tag.title }}
-        <span
-          v-if="!isAffix(tag)"
-          class="el-icon-close"
-          @click.prevent.stop="closeSelectedTag(tag)"
-        />
+        <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -32,7 +28,6 @@
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
-import eventbus from '@/lib/eventbus'
 
 export default {
   components: { ScrollPane },
@@ -69,36 +64,8 @@ export default {
   mounted() {
     this.initTags()
     this.addTags()
-    eventbus.$on('closeCurrenPage', this.doClose)
-    eventbus.$on('refreshCurrenPage', this.doRefresh)
-  },
-  beforeDestroy() {
-    eventbus.$off('closeCurrenPage', this.doClose)
-    eventbus.$off('refreshCurrenPage', this.doRefresh)
   },
   methods: {
-    doClose() {
-      const tags = this.visitedViews
-      let currentTag
-      for (const tag of tags) {
-        if (tag.path === this.$route.path) {
-          currentTag = tag
-          break
-        }
-      }
-      this.closeSelectedTag(currentTag)
-    },
-    doRefresh() {
-      const tags = this.visitedViews
-      let currentTag
-      for (const tag of tags) {
-        if (tag.path === this.$route.path) {
-          currentTag = tag
-          break
-        }
-      }
-      this.refreshSelectedTag(currentTag)
-    },
     isActive(route) {
       return route.path === this.$route.path
     },
@@ -127,7 +94,7 @@ export default {
       return tags
     },
     initTags() {
-      const affixTags = (this.affixTags = this.filterAffixTags(this.routes))
+      const affixTags = this.affixTags = this.filterAffixTags(this.routes)
       for (const tag of affixTags) {
         // Must have tag name
         if (tag.name) {
@@ -168,21 +135,17 @@ export default {
       })
     },
     closeSelectedTag(view) {
-      this.$store
-        .dispatch('tagsView/delView', view)
-        .then(({ visitedViews }) => {
-          if (this.isActive(view)) {
-            this.toLastView(visitedViews, view)
-          }
-        })
+      this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
+        if (this.isActive(view)) {
+          this.toLastView(visitedViews, view)
+        }
+      })
     },
     closeOthersTags() {
       this.$router.push(this.selectedTag)
-      this.$store
-        .dispatch('tagsView/delOthersViews', this.selectedTag)
-        .then(() => {
-          this.moveToCurrentTag()
-        })
+      this.$store.dispatch('tagsView/delOthersViews', this.selectedTag).then(() => {
+        this.moveToCurrentTag()
+      })
     },
     closeAllTags(view) {
       this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
@@ -233,25 +196,29 @@ export default {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  height: 34px;
+  padding: 10px 0;
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
     .tags-view-item {
-      display: inline-block;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
       cursor: pointer;
-      height: 26px;
-      line-height: 26px;
+      height: 34px;
+      line-height: 34px;
       border: 1px solid #d8dce5;
       color: #495060;
       background: #fff;
-      padding: 0 8px;
-      font-size: 12px;
+      padding: 0 15px;
+      font-size: 14px;
+      font-weight: bold;
       margin-left: 5px;
-      margin-top: 4px;
+      border-radius: 2px;
       &:first-of-type {
         margin-left: 15px;
       }
@@ -259,19 +226,9 @@ export default {
         margin-right: 15px;
       }
       &.active {
-        background-color: #42b983;
+        background-color: #5757d9;
         color: #fff;
-        border-color: #42b983;
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
-        }
+        border-color: #5757d9;
       }
     }
   }
@@ -286,7 +243,7 @@ export default {
     font-size: 12px;
     font-weight: 400;
     color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
     li {
       margin: 0;
       padding: 7px 16px;
@@ -304,15 +261,15 @@ export default {
 .tags-view-wrapper {
   .tags-view-item {
     .el-icon-close {
-      width: 16px;
-      height: 16px;
-      vertical-align: 2px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       text-align: center;
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      transition: all .15s cubic-bezier(.645, .045, .355, 1);
       transform-origin: 100% 50%;
+      margin-left: 5px;
       &:before {
-        transform: scale(0.6);
+        transform: scale(.8);
         display: inline-block;
         vertical-align: -3px;
       }

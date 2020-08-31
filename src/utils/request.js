@@ -5,7 +5,6 @@ import { getToken } from '@/utils/auth'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
-  // baseURL: 'https://api.jinqiuqiu.top',
   withCredentials: false,
   timeout: 5000
 })
@@ -38,7 +37,7 @@ service.interceptors.response.use(
       })
 
       // token过期
-      if (res.code === 999) {
+      if (res.code === 999 && window.gvm.$route.path !== '/login') {
         MessageBox.confirm('登录状态已经过期', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',

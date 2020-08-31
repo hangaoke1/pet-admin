@@ -1,7 +1,7 @@
 {
-  "name": "vue-element-admin",
+  "name": "youchong-admin",
   "version": "4.2.1",
-  "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
+  "description": "",
   "author": "Han <188869009@qq.com>",
   "license": "MIT",
   "scripts": {
@@ -50,7 +50,7 @@
     "driver.js": "0.9.5",
     "dropzone": "5.5.1",
     "echarts": "4.2.1",
-    "element-ui": "^2.13.0",
+    "element-ui": "^2.13.1",
     "file-saver": "2.0.1",
     "fuse.js": "3.4.4",
     "js-cookie": "2.2.0",
