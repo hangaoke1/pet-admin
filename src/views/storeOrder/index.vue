@@ -66,12 +66,29 @@
       </el-table-column>
       <el-table-column label="服务内容" width="150" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.reserveWash.service }}</span>
+          <div v-for="item in JSON.parse(row.reserveWash.service)" :key="item.id">{{ item.name }}</div>
         </template>
       </el-table-column>
       <el-table-column label="预约时间" width="200" align="center">
         <template slot-scope="{row}">
           <span>{{ row.reserveWash.reserveTime }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="订单金额" width="180" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.reserveWash.totalFee }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="实付金额" width="180" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.reserveWash.paidFee }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="订单状态" width="150" align="center">
+        <template slot-scope="{row}">
+          <span
+            :style="{color: colorMap[row.reserveWash.reserveOrderStatus]}"
+          >{{ textMap[row.reserveWash.reserveOrderStatus] }}</span>
         </template>
       </el-table-column>
       <el-table-column label="宠物种类" width="100" align="center">
@@ -82,19 +99,16 @@
       </el-table-column>
       <el-table-column label="服务对象" width="200" align="center">
         <template slot-scope="{row}">
-          <div>{{ row.petRecord.petName }}  {{ sexMap[row.petRecord.sex] || '未知' }} {{ getPetYear(row.petRecord.birthday) }}</div>
-          <div>{{ row.petRecord.petBreed }}</div>
+          <div>{{ row.petRecord.petName }} {{ sexMap[row.petRecord.sex] || '未知' }} {{ getPetYear(row.petRecord.birthday) }}</div>
+          <div>
+            <el-tag>{{ row.petRecord.petBreed }}</el-tag>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="预约人" align="center" width="150">
         <template slot-scope="{row}">
           <div>{{ row.user.nickName }}</div>
           <div>{{ row.reserveWash.mobile }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="订单状态" width="150" align="center">
-        <template slot-scope="{row}">
-          <span :style="{color: colorMap[row.reserveWash.reserveOrderStatus]}">{{ textMap[row.reserveWash.reserveOrderStatus] }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="200" align="center">
