@@ -148,6 +148,17 @@
             <el-input v-model="row.skuName" size="small"></el-input>
           </template>
         </el-table-column>
+        <el-table-column label="sku原价" width="160" align="center">
+          <template slot-scope="{row}">
+            <el-input-number
+              v-model="row.originPrice"
+              controls-position="right"
+              :min="0"
+              :max="99999"
+              size="small"
+            ></el-input-number>
+          </template>
+        </el-table-column>
         <el-table-column label-class-name="u-require" label="sku价格" width="160" align="center">
           <template slot-scope="{row}">
             <el-input-number
@@ -258,12 +269,14 @@ const genSku = function() {
     skuName: '',
     skuImgUrl: '',
     skuDetailImgUrl: '',
+    originPrice: '',
     price: '',
     stock: '',
     specs: null
   }
 }
 export default {
+  name: '商品编辑',
   data() {
     var validateBanner = (rule, value, callback) => {
       if (!_.get(value, 'length')) {

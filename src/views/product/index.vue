@@ -29,7 +29,9 @@
       <div v-show="filterMore" class="filter-more"></div>-->
     </div>
 
-    <div style="margin-bottom: 10px"><el-button v-waves class="filter-item" size="small" @click="doDeleteMulti">删除</el-button></div>
+    <div style="margin-bottom: 10px">
+      <el-button v-waves class="filter-item" size="small" @click="doDeleteMulti">删除</el-button>
+    </div>
 
     <!-- 数据表格 -->
     <el-table
@@ -75,9 +77,7 @@
                     icon="el-icon-refresh"
                     type="warning"
                     @click="cancelSkuStock(row)"
-                  >
-                    取消
-                  </el-button>
+                  >取消</el-button>
                 </div>
                 <span v-else>{{ row.originalStock }}</span>
               </template>
@@ -208,6 +208,7 @@ import waves from '@/directive/waves'
 import * as productApi from '@/api/product'
 
 export default {
+  name: '商品管理',
   directives: { waves },
   data() {
     return {
@@ -253,14 +254,17 @@ export default {
       })
         .then(() => {
           const productId = ids.join('-')
-          productApi.deleteProduct({
-            productId
-          }).then(res => {
-            this.$message.success('删除成功')
-            this.getList()
-          }).catch(err => {
-            this.$message.error(err.message)
-          })
+          productApi
+            .deleteProduct({
+              productId
+            })
+            .then(res => {
+              this.$message.success('删除成功')
+              this.getList()
+            })
+            .catch(err => {
+              this.$message.error(err.message)
+            })
         })
         .catch(() => {})
     },
@@ -271,14 +275,17 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          productApi.deleteProduct({
-            productId: item.product.productId
-          }).then(res => {
-            this.$message.success('删除成功')
-            this.getList()
-          }).catch(err => {
-            this.$message.error(err.message)
-          })
+          productApi
+            .deleteProduct({
+              productId: item.product.productId
+            })
+            .then(res => {
+              this.$message.success('删除成功')
+              this.getList()
+            })
+            .catch(err => {
+              this.$message.error(err.message)
+            })
         })
         .catch(() => {})
     },

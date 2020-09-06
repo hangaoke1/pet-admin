@@ -47,26 +47,6 @@
         size="small"
         @click="getList"
       >查询</el-button>
-      <!-- <el-button
-        class="filter-item"
-        type="text"
-        size="mini"
-        style="margin-top: 10px;"
-        @click="filterMore = !filterMore"
-      >展开更多筛选条件</el-button>
-      <div v-show="filterMore" class="filter-more">
-        <el-date-picker
-          v-model="listQuery.date"
-          class="filter-item"
-          type="datetimerange"
-          :picker-options="pickerOptions"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"
-          :default-time="['00:00:00', '23:59:59']"
-        ></el-date-picker>
-      </div> -->
     </div>
 
     <!-- 数据表格 -->

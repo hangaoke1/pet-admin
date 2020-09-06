@@ -21,7 +21,7 @@
 
     <el-dialog :title="type === 'add' ? '新增' : '编辑'" :visible.sync="dialogVisible">
       <el-form :model="form" label-width="80px">
-        <el-form-item label="轮播图片">
+        <el-form-item v-loading="uploadLoading" label="轮播图片">
           <el-image
             v-if="form.imgUrl"
             style="width: 187px; height: 100px"
@@ -66,6 +66,7 @@ export default {
       form: {},
       dialogVisible: false,
       loading: true,
+      uploadLoading: false,
       list: []
     }
   },
@@ -145,9 +146,11 @@ export default {
         })
     },
     handleUploadSuccess(res, file) {
+      this.uploadLoading = false
       this.form.imgUrl = res.data
     },
     beforeUpload() {
+      this.uploadLoading = true
       return true
     }
   }
