@@ -57,15 +57,15 @@
       style="width: 100%"
       header-row-class-name="u-tabel__header"
     >
-      <el-table-column label="订单编号" width="180" align="center">
+      <el-table-column label="订单编号" width="180">
         <template slot-scope="{row}">
           <span>{{ row.order.orderId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品详情">
+      <el-table-column label="商品详情" width="300">
         <template slot-scope="{row}">
           <div class="u-product__list">
-            <div v-for="item in row.orderItemList" :key="item.id" class="u-product__item">
+            <div v-for="item in row.orderItemList" :key="item.id" class="u-product__item pr-2">
               <el-image
                 class="u-sku__img"
                 style="width: 50px; height: 50px"
@@ -85,7 +85,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="订单状态" width="150" align="center">
+      <el-table-column label="订单状态" width="150">
         <template slot-scope="{row}">
           <div
             class="u-orderStatus"
@@ -93,9 +93,9 @@
           >{{ textMap[row.order.orderStatus] }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="订单总价(元)" align="center" width="150">
+      <el-table-column label="订单总价(元)" width="150">
         <template slot-scope="{row}">
-          <div class="u-totalFee">{{ row.order.totalFee }}</div>
+          <span>¥ {{ row.order.totalFee }}</span>
         </template>
       </el-table-column>
       <el-table-column label="收货地址">
@@ -117,12 +117,12 @@
           <div class="u-buyerMemo">{{ row.order.buyerMemo }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="创建时间">
         <template slot-scope="{row}">
           <div class="u-createTime">{{ row.order.createTime }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="250" fixed="right" align="center">
+      <el-table-column label="操作" width="250" fixed="right">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini">查看详情</el-button>
           <el-button
@@ -351,9 +351,6 @@ export default {
   }
   .u-createTime {
     font-size: 12px;
-  }
-  .u-totalFee {
-    text-align: center;
   }
 }
 </style>

@@ -57,45 +57,47 @@
       style="width: 100%"
       header-row-class-name="u-tabel__header"
     >
-      <el-table-column label="订单编号" width="180" align="center">
+      <el-table-column label="订单编号" width="150">
         <template slot-scope="{row}">
           <span>{{ row.reserveWash.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="服务内容" align="center">
+      <el-table-column label="服务内容" width="250">
         <template slot-scope="{row}">
-          <div v-for="item in JSON.parse(row.reserveWash.service)" :key="item.id">{{ item.name }}</div>
+          <div v-for="item in JSON.parse(row.reserveWash.service)" :key="item.id">
+            <service-item :info="item"></service-item>
+          </div>
         </template>
       </el-table-column>
-      <el-table-column label="预约时间" width="200" align="center">
+      <el-table-column label="预约时间" width="200">
         <template slot-scope="{row}">
           <span>{{ row.reserveWash.reserveTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="订单金额" width="180" align="center">
+      <el-table-column label="订单金额" width="150">
         <template slot-scope="{row}">
-          <span>{{ row.reserveWash.totalFee }}</span>
+          <span>¥ {{ row.reserveWash.totalFee }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="实付金额" width="180" align="center">
+      <el-table-column label="实付金额" width="150">
         <template slot-scope="{row}">
-          <span>{{ row.reserveWash.paidFee }}</span>
+          <span>¥ {{ row.reserveWash.paidFee }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="订单状态" width="150" align="center">
+      <el-table-column label="订单状态" width="150">
         <template slot-scope="{row}">
           <span
             :style="{color: colorMap[row.reserveWash.reserveOrderStatus]}"
           >{{ textMap[row.reserveWash.reserveOrderStatus] }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="宠物种类" width="100" align="center">
+      <el-table-column label="宠物种类" width="150">
         <template slot-scope="{row}">
           <el-tag v-if="row.petRecord.petType == 1" size="medium">狗</el-tag>
           <el-tag v-else size="medium" type="danger">猫</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="服务对象" align="center">
+      <el-table-column label="服务对象" width="150">
         <template slot-scope="{row}">
           <div>{{ row.petRecord.petName }} {{ sexMap[row.petRecord.sex] || '未知' }} {{ getPetYear(row.petRecord.birthday) }}</div>
           <div>
@@ -103,18 +105,18 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="预约人" align="center">
+      <el-table-column label="预约人" width="150">
         <template slot-scope="{row}">
           <div>{{ row.user.nickName }}</div>
           <div>{{ row.reserveWash.mobile }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center">
+      <el-table-column label="创建时间" width="160">
         <template slot-scope="{row}">
           <span>{{ row.reserveWash.createTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200" fixed="right" align="center">
+      <el-table-column label="操作" width="200" fixed="right">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini">查看详情</el-button>
           <el-button
@@ -149,9 +151,13 @@ import waves from '@/directive/waves'
 import * as storeOrderApi from '@/api/storeOrder'
 import getPetYear from '@/lib/getPetYear'
 import { recentWeek, recentMonth } from '@/utils/date'
+import ServiceItem from './ServiceItem.vue'
 
 export default {
   name: 'storeOrder',
+  components: {
+    ServiceItem
+  },
   directives: { waves },
   data() {
     return {

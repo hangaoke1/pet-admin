@@ -132,7 +132,7 @@ export const asyncRoutes = [
         component: () => import('@/views/productAdd/index'),
         name: 'productAdd',
         hidden: true,
-        meta: { title: '商品编辑', icon: 'shopping', affix: false }
+        meta: { title: '商品编辑', icon: 'shopping', affix: false, noCache: true }
       }
     ]
   },
