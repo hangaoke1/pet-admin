@@ -32,6 +32,7 @@
 import _ from 'lodash'
 import * as noticeApi from '@/api/notice'
 export default {
+  name: 'notice',
   data() {
     return {
       type: 'add',

@@ -60,6 +60,7 @@
 import _ from 'lodash'
 import * as bannerApi from '@/api/banner'
 export default {
+  name: 'banner',
   data() {
     return {
       type: 'add',

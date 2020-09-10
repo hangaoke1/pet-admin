@@ -53,8 +53,6 @@
     <el-table
       v-loading="loading"
       :data="list"
-      stripe
-      border
       highlight-current-row
       style="width: 100%"
       header-row-class-name="u-tabel__header"
@@ -64,7 +62,7 @@
           <span>{{ row.reserveWash.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="服务内容" width="150" align="center">
+      <el-table-column label="服务内容" align="center">
         <template slot-scope="{row}">
           <div v-for="item in JSON.parse(row.reserveWash.service)" :key="item.id">{{ item.name }}</div>
         </template>
@@ -97,7 +95,7 @@
           <el-tag v-else size="medium" type="danger">猫</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="服务对象" width="200" align="center">
+      <el-table-column label="服务对象" align="center">
         <template slot-scope="{row}">
           <div>{{ row.petRecord.petName }} {{ sexMap[row.petRecord.sex] || '未知' }} {{ getPetYear(row.petRecord.birthday) }}</div>
           <div>
@@ -105,13 +103,13 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="预约人" align="center" width="150">
+      <el-table-column label="预约人" align="center">
         <template slot-scope="{row}">
           <div>{{ row.user.nickName }}</div>
           <div>{{ row.reserveWash.mobile }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="200" align="center">
+      <el-table-column label="创建时间" align="center">
         <template slot-scope="{row}">
           <span>{{ row.reserveWash.createTime }}</span>
         </template>
@@ -153,6 +151,7 @@ import getPetYear from '@/lib/getPetYear'
 import { recentWeek, recentMonth } from '@/utils/date'
 
 export default {
+  name: 'storeOrder',
   directives: { waves },
   data() {
     return {

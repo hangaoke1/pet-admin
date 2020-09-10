@@ -143,12 +143,12 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column label-class-name="u-require" label="sku名称" width="200">
+        <el-table-column label-class-name="u-require" label="sku名称" width="180">
           <template slot-scope="{row}">
             <el-input v-model="row.skuName" size="small"></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="sku原价" width="160" align="center">
+        <el-table-column label="sku原价" width="150" align="center">
           <template slot-scope="{row}">
             <el-input-number
               v-model="row.originPrice"
@@ -159,7 +159,7 @@
             ></el-input-number>
           </template>
         </el-table-column>
-        <el-table-column label-class-name="u-require" label="sku价格" width="160" align="center">
+        <el-table-column label-class-name="u-require" label="sku价格" width="150" align="center">
           <template slot-scope="{row}">
             <el-input-number
               v-model="row.price"
@@ -170,7 +170,7 @@
             ></el-input-number>
           </template>
         </el-table-column>
-        <el-table-column label-class-name="u-require" label="sku库存" width="160" align="center">
+        <el-table-column label-class-name="u-require" label="sku库存" width="150" align="center">
           <template slot-scope="{row}">
             <el-input-number
               v-model="row.stock"
@@ -179,6 +179,18 @@
               :max="99999"
               size="small"
             ></el-input-number>
+          </template>
+        </el-table-column>
+        <el-table-column label="商品类型" width="120" align="center">
+          <template slot-scope="{row}">
+            <el-select v-model="row.hotFlag" placeholder="请选择">
+              <el-option
+                v-for="item in hotFlagOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column label-class-name="u-require" label="sku小图(400x400)" align="center">
@@ -230,7 +242,11 @@
       </el-table>
     </div>
     <div class="u-submit">
-      <el-button :loading="submitLoading" type="primary" @click="handleSubmit">{{ $route.query.edit ? '更新商品': '提交发布' }}</el-button>
+      <el-button
+        :loading="submitLoading"
+        type="primary"
+        @click="handleSubmit"
+      >{{ $route.query.edit ? '更新商品': '提交发布' }}</el-button>
       <!-- <el-button>保存草稿</el-button> -->
     </div>
   </div>
@@ -264,7 +280,8 @@ const specsMap = {}
 specsList.forEach(item => {
   specsMap[item.type] = item
 })
-const genSku = function() {
+
+const genSku = function () {
   return {
     skuName: '',
     skuImgUrl: '',
@@ -276,7 +293,7 @@ const genSku = function() {
   }
 }
 export default {
-  name: '商品编辑',
+  name: 'productAdd',
   data() {
     var validateBanner = (rule, value, callback) => {
       if (!_.get(value, 'length')) {
@@ -309,6 +326,20 @@ export default {
       options: [
         { label: '狗狗', value: 1 },
         { label: '猫咪', value: 2 }
+      ],
+      hotFlagOptions: [
+        {
+          value: 0,
+          label: '普通'
+        },
+        {
+          value: 1,
+          label: '新品'
+        },
+        {
+          value: 2,
+          label: '折扣'
+        }
       ],
       categoryOptions: [],
       rules: {
@@ -405,8 +436,8 @@ export default {
                     eventbus.$emit('closeCurrenPage')
                   })
                   .catch(err => {
+                    console.error(err)
                     this.submitLoading = false
-                    this.$message.error(err.message)
                   })
               } else {
                 productApi
@@ -587,7 +618,8 @@ export default {
   padding-bottom: 400px;
 }
 .u-productAdd {
-  width: 1040px;
+  min-width: 1200px;
+  max-width: 1400px;
   padding: 20px;
   border: 1px solid #ccc;
 }

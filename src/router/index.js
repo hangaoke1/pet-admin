@@ -91,7 +91,7 @@ export const asyncRoutes = [
       {
         path: '',
         component: () => import('@/views/banner/index'),
-        name: '轮播管理',
+        name: 'banner',
         meta: { title: '轮播管理', icon: 'example', affix: false }
       }
     ]
@@ -104,7 +104,7 @@ export const asyncRoutes = [
       {
         path: '',
         component: () => import('@/views/notice/index'),
-        name: '公告管理',
+        name: 'notice',
         meta: { title: '公告管理', icon: 'star', affix: false }
       }
     ]
@@ -117,7 +117,7 @@ export const asyncRoutes = [
       {
         path: '',
         component: () => import('@/views/product/index'),
-        name: '商品管理',
+        name: 'product',
         meta: { title: '商品管理', icon: 'shopping', affix: false }
       }
     ]
@@ -130,7 +130,7 @@ export const asyncRoutes = [
       {
         path: '',
         component: () => import('@/views/productAdd/index'),
-        name: '商品编辑',
+        name: 'productAdd',
         hidden: true,
         meta: { title: '商品编辑', icon: 'shopping', affix: false }
       }
@@ -144,7 +144,7 @@ export const asyncRoutes = [
       {
         path: '',
         component: () => import('@/views/shopOrder/index'),
-        name: '商城订单',
+        name: 'shopOrder',
         meta: { title: '商城订单', icon: 'form', affix: false }
       }
     ]
@@ -157,7 +157,7 @@ export const asyncRoutes = [
       {
         path: '',
         component: () => import('@/views/storeOrder/index'),
-        name: '门店订单',
+        name: 'storeOrder',
         meta: { title: '门店订单', icon: 'form', affix: false }
       }
     ]
@@ -170,7 +170,7 @@ export const asyncRoutes = [
       {
         path: '',
         component: () => import('@/views/device/index'),
-        name: '监控管理',
+        name: 'device',
         meta: { title: '监控管理', icon: 'eye-open', affix: false }
       }
     ]

@@ -53,8 +53,6 @@
     <el-table
       v-loading="loading"
       :data="list"
-      stripe
-      border
       highlight-current-row
       style="width: 100%"
       header-row-class-name="u-tabel__header"
@@ -64,7 +62,7 @@
           <span>{{ row.order.orderId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品详情" width="250">
+      <el-table-column label="商品详情">
         <template slot-scope="{row}">
           <div class="u-product__list">
             <div v-for="item in row.orderItemList" :key="item.id" class="u-product__item">
@@ -87,12 +85,20 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column label="订单状态" width="150" align="center">
+        <template slot-scope="{row}">
+          <div
+            class="u-orderStatus"
+            :style="{color: colorMap[row.order.orderStatus]}"
+          >{{ textMap[row.order.orderStatus] }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="订单总价(元)" align="center" width="150">
         <template slot-scope="{row}">
           <div class="u-totalFee">{{ row.order.totalFee }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="收货地址" width="250">
+      <el-table-column label="收货地址">
         <template slot-scope="{row}">
           <div class="u-address">
             <span>{{ row.userAddress.province }}</span>
@@ -106,20 +112,12 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="订单备注" width="150">
+      <el-table-column label="订单备注">
         <template slot-scope="{row}">
           <div class="u-buyerMemo">{{ row.order.buyerMemo }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="订单状态" width="150" align="center">
-        <template slot-scope="{row}">
-          <div
-            class="u-orderStatus"
-            :style="{color: colorMap[row.order.orderStatus]}"
-          >{{ textMap[row.order.orderStatus] }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" width="150" align="center">
+      <el-table-column label="创建时间" align="center">
         <template slot-scope="{row}">
           <div class="u-createTime">{{ row.order.createTime }}</div>
         </template>
@@ -161,6 +159,7 @@ import * as shopOrderApi from '@/api/shopOrder'
 import { recentWeek, recentMonth } from '@/utils/date'
 
 export default {
+  name: 'shopOrder',
   directives: { waves },
   data() {
     return {

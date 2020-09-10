@@ -115,7 +115,7 @@
           <span>{{ row.product.brand }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品信息" width="200">
+      <el-table-column label="商品信息" width="250">
         <template slot-scope="{row}">
           <div class="u-product__info">
             <el-image
@@ -172,7 +172,7 @@
           <span>{{ row.product.address }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="200" align="center">
+      <el-table-column label="创建时间" align="center">
         <template slot-scope="{row}">
           <span>{{ row.product.createTime }}</span>
         </template>
@@ -208,7 +208,7 @@ import waves from '@/directive/waves'
 import * as productApi from '@/api/product'
 
 export default {
-  name: '商品管理',
+  name: 'product',
   directives: { waves },
   data() {
     return {
