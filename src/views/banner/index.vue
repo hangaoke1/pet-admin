@@ -3,11 +3,23 @@
     <div class="u-title">
       <el-button type="primary" size="small" @click="handleAdd">新增轮播</el-button>
     </div>
-    <el-table v-loading="loading" :data="list" style="width: 100%" border header-row-class-name="u-tabel__header">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      style="width: 100%"
+      border
+      header-row-class-name="u-tabel__header"
+    >
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="name" label="图片">
         <template slot-scope="scope">
-          <el-image style="width: 187px; height: 100px" :src="scope.row.imgUrl" fit="fill" lazy :preview-src-list="[scope.row.imgUrl]" />
+          <el-image
+            style="width: 187px; height: 100px"
+            :src="scope.row.imgUrl"
+            fit="fill"
+            lazy
+            :preview-src-list="[scope.row.imgUrl]"
+          />
         </template>
       </el-table-column>
       <el-table-column prop="detail" label="描述"></el-table-column>
@@ -44,6 +56,17 @@
             </el-upload>
           </div>
         </el-form-item>
+        <el-form-item label="类型">
+          <!-- <el-input v-model="form.bannerType" autocomplete="off"></el-input> -->
+          <el-select v-model="form.bannerType" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="轮播描述">
           <el-input v-model="form.detail" autocomplete="off"></el-input>
         </el-form-item>
@@ -68,7 +91,17 @@ export default {
       dialogVisible: false,
       loading: true,
       uploadLoading: false,
-      list: []
+      list: [],
+      options: [
+        {
+          value: 0,
+          label: '首页'
+        },
+        {
+          value: 1,
+          label: '商城'
+        }
+      ]
     }
   },
   mounted() {
@@ -113,7 +146,8 @@ export default {
       this.type = 'add'
       this.form = {
         imgUrl: '',
-        detail: ''
+        detail: '',
+        bannerType: 0
       }
       this.dialogVisible = true
     },
@@ -129,15 +163,17 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          bannerApi.deleteBanner({
-            id: item.id
-          }).then(() => {
-            this.init()
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
+          bannerApi
+            .deleteBanner({
+              id: item.id
             })
-          })
+            .then(() => {
+              this.init()
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            })
         })
         .catch(() => {
           this.$message({
