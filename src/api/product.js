@@ -11,6 +11,15 @@ export function queryProducts(data) {
   })
 }
 
+// 查询商品详情
+export function queryProductFullInfoById(data) {
+  return request({
+    url: '/pet/queryProductFullInfoById',
+    method: 'get',
+    params: data
+  })
+}
+
 export function queryProductCategory(data) {
   return request({
     url: '/admin/queryProductCategory',

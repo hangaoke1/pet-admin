@@ -1,7 +1,7 @@
 <template>
   <div class="u-product">
     <!-- 查询条件 -->
-    <div class="filter-container">
+    <div class="mb-1">
       <el-input
         v-model="listQuery.keyword"
         placeholder="请输入关键字"
@@ -12,25 +12,17 @@
       />
       <el-button
         v-waves
-        class="filter-item"
+        class="filter-item ml-1"
         type="primary"
         icon="el-icon-search"
         size="small"
-        @click="getList"
+        @click="doSearch"
       >查询</el-button>
-      <el-button v-waves class="filter-item" type="success" size="small" @click="doAdd">创建新商品</el-button>
-      <!-- <el-button
-        class="filter-item"
-        type="text"
-        size="mini"
-        style="margin-top: 10px;"
-        @click="filterMore = !filterMore"
-      >展开更多筛选条件</el-button>
-      <div v-show="filterMore" class="filter-more"></div>-->
+      <el-button v-waves class="filter-item" type="success" plain size="small" @click="doAdd">创建新商品</el-button>
     </div>
 
-    <div style="margin-bottom: 10px">
-      <el-button v-waves class="filter-item" size="small" @click="doDeleteMulti">删除</el-button>
+    <div class="mb-1">
+      <el-button v-waves class="filter-item" type="danger" size="small" plain @click="doDeleteMulti">批量删除</el-button>
     </div>
 
     <!-- 数据表格 -->
@@ -229,16 +221,19 @@ export default {
     this.getList()
   },
   methods: {
+    doSearch() {
+      this.pageNo = 1
+      this.getList()
+    },
     doAdd() {
       store.set('product_edit', '')
       this.$router.push({
-        path: '/productAdd'
+        path: '/product/create'
       })
     },
-    doEdit(product) {
-      store.set('product_edit', product)
+    doEdit(info) {
       this.$router.push({
-        path: '/productAdd?edit=1'
+        path: `/product/edit/${info.product.productId}`
       })
     },
     // 批量删除

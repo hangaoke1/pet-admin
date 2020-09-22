@@ -119,20 +119,20 @@ export const asyncRoutes = [
         component: () => import('@/views/product/index'),
         name: 'product',
         meta: { title: '商品管理', icon: 'shopping', affix: false }
-      }
-    ]
-  },
-  {
-    path: '/productAdd',
-    component: Layout,
-    redirect: '/productAdd',
-    children: [
+      },
       {
-        path: '',
-        component: () => import('@/views/productAdd/index'),
-        name: 'productAdd',
+        path: 'create',
         hidden: true,
-        meta: { title: '商品编辑', icon: 'shopping', affix: false, noCache: true }
+        component: () => import('@/views/product/create'),
+        name: 'productCreate',
+        meta: { title: '商品新增', affix: false }
+      },
+      {
+        path: 'edit/:productId',
+        hidden: true,
+        component: () => import('@/views/product/edit'),
+        name: 'productEdit',
+        meta: { title: '商品编辑', affix: false }
       }
     ]
   },
@@ -206,11 +206,12 @@ export const asyncRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
 
 const router = createRouter()
 

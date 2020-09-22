@@ -311,6 +311,9 @@ const genSku = function () {
 }
 export default {
   name: 'productDetail',
+  props: {
+    isEdit: Boolean
+  },
   data() {
     var validateBanner = (rule, value, callback) => {
       if (!_.get(value, 'length')) {
@@ -383,9 +386,6 @@ export default {
   computed: {
     effectSpecs() {
       return this.specs.filter(item => !!item.val.length)
-    },
-    isEdit() {
-      return this.$route.params.action === 'edit'
     }
   },
   watch: {
@@ -413,17 +413,31 @@ export default {
     init() {
       if (this.isEdit) {
         // 编辑商品
+        this.tempRoute = Object.assign({}, this.$route)
         this.queryProductFullInfoById()
       } else {
         // 新增商品
       }
     },
+    setTagsViewTitle() {
+      const title = '商品编辑'
+      const route = Object.assign({}, this.tempRoute, {
+        title: `${title}-${this.$route.params.productId}`
+      })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = '商品编辑'
+      document.title = `${title} - ${this.$route.params.productId}`
+    },
     queryProductFullInfoById() {
       productApi
         .queryProductFullInfoById({
-          productId: this.$route.query.productId
+          productId: this.$route.params.productId
         })
         .then(data => {
+          this.setTagsViewTitle()
+          this.setPageTitle()
           store.set('product_edit', data)
           this.recoverData(data)
         })
