@@ -148,7 +148,7 @@
 <script>
 import dayjs from 'dayjs'
 import waves from '@/directive/waves'
-import * as storeOrderApi from '@/api/storeOrder'
+import storeOrderApi from '@/api/storeOrder'
 import getPetYear from '@/lib/getPetYear'
 import { recentWeek, recentMonth } from '@/utils/date'
 import ServiceItem from './ServiceItem.vue'

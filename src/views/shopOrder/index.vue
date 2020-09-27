@@ -57,7 +57,7 @@
       style="width: 100%"
       header-row-class-name="u-tabel__header"
     >
-      <el-table-column label="订单编号" width="180">
+      <el-table-column label="订单编号" width="180" align="center">
         <template slot-scope="{row}">
           <span>{{ row.order.orderId }}</span>
         </template>
@@ -85,12 +85,9 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="订单状态" width="150">
+      <el-table-column label="订单状态" width="150" align="center">
         <template slot-scope="{row}">
-          <div
-            class="u-orderStatus"
-            :style="{color: colorMap[row.order.orderStatus]}"
-          >{{ textMap[row.order.orderStatus] }}</div>
+          <el-tag :type="colorMap[row.order.orderStatus]">{{ textMap[row.order.orderStatus] }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="订单总价(元)" width="150">
@@ -100,15 +97,17 @@
       </el-table-column>
       <el-table-column label="收货地址">
         <template slot-scope="{row}">
-          <div class="u-address">
-            <span>{{ row.userAddress.province }}</span>
-            <span>{{ row.userAddress.city }}</span>
-            <span>{{ row.userAddress.area }}</span>
-            <span>{{ row.userAddress.detail }}</span>
-          </div>
-          <div>
-            <span class="u-contact">{{ row.userAddress.contact }}</span>
-            <span class="u-mobile">{{ row.userAddress.mobile }}</span>
+          <div v-if="row.userAddress">
+            <div class="u-address">
+              <span>{{ row.userAddress.province }}</span>
+              <span>{{ row.userAddress.city }}</span>
+              <span>{{ row.userAddress.area }}</span>
+              <span>{{ row.userAddress.detail }}</span>
+            </div>
+            <div>
+              <span class="u-contact">{{ row.userAddress.contact }}</span>
+              <span class="u-mobile">{{ row.userAddress.mobile }}</span>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -171,11 +170,11 @@ export default {
         900: '已取消'
       },
       colorMap: {
-        100: '#F24957',
-        200: '#FFAF0F',
-        300: '#409EFF',
-        400: '#67C23A',
-        900: '#909399'
+        100: 'danger',
+        200: 'warning',
+        300: '',
+        400: 'success',
+        900: 'info'
       },
       pickerOptions: {
         shortcuts: [
