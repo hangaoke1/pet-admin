@@ -155,7 +155,7 @@
 <script>
 import dayjs from 'dayjs'
 import waves from '@/directive/waves'
-import * as shopOrderApi from '@/api/shopOrder'
+import shopOrderApi from '@/api/shopOrder'
 import { recentWeek, recentMonth } from '@/utils/date'
 
 export default {

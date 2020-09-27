@@ -1,21 +1,9 @@
 /**
  * 商城订单管理
  */
-import request from '@/utils/request'
+import { api } from './index'
 
-export function queryOrder(data) {
-  return request({
-    url: '/admin/queryOrder',
-    method: 'post',
-    data
-  })
+export default {
+  queryOrder: params => api.post('/admin/queryOrder', params),
+  shipOrder: params => api.post('/admin/shipOrder', params)
 }
-
-export function shipOrder(data) {
-  return request({
-    url: '/admin/shipOrder',
-    method: 'post',
-    data
-  })
-}
-

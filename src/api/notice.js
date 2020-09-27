@@ -1,35 +1,11 @@
 /**
  * 公告管理
  */
-import request from '@/utils/request'
+import { api } from './index'
 
-export function queryNotice() {
-  return request({
-    url: '/admin/queryNotice',
-    method: 'get'
-  })
-}
-
-export function insertNotice(data) {
-  return request({
-    url: '/admin/insertNotice',
-    method: 'post',
-    data
-  })
-}
-
-export function updateNotice(data) {
-  return request({
-    url: '/admin/updateNotice',
-    method: 'post',
-    data
-  })
-}
-
-export function deleteNotice(data) {
-  return request({
-    url: '/admin/deleteNotice',
-    method: 'post',
-    data
-  })
+export default {
+  queryNotice: params => api.get('/admin/queryNotice', params),
+  insertNotice: params => api.post('/admin/insertNotice', params),
+  updateNotice: params => api.post('/admin/updateNotice', params),
+  deleteNotice: params => api.post('/admin/deleteNotice', params)
 }

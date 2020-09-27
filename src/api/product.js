@@ -1,53 +1,13 @@
 /**
  * 商品管理
  */
-import request from '@/utils/request'
+import { api } from './index'
 
-export function queryProducts(data) {
-  return request({
-    url: '/admin/queryProducts',
-    method: 'post',
-    data
-  })
-}
-
-// 查询商品详情
-export function queryProductFullInfoById(data) {
-  return request({
-    url: '/pet/queryProductFullInfoById',
-    method: 'get',
-    params: data
-  })
-}
-
-export function queryProductCategory(data) {
-  return request({
-    url: '/admin/queryProductCategory',
-    method: 'post',
-    data
-  })
-}
-
-export function insertProduct(data) {
-  return request({
-    url: '/admin/insertProduct',
-    method: 'post',
-    data
-  })
-}
-
-export function updateProduct(data) {
-  return request({
-    url: '/admin/updateProduct',
-    method: 'post',
-    data
-  })
-}
-
-export function deleteProduct(data) {
-  return request({
-    url: '/admin/deleteProduct',
-    method: 'post',
-    data
-  })
+export default {
+  queryProducts: params => api.post('/admin/queryProducts', params),
+  queryProductFullInfoById: params => api.get('/admin/queryProductFullInfoById', params),
+  queryProductCategory: params => api.post('/admin/queryProductCategory', params),
+  insertProduct: params => api.post('/admin/insertProduct', params),
+  updateProduct: params => api.post('/admin/updateProduct', params),
+  deleteProduct: params => api.post('/admin/deleteProduct', params)
 }

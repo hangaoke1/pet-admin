@@ -175,6 +175,19 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/store',
+    component: Layout,
+    redirect: '/store',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/store/index'),
+        name: 'store',
+        meta: { title: '门店管理', icon: 'eye-open', affix: false }
+      }
+    ]
+  },
   // {
   //   path: '/permission',
   //   component: Layout,

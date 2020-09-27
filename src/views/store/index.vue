@@ -1,10 +1,21 @@
 <template>
   <div class="u-notice">
     <div class="u-title">
-      <el-button type="primary" size="small" @click="handleAdd">新增公告</el-button>
+      <el-button type="primary" size="small" @click="handleAdd">新增门店</el-button>
     </div>
-    <el-table v-loading="loading" :data="list" style="width: 100%" border header-row-class-name="u-tabel__header">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      style="width: 100%"
+      border
+      header-row-class-name="u-tabel__header"
+    >
       <el-table-column type="index" width="50"></el-table-column>
+      <el-table-column prop="storeName" label="门店名称"></el-table-column>
+      <el-table-column prop="lon" label="经度"></el-table-column>
+      <el-table-column prop="lat" label="纬度"></el-table-column>
+      <el-table-column prop="mobile" label="联系电话"></el-table-column>
+      <el-table-column prop="title" label="公告内容"></el-table-column>
       <el-table-column prop="title" label="公告内容"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -32,7 +43,7 @@
 import _ from 'lodash'
 import noticeApi from '@/api/notice'
 export default {
-  name: 'notice',
+  name: 'store',
   data() {
     return {
       type: 'add',

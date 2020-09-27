@@ -147,7 +147,7 @@
 
 <script>
 import waves from '@/directive/waves'
-import * as deviceApi from '@/api/device'
+import deviceApi from '@/api/device'
 import * as userApi from '@/api/user'
 import config from '@/config'
 import _ from 'lodash'

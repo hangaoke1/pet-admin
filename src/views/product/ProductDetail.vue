@@ -33,11 +33,14 @@
           <el-select v-model="form.categoryId" clearable placeholder="请选择" size="small">
             <el-option
               v-for="item in categoryOptions"
-              :key="item.categoryId"
+              :key="item.id"
               :label="item.categoryName"
-              :value="item.categoryId"
+              :value="item.id"
             ></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="上架状态">
+          <el-switch v-model="form.onOff"></el-switch>
         </el-form-item>
         <el-form-item label="商品描述">
           <el-input
@@ -275,7 +278,7 @@
 <script>
 import _ from 'lodash'
 import store from 'store'
-import * as productApi from '@/api/product'
+import productApi from '@/api/product'
 
 const specsList = [
   { type: 'weight', name: '重量' },
@@ -336,6 +339,7 @@ export default {
         brand: '',
         address: '',
         detail: '',
+        onOff: true,
         productImgUrl: []
       },
       specs: [],
@@ -451,6 +455,7 @@ export default {
         brand: product.brand,
         address: product.address,
         detail: product.detail,
+        onOff: product.onOff === 0,
         productImgUrl: []
       }
       this.specs = product.specs || []
@@ -509,6 +514,7 @@ export default {
     genParams() {
       const params = {
         ...this.form,
+        onOff: this.form.onOff ? 0 : 1,
         specList: this.specs
           .filter(item => !!_.get(item, 'val.length'))
           .map(item => ({ name: item.name, type: item.type, val: item.val })),

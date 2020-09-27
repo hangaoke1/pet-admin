@@ -197,7 +197,7 @@ import _ from 'lodash'
 import store from 'store'
 import config from '@/config'
 import waves from '@/directive/waves'
-import * as productApi from '@/api/product'
+import productApi from '@/api/product'
 
 export default {
   name: 'product',

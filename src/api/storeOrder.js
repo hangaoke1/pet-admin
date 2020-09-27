@@ -1,20 +1,9 @@
 /**
  * 门店订单管理
  */
-import request from '@/utils/request'
+import { api } from './index'
 
-export function queryReserveWashList(data) {
-  return request({
-    url: '/admin/queryReserveWashList',
-    method: 'post',
-    data
-  })
-}
-
-export function finishReserveWash(data) {
-  return request({
-    url: '/admin/finishReserveWash',
-    method: 'post',
-    data
-  })
+export default {
+  queryReserveWashList: params => api.post('/admin/queryReserveWashList', params),
+  finishReserveWash: params => api.post('/admin/finishReserveWash', params)
 }

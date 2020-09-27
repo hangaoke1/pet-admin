@@ -1,35 +1,11 @@
 /**
  * 轮播图管理
  */
-import request from '@/utils/request'
+import { api } from './index'
 
-export function queryBanners() {
-  return request({
-    url: '/admin/queryBanners',
-    method: 'get'
-  })
-}
-
-export function insertBanner(data) {
-  return request({
-    url: '/admin/insertBanner',
-    method: 'post',
-    data
-  })
-}
-
-export function updateBanner(data) {
-  return request({
-    url: '/admin/updateBanner',
-    method: 'post',
-    data
-  })
-}
-
-export function deleteBanner(data) {
-  return request({
-    url: '/admin/deleteBanner',
-    method: 'post',
-    data
-  })
+export default {
+  queryBanners: params => api.get('/admin/queryBanners', params),
+  insertBanner: params => api.post('/admin/insertBanner', params),
+  updateBanner: params => api.post('/admin/updateBanner', params),
+  deleteBanner: params => api.post('/admin/deleteBanner', params)
 }

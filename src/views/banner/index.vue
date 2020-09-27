@@ -81,7 +81,7 @@
 
 <script>
 import _ from 'lodash'
-import * as bannerApi from '@/api/banner'
+import bannerApi from '@/api/banner'
 export default {
   name: 'banner',
   data() {
