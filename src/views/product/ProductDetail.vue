@@ -1,5 +1,5 @@
 <template>
-  <div class="u-page__product">
+  <div class="u-page__product p-2">
     <div class="u-productAdd">
       <h1 class="u-title">
         <span class="u-index">1</span>商品基本信息
@@ -313,7 +313,7 @@ const genSku = function () {
   }
 }
 export default {
-  name: 'productDetail',
+  name: 'ProductDetail',
   props: {
     isEdit: Boolean
   },
@@ -439,7 +439,8 @@ export default {
         .queryProductFullInfoById({
           productId: this.$route.params.productId
         })
-        .then(data => {
+        .then(res => {
+          const data = res.data
           this.setTagsViewTitle()
           this.setPageTitle()
           store.set('product_edit', data)
@@ -480,7 +481,7 @@ export default {
               if (this.isEdit) {
                 productApi
                   .updateProduct(params)
-                  .then(res => {
+                  .then(() => {
                     this.$message.success('更新商品成功')
                     this.submitLoading = false
                     this.init()
@@ -492,7 +493,7 @@ export default {
               } else {
                 productApi
                   .insertProduct(params)
-                  .then(res => {
+                  .then(() => {
                     this.$message.success('新增商品成功')
                     this.submitLoading = false
                   })
@@ -671,7 +672,7 @@ export default {
   min-width: 1000px;
   max-width: 1400px;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
 }
 .u-title {
   font-size: 16px;

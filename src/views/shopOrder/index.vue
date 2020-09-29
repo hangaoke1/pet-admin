@@ -1,5 +1,5 @@
 <template>
-  <div class="u-shopOrder">
+  <div class="u-shopOrder p-2">
     <!-- 查询条件 -->
     <div class="filter-container">
       <el-input
@@ -55,6 +55,7 @@
       :data="list"
       highlight-current-row
       style="width: 100%"
+      size="mini"
       header-row-class-name="u-tabel__header"
     >
       <el-table-column label="订单编号" width="180" align="center">
@@ -77,25 +78,28 @@
               />
               <div class="u-sku__name">
                 <div>{{ item.productSku.skuName }}</div>
-                <div class="u-sku__specs">{{ getSpecs(item.productSku) }}</div>
+                <div class="u-sku__specs text-hui2">{{ getSpecs(item.productSku) }}</div>
               </div>
-              <div class="u-sku__price">¥{{ item.productSku.price }}</div>
+              <div class="u-sku__price">
+                <span class="font-s-1" style="margin-right: 3px">¥</span>
+                {{ item.productSku.price }}
+              </div>
               <div class="u-sku__quantity">x{{ item.quantity }}</div>
             </div>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="订单状态" width="150" align="center">
+      <el-table-column label="订单状态" width="120" align="center">
         <template slot-scope="{row}">
           <el-tag :type="colorMap[row.order.orderStatus]">{{ textMap[row.order.orderStatus] }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="订单总价(元)" width="150">
+      <el-table-column label="订单总价(元)" width="150" align="center">
         <template slot-scope="{row}">
           <span>¥ {{ row.order.totalFee }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="收货地址">
+      <el-table-column label="收货地址" width="300">
         <template slot-scope="{row}">
           <div v-if="row.userAddress">
             <div class="u-address">
@@ -111,12 +115,12 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="订单备注">
+      <el-table-column label="订单备注" align="center" width="200">
         <template slot-scope="{row}">
           <div class="u-buyerMemo">{{ row.order.buyerMemo }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间">
+      <el-table-column label="创建时间" align="center" width="200">
         <template slot-scope="{row}">
           <div class="u-createTime">{{ row.order.createTime }}</div>
         </template>
@@ -158,7 +162,7 @@ import shopOrderApi from '@/api/shopOrder'
 import { recentWeek, recentMonth } from '@/utils/date'
 
 export default {
-  name: 'shopOrder',
+  name: 'ShopOrder',
   directives: { waves },
   data() {
     return {
@@ -234,7 +238,7 @@ export default {
             .shipOrder({
               orderId
             })
-            .then(res => {
+            .then(() => {
               row.order.orderStatus = 300
               this.$message({
                 type: 'success',
@@ -268,6 +272,7 @@ export default {
           pageSize: this.pageSize
         })
         .then(res => {
+          res = res.data
           this.loading = false
           this.list = res.items
           this.totalCount = res.totalCount
@@ -318,8 +323,7 @@ export default {
     }
     &__specs {
       margin-top: 5px;
-      font-size: 12px;
-      color: #999;
+      font-size: 10px;
     }
     &__price {
       flex: 0 0 auto;
@@ -334,7 +338,7 @@ export default {
     }
   }
   .u-address {
-    font-size: 12px;
+    font-size: 13px;
   }
   .u-contact {
     font-size: 12px;

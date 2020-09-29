@@ -8,33 +8,13 @@
         @search="handleSearch"
       />
       <div class="px-2">
-        <el-button @click="doAdd">添加门店</el-button>
+        <el-button @click="doAdd">添加分类</el-button>
       </div>
       <div class="px-2">
         <el-table border class="mt-1" :data="list" style="width: 100%" v-loading="loading">
-          <el-table-column prop="logo" align="center" label="LOGO">
-            <template slot-scope="scope">
-              <el-avatar :src="scope.row.logo"></el-avatar>
-            </template>
-          </el-table-column>
-          <el-table-column prop="storeName" align="center" label="门店名称"></el-table-column>
-          <el-table-column prop="mobile" align="center" label="联系电话"></el-table-column>
-          <el-table-column prop="lon" align="center" label="经度"></el-table-column>
-          <el-table-column prop="lat" align="center" label="纬度"></el-table-column>
-          <el-table-column fixed="workTime" align="center" label="工作时间" width="200"></el-table-column>
-          <el-table-column prop="storeState" align="center" label="营业状态">
-            <template slot-scope="scope">
-              <el-tag size="medium" v-if="scope.row.storeState === 0">营业</el-tag>
-              <el-tag size="medium" type="warning" v-else>休息</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="storeState" align="center" label="营业状态">
-            <template slot-scope="scope">
-              <el-button size="small" type="text" @click="doUpdate(scope.row)">编辑</el-button>
-              <el-divider direction="vertical"></el-divider>
-              <el-button class="text-red" size="small" type="text" @click="doDelete(scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
+          <el-table-column prop="id" align="center" label="分类id"></el-table-column>
+          <el-table-column prop="categoryName" align="center" label="分类名称"></el-table-column>
+          <el-table-column prop="createTime" align="center" label="创建时间"></el-table-column>
         </el-table>
       </div>
       <div class="text-right p-1">
@@ -53,7 +33,7 @@
 
       <el-dialog :title="editText" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-          <el-form-item v-loading="uploadLoading" label="LOGO" :label-width="formLabelWidth">
+          <!-- <el-form-item v-loading="uploadLoading" label="LOGO" :label-width="formLabelWidth">
             <el-image
               v-if="form.logo"
               style="width: 100px; height: 100px"
@@ -75,27 +55,9 @@
                 </el-button>
               </el-upload>
             </div>
-          </el-form-item>
-          <el-form-item label="门店名称" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.storeName" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="联系电话" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.mobile" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="经度" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.lon" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="纬度" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.lat" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="工作时间" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.workTime" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="营业状态" :label-width="formLabelWidth">
-            <el-radio-group v-model="form.storeState">
-              <el-radio :label="0">营业</el-radio>
-              <el-radio :label="1">休息</el-radio>
-            </el-radio-group>
+          </el-form-item> -->
+          <el-form-item label="分类名称" :label-width="formLabelWidth">
+            <el-input v-model.trim="form.categoryName" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -110,10 +72,10 @@
 <script>
 import filterOptions from './filter-options'
 import GFilter from '@/components/GFilter'
-import storeApi from '@/api/store'
+import categoryApi from '@/api/category'
 
 export default {
-  name: 'Store',
+  name: 'Category',
   components: {
     GFilter
   },
@@ -143,7 +105,7 @@ export default {
   },
   computed: {
     editText () {
-      return this.form.id ? '编辑门店' : '新增门店'
+      return this.form.id ? '编辑分类' : '新增分类'
     }
   },
   activated() {
@@ -177,7 +139,7 @@ export default {
       this.dialogFormVisible = true
     },
     doSubmitAdd() {
-      storeApi
+      categoryApi
         .saveOrUpdateStore(this.form)
         .then(() => {
           this.dialogFormVisible = false
@@ -205,8 +167,8 @@ export default {
     },
     load() {
       this.loading = true
-      storeApi
-        .queryStore({
+      categoryApi
+        .queryProductCategory({
           pageNo: this.page.pageNo,
           pageSize: this.page.pageSize
         })

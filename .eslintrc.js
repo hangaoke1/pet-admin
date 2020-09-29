@@ -9,12 +9,11 @@ module.exports = {
     node: true,
     es6: true
   },
-  extends: [ 'plugin:vue/recommended', 'eslint:recommended' ],
+  extends: ['plugin:vue/recommended', 'eslint:recommended'],
 
   // add your custom rules here
   //it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
-    'vue/html-self-closing': 'off',
     'vue/max-attributes-per-line': [
       2,
       {
@@ -27,7 +26,7 @@ module.exports = {
     ],
     'vue/singleline-html-element-content-newline': 'off',
     'vue/multiline-html-element-content-newline': 'off',
-    'vue/name-property-casing': 'off',
+    'vue/name-property-casing': ['error', 'PascalCase'],
     'vue/no-v-html': 'off',
     'accessor-pairs': 2,
     'arrow-spacing': [
@@ -37,7 +36,7 @@ module.exports = {
         after: true
       }
     ],
-    'block-spacing': [ 2, 'always' ],
+    'block-spacing': [2, 'always'],
     'brace-style': [
       2,
       '1tbs',
@@ -51,7 +50,7 @@ module.exports = {
         properties: 'always'
       }
     ],
-    'comma-dangle': [ 2, 'never' ],
+    'comma-dangle': [2, 'never'],
     'comma-spacing': [
       2,
       {
@@ -59,12 +58,12 @@ module.exports = {
         after: true
       }
     ],
-    'comma-style': [ 2, 'last' ],
+    'comma-style': [2, 'last'],
     'constructor-super': 2,
-    curly: [ 2, 'multi-line' ],
-    'dot-location': [ 2, 'property' ],
+    curly: [2, 'multi-line'],
+    'dot-location': [2, 'property'],
     'eol-last': 2,
-    eqeqeq: [ 'error', 'always', { null: 'ignore' } ],
+    eqeqeq: ['error', 'always', { null: 'ignore' }],
     'generator-star-spacing': [
       2,
       {
@@ -72,7 +71,7 @@ module.exports = {
         after: true
       }
     ],
-    'handle-callback-err': [ 2, '^(err|error)$' ],
+    'handle-callback-err': [2, '^(err|error)$'],
     indent: [
       2,
       2,
@@ -80,7 +79,7 @@ module.exports = {
         SwitchCase: 1
       }
     ],
-    'jsx-quotes': [ 2, 'prefer-single' ],
+    'jsx-quotes': [2, 'prefer-single'],
     'key-spacing': [
       2,
       {
@@ -122,12 +121,12 @@ module.exports = {
     'no-extend-native': 2,
     'no-extra-bind': 2,
     'no-extra-boolean-cast': 2,
-    'no-extra-parens': [ 2, 'functions' ],
+    'no-extra-parens': [2, 'functions'],
     'no-fallthrough': 2,
     'no-floating-decimal': 2,
     'no-func-assign': 2,
     'no-implied-eval': 2,
-    'no-inner-declarations': [ 2, 'functions' ],
+    'no-inner-declarations': [2, 'functions'],
     'no-invalid-regexp': 2,
     'no-irregular-whitespace': 2,
     'no-iterator': 2,
@@ -162,7 +161,7 @@ module.exports = {
     'no-proto': 2,
     'no-redeclare': 2,
     'no-regex-spaces': 2,
-    'no-return-assign': [ 2, 'except-parens' ],
+    'no-return-assign': [2, 'except-parens'],
     'no-self-assign': 2,
     'no-self-compare': 2,
     'no-sequences': 2,
@@ -184,13 +183,6 @@ module.exports = {
     ],
     'no-unreachable': 2,
     'no-unsafe-finally': 2,
-    'no-unused-vars': [
-      2,
-      {
-        vars: 'all',
-        args: 'none'
-      }
-    ],
     'no-useless-call': 2,
     'no-useless-computed-key': 2,
     'no-useless-constructor': 2,
@@ -213,7 +205,7 @@ module.exports = {
         }
       }
     ],
-    'padded-blocks': [ 2, 'never' ],
+    'padded-blocks': [2, 'never'],
     quotes: [
       2,
       'single',
@@ -222,7 +214,8 @@ module.exports = {
         allowTemplateLiterals: true
       }
     ],
-    semi: [ 2, 'never' ],
+    // semi: [2, 'never'],
+    semi: 'off',
     'semi-spacing': [
       2,
       {
@@ -230,9 +223,9 @@ module.exports = {
         after: true
       }
     ],
-    'space-before-blocks': [ 2, 'always' ],
+    'space-before-blocks': [2, 'always'],
     'space-before-function-paren': 'off',
-    'space-in-parens': [ 2, 'never' ],
+    'space-in-parens': [2, 'never'],
     'space-infix-ops': 2,
     'space-unary-ops': [
       2,
@@ -245,24 +238,36 @@ module.exports = {
       2,
       'always',
       {
-        markers: [ 'global', 'globals', 'eslint', 'eslint-disable', '*package', '!', ',' ]
+        markers: [
+          'global',
+          'globals',
+          'eslint',
+          'eslint-disable',
+          '*package',
+          '!',
+          ','
+        ]
       }
     ],
-    'template-curly-spacing': [ 2, 'never' ],
+    'template-curly-spacing': [2, 'never'],
     'use-isnan': 2,
     'valid-typeof': 2,
-    'wrap-iife': [ 2, 'any' ],
-    'yield-star-spacing': [ 2, 'both' ],
-    yoda: [ 2, 'never' ],
+    'wrap-iife': [2, 'any'],
+    'yield-star-spacing': [2, 'both'],
+    yoda: [2, 'never'],
     'prefer-const': 2,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'object-curly-spacing': [
       2,
       'always',
       {
-        objectsInObjects: false
+        objectsInObjects: true
       }
     ],
-    'array-bracket-spacing': [ 2, 'never' ]
+    'array-bracket-spacing': [2, 'never'],
+    'vue/html-self-closing': 'off',
+    'vue/attributes-order': 'off',
+    'vue/no-unused-vars': 'off',
+    'no-unused-vars': 'off'
   }
 }

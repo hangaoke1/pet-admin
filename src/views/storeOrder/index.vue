@@ -1,5 +1,5 @@
 <template>
-  <div class="u-storeOrder">
+  <div class="u-storeOrder p-2">
     <!-- 查询条件 -->
     <div class="filter-container">
       <el-input
@@ -154,7 +154,7 @@ import { recentWeek, recentMonth } from '@/utils/date'
 import ServiceItem from './ServiceItem.vue'
 
 export default {
-  name: 'storeOrder',
+  name: 'StoreOrder',
   components: {
     ServiceItem
   },
@@ -237,7 +237,7 @@ export default {
             .finishReserveWash({
               orderId
             })
-            .then(res => {
+            .then(() => {
               row.reserveWash.reserveOrderStatus = 200
               this.$message({
                 type: 'success',
@@ -268,6 +268,7 @@ export default {
           pageSize: this.pageSize
         })
         .then(res => {
+          res = res.data
           this.loading = false
           this.list = res.items
           this.totalCount = res.totalCount

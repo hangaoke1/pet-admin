@@ -33,7 +33,8 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(token => {
+      login({ username: username.trim(), password: password }).then(res => {
+        const token = res.data
         commit('SET_TOKEN', token)
         setToken(token)
         resolve()
@@ -47,6 +48,7 @@ const actions = {
   getInfo({ commit }) {
     return new Promise((resolve, reject) => {
       getInfo().then(res => {
+        res = res.data
         // TODO: 管理员权限
         const roles = ['admin']
         commit('SET_ROLES', roles)

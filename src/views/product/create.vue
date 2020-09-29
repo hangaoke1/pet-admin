@@ -5,7 +5,7 @@
 <script>
 import ProductDetail from './ProductDetail'
 export default {
-  name: 'productCreate',
+  name: 'ProductCreate',
   components: { ProductDetail }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="u-banner">
+  <div class="u-banner p-2">
     <div class="u-title">
       <el-button type="primary" size="small" @click="handleAdd">新增轮播</el-button>
     </div>
@@ -57,7 +57,6 @@
           </div>
         </el-form-item>
         <el-form-item label="类型">
-          <!-- <el-input v-model="form.bannerType" autocomplete="off"></el-input> -->
           <el-select v-model="form.bannerType" placeholder="请选择">
             <el-option
               v-for="item in options"
@@ -83,7 +82,7 @@
 import _ from 'lodash'
 import bannerApi from '@/api/banner'
 export default {
-  name: 'banner',
+  name: 'Banner',
   data() {
     return {
       type: 'add',
@@ -115,7 +114,7 @@ export default {
       this.loading = true
       bannerApi.queryBanners().then(res => {
         this.loading = false
-        this.list = res || []
+        this.list = res.data || []
       })
     },
     insertBanner(data) {

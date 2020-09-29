@@ -1,5 +1,5 @@
 <template>
-  <div class="u-device">
+  <div class="u-device p-2">
     <div class="filter-container">
       <el-input
         v-model="listQuery.title"
@@ -153,6 +153,7 @@ import config from '@/config'
 import _ from 'lodash'
 
 export default {
+  name: 'Device',
   directives: { waves },
   data() {
     return {
@@ -214,7 +215,7 @@ export default {
         id
       }).then(res => {
         this.bindUserListLoading = false
-        this.bindUserList = res || []
+        this.bindUserList = res.data || []
       }).catch(err => {
         this.bindUserListLoading = false
         this.bindUserList = []
@@ -243,7 +244,7 @@ export default {
         pageSize: 20,
         pageNo: 1
       }).then(res => {
-        this.searchList = res.items
+        this.searchList = res.data.items
       }).catch(err => {
         console.log(err)
       })
@@ -320,7 +321,7 @@ export default {
               cameraName: this.form.cameraName,
               url: this.form.url
             })
-            .then(res => {
+            .then(() => {
               this.$message.success('新增成功')
               this.dialogFormVisible = false
               this.getDevice()
@@ -341,7 +342,7 @@ export default {
               cameraName: this.form.cameraName,
               url: this.form.url
             })
-            .then(res => {
+            .then(() => {
               this.$message.success('修改成功')
               this.dialogFormVisible = false
               this.getDevice()
@@ -360,8 +361,8 @@ export default {
           pageNo: this.pageNo
         })
         .then(res => {
-          this.totalCount = res.totalCount
-          this.list = res.items
+          this.totalCount = res.data.totalCount
+          this.list = res.data.items
         })
         .catch(err => {
           console.log(err)

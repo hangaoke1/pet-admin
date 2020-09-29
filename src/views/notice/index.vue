@@ -1,5 +1,5 @@
 <template>
-  <div class="u-notice">
+  <div class="u-notice p-2">
     <div class="u-title">
       <el-button type="primary" size="small" @click="handleAdd">新增公告</el-button>
     </div>
@@ -32,7 +32,7 @@
 import _ from 'lodash'
 import noticeApi from '@/api/notice'
 export default {
-  name: 'notice',
+  name: 'Notice',
   data() {
     return {
       type: 'add',
@@ -55,7 +55,7 @@ export default {
       this.loading = true
       noticeApi.queryNotice().then(res => {
         this.loading = false
-        this.list = res || []
+        this.list = res.data || []
       })
     },
     insertNotice(data) {

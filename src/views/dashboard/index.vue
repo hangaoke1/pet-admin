@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="p-2">
     欢迎使用小黄兜宠物管理后台
   </div>
 </template>

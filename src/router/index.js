@@ -71,7 +71,7 @@ export const constantRoutes = [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
-        name: 'dashboard',
+        name: 'Dashboard',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
@@ -86,12 +86,12 @@ export const asyncRoutes = [
   {
     path: '/banner',
     component: Layout,
-    redirect: '/banner',
+    redirect: '/banner/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/banner/index'),
-        name: 'banner',
+        name: 'Banner',
         meta: { title: '轮播管理', icon: 'example', affix: false }
       }
     ]
@@ -99,12 +99,12 @@ export const asyncRoutes = [
   {
     path: '/notice',
     component: Layout,
-    redirect: '/notice',
+    redirect: '/notice/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/notice/index'),
-        name: 'notice',
+        name: 'Notice',
         meta: { title: '公告管理', icon: 'star', affix: false }
       }
     ]
@@ -112,26 +112,26 @@ export const asyncRoutes = [
   {
     path: '/product',
     component: Layout,
-    redirect: '/product',
+    redirect: '/product/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/product/index'),
-        name: 'product',
+        name: 'Product',
         meta: { title: '商品管理', icon: 'shopping', affix: false }
       },
       {
         path: 'create',
         hidden: true,
         component: () => import('@/views/product/create'),
-        name: 'productCreate',
+        name: 'ProductCreate',
         meta: { title: '商品新增', affix: false }
       },
       {
         path: 'edit/:productId',
         hidden: true,
         component: () => import('@/views/product/edit'),
-        name: 'productEdit',
+        name: 'ProductEdit',
         meta: { title: '商品编辑', affix: false }
       }
     ]
@@ -139,12 +139,12 @@ export const asyncRoutes = [
   {
     path: '/shopOrder',
     component: Layout,
-    redirect: '/shopOrder',
+    redirect: '/shopOrder/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/shopOrder/index'),
-        name: 'shopOrder',
+        name: 'ShopOrder',
         meta: { title: '商城订单', icon: 'form', affix: false }
       }
     ]
@@ -152,12 +152,12 @@ export const asyncRoutes = [
   {
     path: '/storeOrder',
     component: Layout,
-    redirect: '/storeOrder',
+    redirect: '/storeOrder/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/storeOrder/index'),
-        name: 'storeOrder',
+        name: 'StoreOrder',
         meta: { title: '门店订单', icon: 'form', affix: false }
       }
     ]
@@ -165,12 +165,12 @@ export const asyncRoutes = [
   {
     path: '/device',
     component: Layout,
-    redirect: '/device',
+    redirect: '/device/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/device/index'),
-        name: 'device',
+        name: 'Device',
         meta: { title: '监控管理', icon: 'eye-open', affix: false }
       }
     ]
@@ -178,13 +178,26 @@ export const asyncRoutes = [
   {
     path: '/store',
     component: Layout,
-    redirect: '/store',
+    redirect: '/publish/index',
     children: [
       {
-        path: '',
+        path: 'index',
         component: () => import('@/views/store/index'),
-        name: 'store',
+        name: 'Store',
         meta: { title: '门店管理', icon: 'eye-open', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/category',
+    component: Layout,
+    redirect: '/category/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/category/index'),
+        name: 'Category',
+        meta: { title: '分类管理', icon: 'eye-open', affix: false }
       }
     ]
   },

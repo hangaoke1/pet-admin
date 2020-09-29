@@ -1,5 +1,5 @@
 <template>
-  <div class="u-product">
+  <div class="u-product p-2">
     <!-- 查询条件 -->
     <div class="mb-1">
       <el-input
@@ -32,6 +32,7 @@
       border
       highlight-current-row
       style="width: 100%"
+      size="mini"
       header-row-class-name="u-tabel__header"
       @selection-change="handleSelectionChange"
     >
@@ -200,7 +201,7 @@ import waves from '@/directive/waves'
 import productApi from '@/api/product'
 
 export default {
-  name: 'product',
+  name: 'Product',
   directives: { waves },
   data() {
     return {
@@ -253,7 +254,7 @@ export default {
             .deleteProduct({
               productId
             })
-            .then(res => {
+            .then(() => {
               this.$message.success('删除成功')
               this.getList()
             })
@@ -274,7 +275,7 @@ export default {
             .deleteProduct({
               productId: item.product.productId
             })
-            .then(res => {
+            .then(() => {
               this.$message.success('删除成功')
               this.getList()
             })
@@ -327,6 +328,7 @@ export default {
           pageSize: this.pageSize
         })
         .then(res => {
+          res = res.data;
           this.loading = false
           res.items.forEach(pd => {
             pd.productSkuList.forEach(sku => {
