@@ -539,9 +539,9 @@ export default {
         for (let i = 0; i < skuList.length; i++) {
           const sku = skuList[i]
           if (
+            sku.skuCode === '' ||
             sku.skuName === '' ||
             sku.skuImgUrl === '' ||
-            sku.skuDetailImgUrl === '' ||
             sku.price === '' ||
             sku.stock === ''
           ) {

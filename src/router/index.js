@@ -171,7 +171,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/storeOrder/index'),
         name: 'StoreOrder',
-        meta: { title: '门店订单', icon: 'form', affix: false }
+        meta: { title: '门店订单', icon: 'list', affix: false }
       }
     ]
   },
@@ -184,7 +184,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/store/index'),
         name: 'Store',
-        meta: { title: '门店管理', icon: 'eye-open', affix: false }
+        meta: { title: '门店管理', icon: 'dianpu', affix: false }
       }
     ]
   },
@@ -197,7 +197,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/grew/index'),
         name: 'Grew',
-        meta: { title: '寄养管理', icon: 'eye-open', affix: false }
+        meta: { title: '寄养管理', icon: 'jiyang', affix: false }
       }
     ]
   },
@@ -210,7 +210,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/device/index'),
         name: 'Device',
-        meta: { title: '监控管理', icon: 'eye-open', affix: false }
+        meta: { title: '监控管理', icon: 'jiankong', affix: false }
       }
     ]
   },
