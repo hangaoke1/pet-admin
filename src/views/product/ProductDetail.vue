@@ -334,7 +334,8 @@ export default {
         address: '',
         detail: '',
         onOff: true,
-        productImgUrl: []
+        productImgUrl: [],
+        productDetailImgUrl: []
       },
       specs: [],
       skuList: [],
@@ -383,6 +384,17 @@ export default {
     }
   },
   watch: {
+    // productDetailImgUrl
+    detailFileList(val) {
+      this.form.productDetailImgUrl = val.map(item => {
+        return {
+          imgUrl: item.url
+        }
+      })
+      this.$nextTick(() => {
+        this.$refs.ruleForm.validateField('productDetailImgUrl')
+      })
+    },
     fileList(val) {
       this.form.productImgUrl = val.map(item => {
         return {
@@ -440,7 +452,7 @@ export default {
         })
     },
     recoverData(data) {
-      const { product, productSkuList, productBannerImgList } = data
+      const { product, productSkuList, productBannerImgList, productDetailImgList } = data
       this.form = {
         categoryId: product.categoryId,
         petType: product.petType,
@@ -449,13 +461,20 @@ export default {
         address: product.address,
         detail: product.detail,
         onOff: product.onOff === 0,
-        productImgUrl: []
+        productImgUrl: [],
+        productDetailImgUrl: []
       }
       this.specs = product.specs || []
       this.skuList = productSkuList
       this.fileList = productBannerImgList.map(item => {
         return {
-          uid: item.imgUrl,
+          uid: item.id || item.imgUrl,
+          url: item.imgUrl
+        }
+      })
+      this.detailFileList = productDetailImgList.map(item => {
+        return {
+          uid: item.id || item.imgUrl,
           url: item.imgUrl
         }
       })
