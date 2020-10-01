@@ -37,7 +37,7 @@ service.interceptors.response.use(
       })
 
       // token过期
-      if (res.code === 999 && window.gvm.$route.path !== '/login') {
+      if (res.code === 900 && window.gvm.$route.path !== '/login') {
         MessageBox.confirm('登录状态已经过期', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
