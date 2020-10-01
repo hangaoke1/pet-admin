@@ -536,6 +536,11 @@ export default {
     checkSku() {
       return new Promise((resolve, reject) => {
         const skuList = this.skuList
+        // sku可为空，后续补充
+        if (!skuList.length) {
+          return resolve()
+        }
+        // sku不为空则做校验
         for (let i = 0; i < skuList.length; i++) {
           const sku = skuList[i]
           if (
