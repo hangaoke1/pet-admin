@@ -110,6 +110,19 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/category',
+    component: Layout,
+    redirect: '/category/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/category/index'),
+        name: 'Category',
+        meta: { title: '分类管理', icon: 'eye-open', affix: false }
+      }
+    ]
+  },
+  {
     path: '/product',
     component: Layout,
     redirect: '/product/index',
@@ -163,19 +176,6 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/device',
-    component: Layout,
-    redirect: '/device/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/device/index'),
-        name: 'Device',
-        meta: { title: '监控管理', icon: 'eye-open', affix: false }
-      }
-    ]
-  },
-  {
     path: '/store',
     component: Layout,
     redirect: '/publish/index',
@@ -189,15 +189,28 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/category',
+    path: '/grew',
     component: Layout,
-    redirect: '/category/index',
+    redirect: '/grew/index',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/category/index'),
-        name: 'Category',
-        meta: { title: '分类管理', icon: 'eye-open', affix: false }
+        component: () => import('@/views/grew/index'),
+        name: 'Grew',
+        meta: { title: '寄养管理', icon: 'eye-open', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/device',
+    component: Layout,
+    redirect: '/device/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/device/index'),
+        name: 'Device',
+        meta: { title: '监控管理', icon: 'eye-open', affix: false }
       }
     ]
   },

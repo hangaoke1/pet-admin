@@ -8,27 +8,37 @@
         @search="handleSearch"
       />
       <div class="px-2">
-        <el-button @click="doAdd">添加门店</el-button>
+        <el-button @click="doAdd">添加寄养</el-button>
       </div>
       <div class="px-2">
-        <el-table size="mini" border class="mt-1" :data="list" style="width: 100%" v-loading="loading">
-          <el-table-column prop="logo" align="center" label="LOGO">
+        <el-table
+          size="mini"
+          border
+          class="mt-1"
+          :data="list"
+          style="width: 100%"
+          v-loading="loading"
+        >
+          <el-table-column prop="petName" align="center" label="宠物名称"></el-table-column>
+          <el-table-column prop="petType" align="center" label="宠物类型">
             <template slot-scope="scope">
-              <el-avatar :src="scope.row.logo"></el-avatar>
+              <el-tag size="medium" v-if="scope.row.petType === 1">猫咪</el-tag>
+              <el-tag size="medium" type="warning" v-else>狗狗</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="storeName" align="center" label="门店名称"></el-table-column>
-          <el-table-column prop="mobile" align="center" label="联系电话"></el-table-column>
-          <el-table-column prop="lon" align="center" label="经度"></el-table-column>
-          <el-table-column prop="lat" align="center" label="纬度"></el-table-column>
-          <el-table-column fixed="workTime" align="center" label="工作时间" width="200"></el-table-column>
-          <el-table-column prop="storeState" align="center" label="营业状态">
+          <el-table-column prop="startTime" align="center" label="开始时间"></el-table-column>
+          <el-table-column prop="endTime" align="center" label="结束时间"></el-table-column>
+          <el-table-column fixed="petState" align="center" label="寄养状态" width="200">
             <template slot-scope="scope">
-              <el-tag size="medium" v-if="scope.row.storeState === 0">营业</el-tag>
-              <el-tag size="medium" type="warning" v-else>休息</el-tag>
+              <el-tag v-if="scope.row.petState === 0" size="medium" type="warning">待确认</el-tag>
+              <el-tag v-else-if="scope.row.petState === 1" size="medium">寄养中</el-tag>
+              <el-tag v-else size="medium" type="success">已完成</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="storeState" align="center" label="营业状态">
+          <el-table-column prop="phone" align="center" label="手机号"></el-table-column>
+          <el-table-column prop="cameraId" align="center" label="监控Id"></el-table-column>
+          <el-table-column prop="remark" align="center" label="备注"></el-table-column>
+          <el-table-column prop="action" align="center" label="操作">
             <template slot-scope="scope">
               <el-button size="small" type="text" @click="doUpdate(scope.row)">编辑</el-button>
               <el-divider direction="vertical"></el-divider>
@@ -50,7 +60,6 @@
           layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
       </div>
-
       <el-dialog :title="editText" :visible.sync="dialogFormVisible">
         <el-form :model="form">
           <el-form-item v-loading="uploadLoading" label="LOGO" :label-width="formLabelWidth">
@@ -110,10 +119,10 @@
 <script>
 import filterOptions from './filter-options'
 import GFilter from '@/components/GFilter'
-import storeApi from '@/api/store'
+import grewApi from '@/api/grew'
 
 export default {
-  name: 'Store',
+  name: 'Grew',
   components: {
     GFilter
   },
@@ -143,7 +152,7 @@ export default {
     }
   },
   computed: {
-    editText () {
+    editText() {
       return this.form.id ? '编辑门店' : '新增门店'
     }
   },
@@ -178,7 +187,7 @@ export default {
       this.dialogFormVisible = true
     },
     doSubmitAdd() {
-      storeApi
+      grewApi
         .saveOrUpdateStore(this.form)
         .then(() => {
           this.dialogFormVisible = false
@@ -206,8 +215,8 @@ export default {
     },
     load() {
       this.loading = true
-      storeApi
-        .queryStore({
+      grewApi
+        .queryList({
           pageNo: this.page.pageNo,
           pageSize: this.page.pageSize
         })

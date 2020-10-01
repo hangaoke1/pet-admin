@@ -11,7 +11,14 @@
         <el-button @click="doAdd">添加分类</el-button>
       </div>
       <div class="px-2">
-        <el-table border class="mt-1" :data="list" style="width: 100%" v-loading="loading">
+        <el-table
+          size="mini"
+          border
+          class="mt-1"
+          :data="list"
+          style="width: 100%"
+          v-loading="loading"
+        >
           <el-table-column prop="id" align="center" label="分类id"></el-table-column>
           <el-table-column prop="categoryName" align="center" label="分类名称"></el-table-column>
           <el-table-column prop="createTime" align="center" label="创建时间"></el-table-column>
@@ -55,7 +62,7 @@
                 </el-button>
               </el-upload>
             </div>
-          </el-form-item> -->
+          </el-form-item>-->
           <el-form-item label="分类名称" :label-width="formLabelWidth">
             <el-input v-model.trim="form.categoryName" autocomplete="off"></el-input>
           </el-form-item>
@@ -104,7 +111,7 @@ export default {
     }
   },
   computed: {
-    editText () {
+    editText() {
       return this.form.id ? '编辑分类' : '新增分类'
     }
   },

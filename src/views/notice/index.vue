@@ -3,7 +3,14 @@
     <div class="u-title">
       <el-button type="primary" size="small" @click="handleAdd">新增公告</el-button>
     </div>
-    <el-table v-loading="loading" :data="list" style="width: 100%" border header-row-class-name="u-tabel__header">
+    <el-table
+      size="mini"
+      v-loading="loading"
+      :data="list"
+      style="width: 100%"
+      border
+      header-row-class-name="u-tabel__header"
+    >
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="title" label="公告内容"></el-table-column>
       <el-table-column label="操作">

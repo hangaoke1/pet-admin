@@ -29,21 +29,22 @@
     <el-table
       v-loading="loading"
       :data="list"
+      size="mini"
       stripe
       border
       highlight-current-row
       style="width: 100%"
       header-row-class-name="u-tabel__header"
     >
-      <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="cameraNo" label="设备编号" width="180"></el-table-column>
-      <el-table-column prop="cameraName" label="设备名称" width="180">
+      <el-table-column align="center" type="index" width="50"></el-table-column>
+      <el-table-column align="center" prop="cameraNo" label="设备编号" width="180"></el-table-column>
+      <el-table-column align="center" prop="cameraName" label="设备名称" width="180">
         <template slot-scope="{row}">
           <span>{{ row.cameraName }}</span>
           <el-button type="success" size="mini" @click="preview(row)">预览</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="url" label="设备地址"></el-table-column>
+      <el-table-column align="center" prop="url" label="设备地址"></el-table-column>
       <el-table-column label="操作" align="center" width="250">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click="handleModifyStatus(row, 'edit')">编辑</el-button>
@@ -98,7 +99,12 @@
           <el-button type="success" size="mini" @click="searchVisible = true">添加用户</el-button>
         </div>
         <div class="u-manage__title">已绑定用户</div>
-        <el-table v-loading="bindUserListLoading" :data="bindUserList" style="width: 100%" height="550px">
+        <el-table
+          v-loading="bindUserListLoading"
+          :data="bindUserList"
+          style="width: 100%"
+          height="550px"
+        >
           <el-table-column label="头像" align="center">
             <template slot-scope="{row}">
               <img class="u-manage__avatar" :src="row.wechatAvatar" :alts="row.nickName" />
@@ -119,7 +125,12 @@
       <div class="u-search">
         <div class="u-search__header">
           <el-input v-model="searchKeyword" placeholder="请输入查询关键字"></el-input>
-          <el-button class="u-search__btn" type="primary" icon="el-icon-search" @click="searchUser">搜索</el-button>
+          <el-button
+            class="u-search__btn"
+            type="primary"
+            icon="el-icon-search"
+            @click="searchUser"
+          >搜索</el-button>
         </div>
         <el-table :data="searchList" style="width: 100%" height="250">
           <el-table-column label="头像" align="center">
@@ -131,7 +142,12 @@
           <el-table-column prop="mobile" label="手机号"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="{row}">
-              <el-button v-if="!isAreadyBind(row)" type="success" size="mini" @click="handleBindUserDebounce(row, 0)">绑定</el-button>
+              <el-button
+                v-if="!isAreadyBind(row)"
+                type="success"
+                size="mini"
+                @click="handleBindUserDebounce(row, 0)"
+              >绑定</el-button>
               <div v-else>已绑定</div>
             </template>
           </el-table-column>
@@ -180,18 +196,17 @@ export default {
         url: ''
       },
       rules: {
-        cameraNo: [
-          { required: true, message: '设备编号不能为空', trigger: 'blur' }
-        ],
-        cameraName: [
-          { required: true, message: '设备名称不能为空', trigger: 'blur' }
-        ],
+        cameraNo: [{ required: true, message: '设备编号不能为空', trigger: 'blur' }],
+        cameraName: [{ required: true, message: '设备名称不能为空', trigger: 'blur' }],
         url: [{ required: true, message: '设备地址不能为空', trigger: 'blur' }]
       }
     }
   },
   beforeMount() {
-    this.handleBindUserDebounce = _.debounce(this.handleBindUser, 500, { leading: true, trailing: false })
+    this.handleBindUserDebounce = _.debounce(this.handleBindUser, 500, {
+      leading: true,
+      trailing: false
+    })
   },
   mounted() {
     this.getDevice()
@@ -211,43 +226,52 @@ export default {
     },
     queryBindUserList(id) {
       this.bindUserListLoading = true
-      return deviceApi.queryUserByCameraId({
-        id
-      }).then(res => {
-        this.bindUserListLoading = false
-        this.bindUserList = res.data || []
-      }).catch(err => {
-        this.bindUserListLoading = false
-        this.bindUserList = []
-        console.log(err)
-      })
+      return deviceApi
+        .queryUserByCameraId({
+          id
+        })
+        .then(res => {
+          this.bindUserListLoading = false
+          this.bindUserList = res.data || []
+        })
+        .catch(err => {
+          this.bindUserListLoading = false
+          this.bindUserList = []
+          console.log(err)
+        })
     },
     // 绑定用户
     handleBindUser(row, bindFlag) {
       const { uid } = row
       const { id } = this.current
-      deviceApi.bindCameraByUid({
-        uid,
-        id,
-        bindFlag
-      }).then(res => {
-        this.$message.success(bindFlag === 0 ? '绑定成功' : '解绑成功')
-        this.queryBindUserList(id)
-      }).catch(err => {
-        this.$message.error(err.message)
-      })
+      deviceApi
+        .bindCameraByUid({
+          uid,
+          id,
+          bindFlag
+        })
+        .then(res => {
+          this.$message.success(bindFlag === 0 ? '绑定成功' : '解绑成功')
+          this.queryBindUserList(id)
+        })
+        .catch(err => {
+          this.$message.error(err.message)
+        })
     },
     searchUser() {
       const keyword = this.searchKeyword.trim()
-      userApi.queryUserList({
-        keyword,
-        pageSize: 20,
-        pageNo: 1
-      }).then(res => {
-        this.searchList = res.data.items
-      }).catch(err => {
-        console.log(err)
-      })
+      userApi
+        .queryUserList({
+          keyword,
+          pageSize: 20,
+          pageNo: 1
+        })
+        .then(res => {
+          this.searchList = res.data.items
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     handleModifyStatus(row, type) {
       // 管理用户
@@ -272,15 +296,11 @@ export default {
       }
       // 删除设备
       if (type === 'deleted') {
-        this.$confirm(
-          `此操作将删除设备【${row.cameraName}】, 是否继续?`,
-          '提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }
-        )
+        this.$confirm(`此操作将删除设备【${row.cameraName}】, 是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
           .then(() => {
             this.handleDelete(row.id)
           })

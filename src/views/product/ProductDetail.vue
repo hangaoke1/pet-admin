@@ -1,5 +1,5 @@
 <template>
-  <div class="u-page__product p-2">
+  <div class="u-page__product p-2" v-loading="loading">
     <div class="u-productAdd">
       <h1 class="u-title">
         <span class="u-index">1</span>商品基本信息
@@ -55,7 +55,7 @@
           <el-upload
             list-type="picture-card"
             :action="uploadUrl"
-            :on-preview="handleBannerPreview"
+            :on-preview="handleImagePreview"
             :on-remove="handleBannerRemove"
             :on-success="handleBannerSuccess"
             :file-list="fileList"
@@ -65,7 +65,23 @@
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt />
           </el-dialog>
-          <div class="u-tip">请至少上传一张轮播图片，推荐尺寸400x400</div>
+          <div class="u-tip">请至少上传一张轮播图片，推荐尺寸400*400</div>
+        </el-form-item>
+        <el-form-item label="商品详情" prop="productDetailImgUrl">
+          <el-upload
+            list-type="picture-card"
+            :action="uploadUrl"
+            :on-preview="handleImagePreview"
+            :on-remove="handleDetailRemove"
+            :on-success="handleDetailSuccess"
+            :file-list="detailFileList"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt />
+          </el-dialog>
+          <div class="u-tip">请至少上传一张详情图，推荐尺寸750*X</div>
         </el-form-item>
       </el-form>
 
@@ -146,9 +162,14 @@
             </template>
           </el-table-column>
         </template>
+        <el-table-column label-class-name="u-require" label="sku自编码" width="180">
+          <template slot-scope="{row}">
+            <el-input v-model="row.skuCode" size="small" placeholder="请输入商品自编码"></el-input>
+          </template>
+        </el-table-column>
         <el-table-column label-class-name="u-require" label="sku名称" width="180">
           <template slot-scope="{row}">
-            <el-input v-model="row.skuName" size="small"></el-input>
+            <el-input v-model="row.skuName" size="small" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
         <el-table-column label="sku原价" width="150" align="center">
@@ -235,34 +256,6 @@
             </el-upload>
           </template>
         </el-table-column>
-        <el-table-column
-          label-class-name="u-require"
-          label="sku详情图(750x2000)"
-          min-width="200"
-          align="center"
-        >
-          <template slot-scope="{row}">
-            <el-upload
-              :action="uploadUrl"
-              :show-file-list="false"
-              :on-success="handleDetailSuccess.bind(this, row)"
-              :before-upload="beforeUpload"
-            >
-              <el-button v-if="!row.skuDetailImgUrl" type="primary" size="mini">
-                上传图片
-                <i class="el-icon-upload el-icon--right"></i>
-              </el-button>
-              <el-image
-                v-else
-                style="width: 50px; height: 50px"
-                :src="row.skuDetailImgUrl"
-                fit="fill"
-                lazy
-                webp
-              />
-            </el-upload>
-          </template>
-        </el-table-column>
       </el-table>
     </div>
     <div class="u-submit">
@@ -302,6 +295,7 @@ specsList.forEach(item => {
 
 const genSku = function () {
   return {
+    skuCode: '',
     skuName: '',
     skuImgUrl: '',
     skuDetailImgUrl: '',
@@ -326,7 +320,7 @@ export default {
       }
     }
     return {
-      doingSave: false,
+      loading: false,
       submitLoading: false,
       enum1: '',
       enum2: '',
@@ -347,6 +341,7 @@ export default {
       dialogVisible: false,
       dialogImageUrl: '',
       fileList: [],
+      detailFileList: [],
       options: [
         { label: '通用', value: 0 },
         { label: '狗狗', value: 1 },
@@ -378,12 +373,7 @@ export default {
           message: '请选择适用对象',
           trigger: 'change'
         },
-        name: { required: true, message: '请输入名称', trigger: 'blur' },
-        productImgUrl: {
-          required: true,
-          validator: validateBanner,
-          trigger: 'change'
-        }
+        name: { required: true, message: '请输入名称', trigger: 'blur' }
       }
     }
   },
@@ -418,6 +408,8 @@ export default {
       if (this.isEdit) {
         // 编辑商品
         this.tempRoute = Object.assign({}, this.$route)
+        this.setTagsViewTitle()
+        this.setPageTitle()
         this.queryProductFullInfoById()
       } else {
         // 新增商品
@@ -435,16 +427,16 @@ export default {
       document.title = `${title} - ${this.$route.params.productId}`
     },
     queryProductFullInfoById() {
+      this.loading = true
       productApi
         .queryProductFullInfoById({
           productId: this.$route.params.productId
         })
         .then(res => {
           const data = res.data
-          this.setTagsViewTitle()
-          this.setPageTitle()
           store.set('product_edit', data)
           this.recoverData(data)
+          this.loading = false
         })
     },
     recoverData(data) {
@@ -482,20 +474,31 @@ export default {
                 productApi
                   .updateProduct(params)
                   .then(() => {
-                    this.$message.success('更新商品成功')
+                    this.$notify({
+                      title: '成功',
+                      message: '更新商品成功',
+                      type: 'success'
+                    })
                     this.submitLoading = false
-                    this.init()
+                    this.$store.dispatch('tagsView/delView', this.$route)
+                    this.$router.push('/product/index')
                   })
                   .catch(err => {
-                    console.error(err)
                     this.submitLoading = false
+                    this.$message.error(err.message)
                   })
               } else {
                 productApi
                   .insertProduct(params)
                   .then(() => {
-                    this.$message.success('新增商品成功')
+                    this.$notify({
+                      title: '成功',
+                      message: '新增商品成功',
+                      type: 'success'
+                    })
                     this.submitLoading = false
+                    this.$store.dispatch('tagsView/delView', this.$route)
+                    this.$router.push('/product/index')
                   })
                   .catch(err => {
                     this.submitLoading = false
@@ -552,15 +555,12 @@ export default {
     handleSmallSuccess(row, res, file) {
       row.skuImgUrl = res.data
     },
-    handleDetailSuccess(row, res, file) {
-      row.skuDetailImgUrl = res.data
-    },
     beforeUpload() {
       return true
     },
     queryProductCategory() {
       productApi.queryProductCategory().then(res => {
-        this.categoryOptions = res || []
+        this.categoryOptions = res.data || []
       })
     },
     getOptions(index) {
@@ -656,7 +656,14 @@ export default {
     handleBannerRemove(file, fileList) {
       this.fileList = fileList
     },
-    handleBannerPreview(file) {
+    handleDetailSuccess(res, file, fileList) {
+      file.url = res.data
+      this.detailFileList = fileList
+    },
+    handleDetailRemove(file, fileList) {
+      this.detailFileList = fileList
+    },
+    handleImagePreview(file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     }
@@ -738,4 +745,14 @@ export default {
     }
   }
 }
+// .el-upload--picture-card {
+//   width: 100px;
+//   height: 100px;
+//   line-height: 102px;
+// }
+// .el-upload-list--picture-card .el-upload-list__item {
+//   width: 100px;
+//   height: 100px;
+//   line-height: 102px;
+// }
 </style>

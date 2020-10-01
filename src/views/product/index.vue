@@ -18,11 +18,18 @@
         size="small"
         @click="doSearch"
       >查询</el-button>
-      <el-button v-waves class="filter-item" type="success" plain size="small" @click="doAdd">创建新商品</el-button>
+      <el-button v-waves class="filter-item" plain size="small" @click="doAdd">创建新商品</el-button>
     </div>
 
     <div class="mb-1">
-      <el-button v-waves class="filter-item" type="danger" size="small" plain @click="doDeleteMulti">批量删除</el-button>
+      <el-button
+        v-waves
+        class="filter-item"
+        type="danger"
+        size="mini"
+        plain
+        @click="doDeleteMulti"
+      >批量删除</el-button>
     </div>
 
     <!-- 数据表格 -->
@@ -42,6 +49,7 @@
           <el-table
             header-row-class-name="u-tabel__header"
             highlight-current-row
+            size="mini"
             :data="props.row.productSkuList"
           >
             <el-table-column prop="id" label="sku编号" width="100" align="center"></el-table-column>
@@ -58,7 +66,7 @@
                 />
               </template>
             </el-table-column>
-            <el-table-column prop="skuName" label="sku名称" width="180"></el-table-column>
+            <el-table-column prop="skuName" label="sku名称" width="200" align="center"></el-table-column>
             <el-table-column prop="price" label="价格" width="100" align="center"></el-table-column>
             <el-table-column label="库存" width="200" align="center">
               <template slot-scope="{row}">
@@ -89,12 +97,17 @@
                 />
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="200" align="center">
+            <!-- <el-table-column label="操作" width="200" align="center">
               <template slot-scope="{row}">
-                <el-button v-show="!row.edit" @click="editSkuStock(row)">修改库存</el-button>
-                <el-button v-show="row.edit" type="success" @click="saveSkuStock(row)">确认修改</el-button>
+                <el-button size="mini" v-show="!row.edit" @click="editSkuStock(row)">修改库存</el-button>
+                <el-button
+                  size="mini"
+                  v-show="row.edit"
+                  type="success"
+                  @click="saveSkuStock(row)"
+                >确认修改</el-button>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </template>
       </el-table-column>
@@ -113,7 +126,7 @@
           <div class="u-product__info">
             <el-image
               v-if="row.productBannerImgList.length"
-              class="u-product__img"
+              class="u-product__img flex-0"
               style="width: 50px; height: 50px"
               :src="row.productBannerImgList[0].imgUrl"
               fit="fill"
@@ -123,7 +136,7 @@
             />
             <el-image
               v-else
-              class="u-product__img"
+              class="u-product__img flex-0"
               style="width: 50px; height: 50px"
               :src="config.petAvatar"
               fit="fill"
@@ -139,7 +152,7 @@
           <span>{{ row.productSkuList.length }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="当前价" width="120" align="center">
+      <el-table-column label="售价" width="120" align="center">
         <template slot-scope="{row}">
           <span>{{ getPrice(row.productSkuList) }}</span>
         </template>
@@ -219,6 +232,9 @@ export default {
     }
   },
   beforeMount() {
+    this.getList()
+  },
+  activated() {
     this.getList()
   },
   methods: {
@@ -328,7 +344,7 @@ export default {
           pageSize: this.pageSize
         })
         .then(res => {
-          res = res.data;
+          res = res.data
           this.loading = false
           res.items.forEach(pd => {
             pd.productSkuList.forEach(sku => {

@@ -63,9 +63,9 @@
           <span>{{ row.order.orderId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商品详情" width="300">
+      <el-table-column label="商品详情" min-width="300">
         <template slot-scope="{row}">
-          <div class="u-product__list">
+          <div class="u-product__list p-1">
             <div v-for="item in row.orderItemList" :key="item.id" class="u-product__item pr-2">
               <el-image
                 class="u-sku__img"
@@ -99,9 +99,9 @@
           <span>¥ {{ row.order.totalFee }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="收货地址" width="300">
+      <el-table-column label="收货地址" min-width="300" align="center">
         <template slot-scope="{row}">
-          <div v-if="row.userAddress">
+          <div v-if="row.userAddress" class="px-2 text-left">
             <div class="u-address">
               <span>{{ row.userAddress.province }}</span>
               <span>{{ row.userAddress.city }}</span>
@@ -115,12 +115,14 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column prop="logisticsName" align="center" label="物流公司" min-width="150"></el-table-column>
+      <el-table-column prop="logisticsNo" align="center" label="物流单号" min-width="150"></el-table-column>
       <el-table-column label="订单备注" align="center" width="200">
         <template slot-scope="{row}">
           <div class="u-buyerMemo">{{ row.order.buyerMemo }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" width="200">
+      <el-table-column label="创建时间" align="center" min-width="200">
         <template slot-scope="{row}">
           <div class="u-createTime">{{ row.order.createTime }}</div>
         </template>

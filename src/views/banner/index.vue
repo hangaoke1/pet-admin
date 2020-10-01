@@ -6,6 +6,7 @@
     <el-table
       v-loading="loading"
       :data="list"
+      size="mini"
       style="width: 100%"
       border
       header-row-class-name="u-tabel__header"
