@@ -145,7 +145,7 @@
         <template v-if="effectSpecs.length === 1">
           <el-table-column :label="specs[0].name" width="100">
             <template slot-scope="{row}">
-              <span>{{ row.specs[0].value }}</span>
+              <span>{{ row.specs[0] && row.specs[0].value }}</span>
             </template>
           </el-table-column>
         </template>
@@ -153,12 +153,12 @@
         <template v-if="effectSpecs.length === 2">
           <el-table-column :label="specs[0].name" width="100">
             <template slot-scope="{row}">
-              <span>{{ row.specs[0].value }}</span>
+              <span>{{ row.specs[0] && row.specs[0].value }}</span>
             </template>
           </el-table-column>
           <el-table-column :label="specs[1].name" width="100">
             <template slot-scope="{row}">
-              <span>{{ row.specs[1].value }}</span>
+              <span>{{ row.specs[1] && row.specs[1].value }}</span>
             </template>
           </el-table-column>
         </template>
