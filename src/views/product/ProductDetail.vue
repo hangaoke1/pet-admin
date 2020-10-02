@@ -506,7 +506,7 @@ export default {
                     })
                     this.submitLoading = false
                     this.$store.dispatch('tagsView/delView', this.$route)
-                    this.$router.push('/product/index')
+                    this.$router.push('/product/list')
                   })
                   .catch(err => {
                     this.submitLoading = false
@@ -523,7 +523,7 @@ export default {
                     })
                     this.submitLoading = false
                     this.$store.dispatch('tagsView/delView', this.$route)
-                    this.$router.push('/product/index')
+                    this.$router.push('/product/list')
                   })
                   .catch(err => {
                     this.submitLoading = false
