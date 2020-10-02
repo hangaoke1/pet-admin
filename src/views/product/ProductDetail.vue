@@ -169,7 +169,10 @@
         </el-table-column>
         <el-table-column label-class-name="u-require" label="sku名称" width="180">
           <template slot-scope="{row}">
-            <el-input v-model="row.skuName" size="small" placeholder="请输入"></el-input>
+            <div class="flex align-center justify-center">
+              <el-input v-model="row.skuName" size="small" placeholder="请输入"></el-input>
+              <el-button class="ml-1" type="text" size="mini" @click="fillSkuName(row)">填充</el-button>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="sku原价" width="150" align="center">
@@ -426,6 +429,9 @@ export default {
       } else {
         // 新增商品
       }
+    },
+    fillSkuName(row) {
+      row.skuName = this.form.name + (row.specs && row.specs.map(v => v.value).join(' '))
     },
     setTagsViewTitle() {
       const title = '商品编辑'
