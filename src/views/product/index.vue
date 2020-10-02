@@ -2,7 +2,7 @@
   <div class="u-product p-2">
     <div class="bg-bai p-3">
       <!-- 查询条件 -->
-      <div class="pb-1 border-bottom-divider">
+      <div class="pb-1 border-bottom-divider flex justify-between">
         <el-input
           v-model="listQuery.keyword"
           placeholder="请输入关键字"
@@ -11,15 +11,17 @@
           size="small"
           @keyup.enter.native="getList"
         />
-        <el-button
-          v-waves
-          class="filter-item ml-1"
-          type="primary"
-          icon="el-icon-search"
-          size="small"
-          @click="doSearch"
-        >查询</el-button>
-        <el-button v-waves class="filter-item" plain size="small" @click="doAdd">创建新商品</el-button>
+        <div>
+          <el-button
+            v-waves
+            class="filter-item ml-1"
+            type="primary"
+            icon="el-icon-search"
+            size="small"
+            @click="doSearch"
+          >查询</el-button>
+          <el-button v-waves class="filter-item" plain size="small" @click="doAdd">创建新商品</el-button>
+        </div>
       </div>
 
       <!-- 数据表格 -->

@@ -1,70 +1,75 @@
 <template>
   <div class="u-device p-2">
-    <div class="filter-container">
-      <el-input
-        v-model="listQuery.title"
-        placeholder="请输入设备编号 "
-        style="width: 200px;"
-        class="filter-item"
-        size="small"
-      />
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        size="small"
-        @click="getDevice"
-      >查询</el-button>
-      <el-button
-        v-waves
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-edit"
-        size="small"
-        @click="handleAddClick"
-      >新增设备</el-button>
-    </div>
-    <el-table
-      v-loading="loading"
-      :data="list"
-      size="mini"
-      stripe
-      border
-      highlight-current-row
-      style="width: 100%"
-      header-row-class-name="u-tabel__header"
-    >
-      <el-table-column align="center" type="index" width="50"></el-table-column>
-      <el-table-column align="center" prop="cameraNo" label="设备编号" width="180"></el-table-column>
-      <el-table-column align="center" prop="cameraName" label="设备名称" width="180">
-        <template slot-scope="{row}">
-          <span>{{ row.cameraName }}</span>
-          <el-button type="success" size="mini" @click="preview(row)">预览</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="url" label="设备地址"></el-table-column>
-      <el-table-column label="操作" align="center" width="250">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleModifyStatus(row, 'edit')">编辑</el-button>
-          <el-button type="success" size="mini" @click="handleModifyStatus(row, 'manage')">管理用户</el-button>
-          <el-button type="danger" size="mini" @click="handleModifyStatus(row,'deleted')">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="p-3 bg-bai">
+      <div class="flex justify-between pb-1 border-bottom-divider">
+        <el-input
+          v-model="listQuery.title"
+          placeholder="请输入设备编号 "
+          style="width: 200px;"
+          class="filter-item"
+          size="small"
+        />
+        <div>
+          <el-button
+            v-waves
+            class="filter-item"
+            type="primary"
+            icon="el-icon-search"
+            size="small"
+            @click="getDevice"
+          >查询</el-button>
+          <el-button
+            v-waves
+            class="filter-item"
+            style="margin-left: 10px;"
+            type="primary"
+            icon="el-icon-edit"
+            size="small"
+            plain
+            @click="handleAddClick"
+          >新增设备</el-button>
+        </div>
+      </div>
+      <el-table
+        class="mt-1"
+        v-loading="loading"
+        :data="list"
+        size="mini"
+        stripe
+        highlight-current-row
+        style="width: 100%"
+        header-row-class-name="u-tabel__header"
+      >
+        <el-table-column align="center" type="index" width="50"></el-table-column>
+        <el-table-column align="center" prop="cameraNo" label="设备编号" width="180"></el-table-column>
+        <el-table-column align="center" prop="cameraName" label="设备名称" width="180">
+          <template slot-scope="{row}">
+            <span>{{ row.cameraName }}</span>
+            <el-button type="success" size="mini" @click="preview(row)">预览</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="url" label="设备地址"></el-table-column>
+        <el-table-column label="操作" align="center" width="250">
+          <template slot-scope="{row}">
+            <el-button type="primary" size="mini" @click="handleModifyStatus(row, 'edit')">编辑</el-button>
+            <el-button type="success" size="mini" @click="handleModifyStatus(row, 'manage')">管理用户</el-button>
+            <el-button type="danger" size="mini" @click="handleModifyStatus(row,'deleted')">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <div class="u-page">
-      <el-pagination
-        background
-        :current-page="pageNo"
-        :page-sizes="[20, 50, 100, 200]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      ></el-pagination>
+      <div class="u-page">
+        <el-pagination
+          background
+          :current-page="pageNo"
+          :page-sizes="[20, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCount"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
+      </div>
     </div>
 
     <el-dialog :title="dialogStatus==='create' ? '新增设备': '编辑设备'" :visible.sync="dialogFormVisible">
