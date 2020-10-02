@@ -110,28 +110,21 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/category',
-    component: Layout,
-    redirect: '/category/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/category/index'),
-        name: 'Category',
-        meta: { title: '分类管理', icon: 'eye-open', affix: false }
-      }
-    ]
-  },
-  {
     path: '/product',
     component: Layout,
-    redirect: '/product/index',
+    meta: { title: '商品管理', icon: 'star', affix: false },
     children: [
       {
-        path: 'index',
+        path: 'list',
         component: () => import('@/views/product/index'),
         name: 'Product',
-        meta: { title: '商品管理', icon: 'shopping', affix: false }
+        meta: { title: '商品列表', affix: false }
+      },
+      {
+        path: '/product/category',
+        component: () => import('@/views/category/index'),
+        name: 'Category',
+        meta: { title: '分类管理', affix: false }
       },
       {
         path: 'create',

@@ -69,19 +69,45 @@
     .submenu-title-noDropdown,
     .el-submenu__title {
       &:hover {
-        background-color: $menuHover !important;
+        background: $menuHover !important;
+      }
+    }
+
+    .el-submenu {
+      .el-menu-item {
+        position: relative;
+        font-size: 12px;
+        span {
+          padding-left: 20px;
+        }
+        &:after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50px;
+          transform: translate(-50%, -50%);
+          background: #FF7013;
+          border-radius: 1.5px;
+          border: none;
+          width: 5px;
+          height: 5px;
+          border-radius: 5px;
+          margin-top: -1px;
+          transition: none;
+        }
       }
     }
 
     // 菜单激活样式
     .el-menu-item {
+      font-weight: bold;
       &:after {
         content: '';
         position: absolute;
-        top: 10px;
-        right: 8px;
-        bottom: 10px;
-        background: #5757D9;
+        top: 0;
+        left: 0px;
+        bottom: 0;
+        background: #FF7013;
         border-radius: 1.5px;
         border: none;
         width: 3px;
@@ -92,7 +118,7 @@
     }
     .el-menu-item.is-active {
       position: relative;
-      background-color: $menuHover !important;
+      background: $menuHover !important;
       &:after {
         transform: scaleY(1);
         opacity: 1;
@@ -108,7 +134,7 @@
       min-width: $sideBarWidth !important;
 
       &:hover {
-        background-color: $subMenuHover !important;
+        background: $subMenuHover !important;
       }
     }
   }
@@ -210,7 +236,7 @@
   .nest-menu .el-submenu>.el-submenu__title,
   .el-menu-item {
     &:hover {
-      background-color: $menuHover !important;
+      background: $menuHover !important;
     }
   }
 

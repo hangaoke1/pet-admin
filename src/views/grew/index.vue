@@ -1,52 +1,37 @@
 <template>
   <div class="dashboard-container p-2">
-    <div class="bg-bai">
-      <g-filter
-        class="p-2 pb-1"
-        :options="options"
-        @refresh="handleRefresh"
-        @search="handleSearch"
-      />
-      <div class="px-2">
-        <el-button @click="doAdd">添加寄养</el-button>
-      </div>
-      <div class="px-2">
-        <el-table
-          size="mini"
-          border
-          class="mt-1"
-          :data="list"
-          style="width: 100%"
-          v-loading="loading"
-        >
-          <el-table-column prop="petName" align="center" label="宠物名称"></el-table-column>
-          <el-table-column prop="petType" align="center" label="宠物类型">
-            <template slot-scope="scope">
-              <el-tag size="medium" v-if="scope.row.petType === 1">猫咪</el-tag>
-              <el-tag size="medium" type="warning" v-else>狗狗</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="startTime" align="center" label="开始时间"></el-table-column>
-          <el-table-column prop="endTime" align="center" label="结束时间"></el-table-column>
-          <el-table-column fixed="petState" align="center" label="寄养状态" width="200">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.petState === 0" size="medium" type="warning">待确认</el-tag>
-              <el-tag v-else-if="scope.row.petState === 1" size="medium">寄养中</el-tag>
-              <el-tag v-else size="medium" type="success">已完成</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="phone" align="center" label="手机号"></el-table-column>
-          <el-table-column prop="cameraId" align="center" label="监控Id"></el-table-column>
-          <el-table-column prop="remark" align="center" label="备注"></el-table-column>
-          <el-table-column prop="action" align="center" label="操作">
-            <template slot-scope="scope">
-              <el-button size="small" type="text" @click="doUpdate(scope.row)">编辑</el-button>
-              <el-divider direction="vertical"></el-divider>
-              <el-button class="text-red" size="small" type="text" @click="doDelete(scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+    <div class="bg-bai p-3">
+      <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
+        <el-button slot="left" size="small" @click="doAdd">添加寄养</el-button>
+      </g-filter>
+      <el-table size="mini" class="mt-1" :data="list" style="width: 100%" v-loading="loading">
+        <el-table-column prop="petName" align="center" label="宠物名称"></el-table-column>
+        <el-table-column prop="petType" align="center" label="宠物类型">
+          <template slot-scope="scope">
+            <el-tag size="medium" v-if="scope.row.petType === 1">猫咪</el-tag>
+            <el-tag size="medium" type="warning" v-else>狗狗</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="startTime" align="center" label="开始时间"></el-table-column>
+        <el-table-column prop="endTime" align="center" label="结束时间"></el-table-column>
+        <el-table-column fixed="petState" align="center" label="寄养状态" width="200">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.petState === 0" size="medium" type="warning">待确认</el-tag>
+            <el-tag v-else-if="scope.row.petState === 1" size="medium">寄养中</el-tag>
+            <el-tag v-else size="medium" type="success">已完成</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="phone" align="center" label="手机号"></el-table-column>
+        <el-table-column prop="cameraId" align="center" label="监控Id"></el-table-column>
+        <el-table-column prop="remark" align="center" label="备注"></el-table-column>
+        <el-table-column prop="action" align="center" label="操作">
+          <template slot-scope="scope">
+            <el-button size="small" type="text" @click="doDelete(scope.row)">详情</el-button>
+            <el-divider direction="vertical"></el-divider>
+            <el-button class="text-red" size="small" type="text" @click="doDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <div class="text-right p-1">
         <el-pagination
           @size-change="handleSizeChange"
@@ -140,20 +125,12 @@ export default {
       formLabelWidth: '120px',
       dialogFormVisible: false,
       uploadLoading: false,
-      form: {
-        storeName: '',
-        lon: '',
-        lat: '',
-        mobile: '',
-        logo: '',
-        workTime: '',
-        storeState: 0
-      }
+      form: {}
     }
   },
   computed: {
     editText() {
-      return this.form.id ? '编辑门店' : '新增门店'
+      return this.form.id ? '编辑寄养' : '新增寄养'
     }
   },
   activated() {
@@ -170,17 +147,7 @@ export default {
     },
     // 新建
     doAdd() {
-      this.form = {
-        id: '',
-        storeName: '',
-        lon: '',
-        lat: '',
-        mobile: '',
-        logo: '',
-        workTime: '',
-        storeState: 0
-      }
-      this.dialogFormVisible = true
+      this.$message.warning('暂不支持')
     },
     doUpdate(row) {
       this.form = { ...row }
@@ -221,8 +188,8 @@ export default {
           pageSize: this.page.pageSize
         })
         .then(res => {
-          this.list = res.data
-          this.page.total = res.data.length
+          this.list = res.data.items
+          this.page.total = res.data.totalCount
           this.loading = false
         })
         .catch(() => {

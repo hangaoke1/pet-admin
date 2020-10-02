@@ -1,20 +1,18 @@
 <template>
-  <el-form-item :label="info.name">
-    <el-select
-      v-model="form[info.key]"
-      size="small"
-      :placeholder="info.placeholder || '请选择'"
-      style="width: 100%;"
-      :clearable="info.clearable"
-    >
-      <el-option
-        v-for="item in info.options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      ></el-option>
-    </el-select>
-  </el-form-item>
+  <el-select
+    style="width: 180px;"
+    v-model="form[info.key]"
+    size="small"
+    :placeholder="info.placeholder || '请选择'"
+    :clearable="info.clearable"
+  >
+    <el-option
+      v-for="item in info.options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value"
+    ></el-option>
+  </el-select>
 </template>
 
 <script>

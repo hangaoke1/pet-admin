@@ -1,36 +1,37 @@
 <template>
-  <div class="u-banner p-2">
-    <div class="u-title">
-      <el-button type="primary" size="small" @click="handleAdd">新增轮播</el-button>
+  <div class="p-2">
+    <div class="bg-bai p-3">
+      <div class="mb-2 text-left">
+        <el-button type="primary" size="small" @click="handleAdd">新增轮播</el-button>
+      </div>
+      <el-table
+        v-loading="loading"
+        :data="list"
+        size="mini"
+        style="width: 100%"
+        header-row-class-name="u-tabel__header"
+      >
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column prop="name" label="图片">
+          <template slot-scope="scope">
+            <el-image
+              style="width: 187px; height: 100px"
+              :src="scope.row.imgUrl"
+              fit="fill"
+              lazy
+              :preview-src-list="[scope.row.imgUrl]"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column prop="detail" label="描述"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-    <el-table
-      v-loading="loading"
-      :data="list"
-      size="mini"
-      style="width: 100%"
-      border
-      header-row-class-name="u-tabel__header"
-    >
-      <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="name" label="图片">
-        <template slot-scope="scope">
-          <el-image
-            style="width: 187px; height: 100px"
-            :src="scope.row.imgUrl"
-            fit="fill"
-            lazy
-            :preview-src-list="[scope.row.imgUrl]"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column prop="detail" label="描述"></el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
 
     <el-dialog :title="type === 'add' ? '新增' : '编辑'" :visible.sync="dialogVisible">
       <el-form :model="form" label-width="80px">
@@ -195,10 +196,4 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.u-title {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 10px 0;
-}
 </style>

@@ -1,29 +1,14 @@
 <template>
-  <div class="dashboard-container p-2">
-    <div class="bg-bai">
-      <g-filter
-        class="p-2 pb-1"
-        :options="options"
-        @refresh="handleRefresh"
-        @search="handleSearch"
-      />
-      <div class="px-2">
-        <el-button @click="doAdd">添加分类</el-button>
-      </div>
-      <div class="px-2">
-        <el-table
-          size="mini"
-          border
-          class="mt-1"
-          :data="list"
-          style="width: 100%"
-          v-loading="loading"
-        >
-          <el-table-column prop="id" align="center" label="分类id"></el-table-column>
-          <el-table-column prop="categoryName" align="center" label="分类名称"></el-table-column>
-          <el-table-column prop="createTime" align="center" label="创建时间"></el-table-column>
-        </el-table>
-      </div>
+  <div class="p-2">
+    <div class="bg-bai p-3">
+      <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
+        <el-button slot="left" size="small" @click="doAdd">添加分类</el-button>
+      </g-filter>
+      <el-table size="mini" class="mt-1" :data="list" style="width: 100%" v-loading="loading">
+        <el-table-column prop="id" align="center" label="分类id"></el-table-column>
+        <el-table-column prop="categoryName" align="center" label="分类名称"></el-table-column>
+        <el-table-column prop="createTime" align="center" label="创建时间"></el-table-column>
+      </el-table>
       <div class="text-right p-1">
         <el-pagination
           @size-change="handleSizeChange"

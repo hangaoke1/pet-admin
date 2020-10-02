@@ -1,42 +1,41 @@
 <template>
-  <div class="dashboard-container p-2">
-    <div class="bg-bai">
-      <g-filter
-        class="p-2 pb-1"
-        :options="options"
-        @refresh="handleRefresh"
-        @search="handleSearch"
-      />
-      <div class="px-2">
-        <el-button @click="doAdd">添加门店</el-button>
-      </div>
-      <div class="px-2">
-        <el-table size="mini" border class="mt-1" :data="list" style="width: 100%" v-loading="loading">
-          <el-table-column prop="logo" align="center" label="LOGO">
-            <template slot-scope="scope">
-              <el-avatar :src="scope.row.logo"></el-avatar>
-            </template>
-          </el-table-column>
-          <el-table-column prop="storeName" align="center" label="门店名称"></el-table-column>
-          <el-table-column prop="mobile" align="center" label="联系电话"></el-table-column>
-          <el-table-column prop="lon" align="center" label="经度"></el-table-column>
-          <el-table-column prop="lat" align="center" label="纬度"></el-table-column>
-          <el-table-column fixed="workTime" align="center" label="工作时间" width="200"></el-table-column>
-          <el-table-column prop="storeState" align="center" label="营业状态">
-            <template slot-scope="scope">
-              <el-tag size="medium" v-if="scope.row.storeState === 0">营业</el-tag>
-              <el-tag size="medium" type="warning" v-else>休息</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="storeState" align="center" label="营业状态">
-            <template slot-scope="scope">
-              <el-button size="small" type="text" @click="doUpdate(scope.row)">编辑</el-button>
-              <el-divider direction="vertical"></el-divider>
-              <el-button class="text-red" size="small" type="text" @click="doDelete(scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+  <div class="p-2">
+    <div class="bg-bai p-3">
+      <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
+        <el-button size="small" slot="left" type="primary" plain @click="doAdd">添加门店</el-button>
+      </g-filter>
+      <el-table
+        class="mt-1"
+        size="mini"
+        :data="list"
+        style="width: 100%"
+        stripe
+        v-loading="loading"
+      >
+        <el-table-column prop="logo" align="center" label="LOGO">
+          <template slot-scope="scope">
+            <el-avatar :src="scope.row.logo"></el-avatar>
+          </template>
+        </el-table-column>
+        <el-table-column prop="storeName" align="center" label="门店名称"></el-table-column>
+        <el-table-column prop="mobile" align="center" label="联系电话"></el-table-column>
+        <el-table-column prop="lon" align="center" label="经度"></el-table-column>
+        <el-table-column prop="lat" align="center" label="纬度"></el-table-column>
+        <el-table-column fixed="workTime" align="center" label="工作时间" width="200"></el-table-column>
+        <el-table-column prop="storeState" align="center" label="营业状态">
+          <template slot-scope="scope">
+            <el-tag size="medium" v-if="scope.row.storeState === 0">营业</el-tag>
+            <el-tag size="medium" type="warning" v-else>休息</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="storeState" align="center" label="营业状态">
+          <template slot-scope="scope">
+            <el-button size="small" type="text" @click="doUpdate(scope.row)">编辑</el-button>
+            <el-divider direction="vertical"></el-divider>
+            <el-button class="text-red" size="small" type="text" @click="doDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <div class="text-right p-1">
         <el-pagination
           @size-change="handleSizeChange"
@@ -143,7 +142,7 @@ export default {
     }
   },
   computed: {
-    editText () {
+    editText() {
       return this.form.id ? '编辑门店' : '新增门店'
     }
   },

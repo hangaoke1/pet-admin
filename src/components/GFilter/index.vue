@@ -1,8 +1,8 @@
 <template>
-  <div class="g-filter">
-    <el-form ref="form" :model="query" label-width="auto">
-      <el-row :gutter="20">
-        <el-col v-for="item in options" :key="item.key" :xs="12" :sm="8" :md="8">
+  <div class="g-filter border-bottom-divider">
+    <div class="flex justify-between">
+      <div class="flex flex-wrap">
+        <div style="margin-right: 5px;margin-bottom: 5px" v-for="item in options" :key="item.key">
           <template v-if="item.remote">
             <g-input-remote
               v-if="item.type === 'input'"
@@ -38,15 +38,13 @@
               :clearable="item.clearable"
             />
           </template>
-        </el-col>
-      </el-row>
-    </el-form>
-    <el-row>
-      <el-col :span="24" class="text-right">
-        <el-button>重置</el-button>
-        <el-button type="primary" @click="doSearch">查询</el-button>
-      </el-col>
-    </el-row>
+        </div>
+      </div>
+      <div class="flex-0">
+        <el-button size="small" type="primary" @click="doSearch">查询</el-button>
+        <slot name="left"></slot>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -59,6 +57,7 @@ import GSelectRemote from './GSelectRemote'
 import GDate from './GDate'
 import GDateRange from './GDateRange'
 export default {
+  name: 'GFilter',
   components: {
     GInput,
     GInputRemote,
@@ -94,6 +93,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>

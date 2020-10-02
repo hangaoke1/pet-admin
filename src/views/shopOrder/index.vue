@@ -1,158 +1,161 @@
 <template>
   <div class="u-shopOrder p-2">
-    <!-- 查询条件 -->
-    <div class="filter-container">
-      <el-input
-        v-model="listQuery.orderId"
-        placeholder="请输入订单号"
-        style="width: 200px;"
-        class="filter-item"
-        clearable
-        size="small"
-        @keyup.enter.native="getList"
-      />
-      <el-select
-        v-model="listQuery.orderStatus"
-        class="filter-item"
-        placeholder="订单状态"
-        clearable
-        size="small"
-        @change="getList"
+    <div class="bg-bai p-3">
+      <!-- 查询条件 -->
+      <div class="pb-1 border-bottom-divider">
+        <el-input
+          v-model="listQuery.orderId"
+          placeholder="请输入订单号"
+          style="width: 200px;"
+          class="filter-item"
+          clearable
+          size="small"
+          @keyup.enter.native="getList"
+        />
+        <el-select
+          v-model="listQuery.orderStatus"
+          class="filter-item"
+          placeholder="订单状态"
+          clearable
+          size="small"
+          @change="getList"
+        >
+          <el-option
+            v-for="item in statusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+        <el-date-picker
+          v-model="listQuery.date"
+          class="filter-item"
+          type="datetimerange"
+          :picker-options="pickerOptions"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          align="right"
+          size="small"
+          :default-time="['00:00:00', '23:59:59']"
+          @change="getList"
+        ></el-date-picker>
+        <el-button
+          v-waves
+          class="filter-item"
+          type="primary"
+          icon="el-icon-search"
+          size="small"
+          @click="getList"
+        >查询</el-button>
+      </div>
+
+      <!-- 数据表格 -->
+      <el-table
+        class="mt-1"
+        v-loading="loading"
+        :data="list"
+        highlight-current-row
+        style="width: 100%"
+        size="mini"
+        header-row-class-name="u-tabel__header"
       >
-        <el-option
-          v-for="item in statusOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
-      <el-date-picker
-        v-model="listQuery.date"
-        class="filter-item"
-        type="datetimerange"
-        :picker-options="pickerOptions"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        align="right"
-        size="small"
-        :default-time="['00:00:00', '23:59:59']"
-        @change="getList"
-      ></el-date-picker>
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        size="small"
-        @click="getList"
-      >查询</el-button>
-    </div>
-
-    <!-- 数据表格 -->
-    <el-table
-      v-loading="loading"
-      :data="list"
-      highlight-current-row
-      style="width: 100%"
-      size="mini"
-      header-row-class-name="u-tabel__header"
-    >
-      <el-table-column label="订单编号" width="180" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.order.orderId }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="商品详情" min-width="300">
-        <template slot-scope="{row}">
-          <div class="u-product__list p-1">
-            <div v-for="item in row.orderItemList" :key="item.id" class="u-product__item pr-2">
-              <el-image
-                class="u-sku__img"
-                style="width: 50px; height: 50px"
-                :src="item.productSku.skuImgUrl"
-                fit="fill"
-                lazy
-                webp
-                :preview-src-list="[item.productSku.skuImgUrl]"
-              />
-              <div class="u-sku__name">
-                <div>{{ item.productSku.skuName }}</div>
-                <div class="u-sku__specs text-hui2">{{ getSpecs(item.productSku) }}</div>
+        <el-table-column label="订单编号" width="180" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.order.orderId }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="商品详情" min-width="300">
+          <template slot-scope="{row}">
+            <div class="u-product__list p-1">
+              <div v-for="item in row.orderItemList" :key="item.id" class="u-product__item pr-2">
+                <el-image
+                  class="u-sku__img"
+                  style="width: 50px; height: 50px"
+                  :src="item.productSku.skuImgUrl"
+                  fit="fill"
+                  lazy
+                  webp
+                  :preview-src-list="[item.productSku.skuImgUrl]"
+                />
+                <div class="u-sku__name">
+                  <div>{{ item.productSku.skuName }}</div>
+                  <div class="u-sku__specs text-hui2">{{ getSpecs(item.productSku) }}</div>
+                </div>
+                <div class="u-sku__price">
+                  <span class="font-s-1" style="margin-right: 3px">¥</span>
+                  {{ item.productSku.price }}
+                </div>
+                <div class="u-sku__quantity">x{{ item.quantity }}</div>
               </div>
-              <div class="u-sku__price">
-                <span class="font-s-1" style="margin-right: 3px">¥</span>
-                {{ item.productSku.price }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="订单状态" width="120" align="center">
+          <template slot-scope="{row}">
+            <el-tag :type="colorMap[row.order.orderStatus]">{{ textMap[row.order.orderStatus] }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="订单总价(元)" width="150" align="center">
+          <template slot-scope="{row}">
+            <span>¥ {{ row.order.totalFee }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="收货地址" min-width="300" align="center">
+          <template slot-scope="{row}">
+            <div v-if="row.userAddress" class="px-2 text-left">
+              <div class="u-address">
+                <span>{{ row.userAddress.province }}</span>
+                <span>{{ row.userAddress.city }}</span>
+                <span>{{ row.userAddress.area }}</span>
+                <span>{{ row.userAddress.detail }}</span>
               </div>
-              <div class="u-sku__quantity">x{{ item.quantity }}</div>
+              <div>
+                <span class="u-contact">{{ row.userAddress.contact }}</span>
+                <span class="u-mobile">{{ row.userAddress.mobile }}</span>
+              </div>
             </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="订单状态" width="120" align="center">
-        <template slot-scope="{row}">
-          <el-tag :type="colorMap[row.order.orderStatus]">{{ textMap[row.order.orderStatus] }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="订单总价(元)" width="150" align="center">
-        <template slot-scope="{row}">
-          <span>¥ {{ row.order.totalFee }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="收货地址" min-width="300" align="center">
-        <template slot-scope="{row}">
-          <div v-if="row.userAddress" class="px-2 text-left">
-            <div class="u-address">
-              <span>{{ row.userAddress.province }}</span>
-              <span>{{ row.userAddress.city }}</span>
-              <span>{{ row.userAddress.area }}</span>
-              <span>{{ row.userAddress.detail }}</span>
-            </div>
-            <div>
-              <span class="u-contact">{{ row.userAddress.contact }}</span>
-              <span class="u-mobile">{{ row.userAddress.mobile }}</span>
-            </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="logisticsName" align="center" label="物流公司" min-width="150"></el-table-column>
-      <el-table-column prop="logisticsNo" align="center" label="物流单号" min-width="150"></el-table-column>
-      <el-table-column label="订单备注" align="center" width="200">
-        <template slot-scope="{row}">
-          <div class="u-buyerMemo">{{ row.order.buyerMemo }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center" min-width="200">
-        <template slot-scope="{row}">
-          <div class="u-createTime">{{ row.order.createTime }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="250" fixed="right">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini">查看详情</el-button>
-          <el-button
-            v-if="row.order.orderStatus == 200"
-            type="warning"
-            size="mini"
-            @click="sendOrder(row)"
-          >发货</el-button>
-          <!-- <el-button type="danger" size="mini" @click="handleModifyStatus(row,'deleted')">删除</el-button> -->
-        </template>
-      </el-table-column>
-    </el-table>
+          </template>
+        </el-table-column>
+        <el-table-column prop="logisticsName" align="center" label="物流公司" min-width="150"></el-table-column>
+        <el-table-column prop="logisticsNo" align="center" label="物流单号" min-width="150"></el-table-column>
+        <el-table-column label="订单备注" align="center" width="200">
+          <template slot-scope="{row}">
+            <div class="u-buyerMemo">{{ row.order.buyerMemo }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建时间" align="center" min-width="200">
+          <template slot-scope="{row}">
+            <div class="u-createTime">{{ row.order.createTime }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="250" fixed="right">
+          <template slot-scope="{row}">
+            <el-button type="primary" size="mini">查看详情</el-button>
+            <el-button
+              v-if="row.order.orderStatus == 200"
+              type="warning"
+              size="mini"
+              @click="sendOrder(row)"
+            >发货</el-button>
+            <!-- <el-button type="danger" size="mini" @click="handleModifyStatus(row,'deleted')">删除</el-button> -->
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <!-- 底部分页 -->
-    <div class="u-page">
-      <el-pagination
-        background
-        :current-page="pageNo"
-        :page-sizes="[10, 30, 50, 100]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      ></el-pagination>
+      <!-- 底部分页 -->
+      <div class="u-page">
+        <el-pagination
+          background
+          :current-page="pageNo"
+          :page-sizes="[10, 30, 50, 100]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCount"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
