@@ -431,7 +431,7 @@ export default {
       }
     },
     fillSkuName(row) {
-      row.skuName = this.form.name + (row.specs && row.specs.map(v => v.value).join(' '))
+      row.skuName = this.form.name + (row.specs && row.specs.length && row.specs.map(v => v.value).join(' '))
     },
     setTagsViewTitle() {
       const title = '商品编辑'
