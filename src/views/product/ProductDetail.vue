@@ -162,7 +162,7 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column label-class-name="u-require" label="sku自编码" width="180">
+        <el-table-column label-class-name="u-require" label="sku条形码" width="180">
           <template slot-scope="{row}">
             <el-input v-model="row.skuCode" size="small" placeholder="请输入商品自编码"></el-input>
           </template>
@@ -177,35 +177,17 @@
         </el-table-column>
         <el-table-column label="sku原价" width="150" align="center">
           <template slot-scope="{row}">
-            <el-input-number
-              v-model="row.originPrice"
-              controls-position="right"
-              :min="0"
-              :max="99999"
-              size="small"
-            ></el-input-number>
+            <g-number v-model="row.originPrice"></g-number>
           </template>
         </el-table-column>
         <el-table-column label="sku进货价" width="150" align="center">
           <template slot-scope="{row}">
-            <el-input-number
-              v-model="row.supplyPrice"
-              controls-position="right"
-              :min="0"
-              :max="99999"
-              size="small"
-            ></el-input-number>
+            <g-number v-model="row.supplyPrice"></g-number>
           </template>
         </el-table-column>
         <el-table-column label-class-name="u-require" label="sku价格" width="150" align="center">
           <template slot-scope="{row}">
-            <el-input-number
-              v-model="row.price"
-              controls-position="right"
-              :min="0"
-              :max="99999"
-              size="small"
-            ></el-input-number>
+            <g-number v-model="row.price"></g-number>
           </template>
         </el-table-column>
         <el-table-column label-class-name="u-require" label="sku库存" width="150" align="center">
@@ -275,14 +257,15 @@
 import _ from 'lodash'
 import store from 'store'
 import productApi from '@/api/product'
+import GNumber from '@/components/GNumber'
 
 const specsList = [
   { type: 'weight', name: '重量' },
   { type: 'shap', name: '形状' },
   { type: 'size', name: '尺寸' },
   { type: 'package', name: '套餐' },
-  { type: 'taste', name: '口味' }
-  // { type: 'color', name: '颜色' },
+  { type: 'taste', name: '口味' },
+  { type: 'color', name: '颜色' }
   // { type: 'type', name: '型号' },
   // { type: 'style', name: '款式' },
   // { type: 'material', name: '材质' },
@@ -311,6 +294,9 @@ const genSku = function () {
 }
 export default {
   name: 'ProductDetail',
+  components: {
+    GNumber
+  },
   props: {
     isEdit: Boolean
   },
