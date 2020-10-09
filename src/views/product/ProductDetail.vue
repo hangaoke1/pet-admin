@@ -233,7 +233,7 @@
               <el-image
                 v-else
                 style="width: 50px; height: 50px"
-                :src="row.skuImgUrl"
+                :src="row.skuImgUrl | fmtWebp"
                 fit="fill"
                 lazy
                 webp
@@ -377,7 +377,7 @@ export default {
     detailFileList(val) {
       this.form.productDetailImgUrl = val.map(item => {
         return {
-          imgUrl: item.url
+          imgUrl: this.url2Webp(item.url)
         }
       })
       this.$nextTick(() => {
@@ -387,7 +387,7 @@ export default {
     fileList(val) {
       this.form.productImgUrl = val.map(item => {
         return {
-          imgUrl: item.url
+          imgUrl: this.url2Webp(item.url)
         }
       })
       this.$nextTick(() => {
@@ -417,7 +417,8 @@ export default {
       }
     },
     fillSkuName(row) {
-      row.skuName = this.form.name + (row.specs && row.specs.length && row.specs.map(v => v.value).join(' '))
+      row.skuName =
+        this.form.name + (row.specs && row.specs.length && row.specs.map(v => v.value).join(' '))
     },
     setTagsViewTitle() {
       const title = '商品编辑'
@@ -461,13 +462,13 @@ export default {
       this.fileList = productBannerImgList.map(item => {
         return {
           uid: item.id || item.imgUrl,
-          url: item.imgUrl
+          url: this.url2Webp(item.imgUrl)
         }
       })
       this.detailFileList = productDetailImgList.map(item => {
         return {
           uid: item.id || item.imgUrl,
-          url: item.imgUrl
+          url: this.url2Webp(item.imgUrl)
         }
       })
     },

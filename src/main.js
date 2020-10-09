@@ -43,6 +43,14 @@ Vue.mixin({
     return {
       uploadUrl: process.env.VUE_APP_BASE_API + '/pet/uploadFile'
     }
+  },
+  methods: {
+    url2Webp(url) {
+      if (url.indexOf('imageView2/format/webp') > -1) {
+        return url
+      }
+      return url + `?imageView2/format/webp`
+    }
   }
 })
 

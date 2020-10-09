@@ -66,3 +66,11 @@ export function toThousandFilter(num) {
 export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
+// 腾讯云oss webp
+export function fmtWebp(url) {
+  if (url.indexOf('imageView2/format/webp') > -1) {
+    return url
+  }
+  return url + `?imageView2/format/webp`
+}

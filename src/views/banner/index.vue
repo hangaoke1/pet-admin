@@ -16,7 +16,7 @@
           <template slot-scope="scope">
             <el-image
               style="width: 187px; height: 100px"
-              :src="scope.row.imgUrl"
+              :src="scope.row.imgUrl | fmtWebp"
               fit="fill"
               lazy
               :preview-src-list="[scope.row.imgUrl]"
@@ -39,7 +39,7 @@
           <el-image
             v-if="form.imgUrl"
             style="width: 187px; height: 100px"
-            :src="form.imgUrl"
+            :src="form.imgUrl | fmtWebp"
             fit="fill"
             lazy
             :preview-src-list="[form.imgUrl]"

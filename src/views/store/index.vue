@@ -56,7 +56,7 @@
             <el-image
               v-if="form.logo"
               style="width: 100px; height: 100px"
-              :src="form.logo"
+              :src="form.logo | fmtWebp"
               fit="fill"
               lazy
               :preview-src-list="[form.logo]"

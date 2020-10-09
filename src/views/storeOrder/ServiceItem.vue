@@ -2,7 +2,7 @@
   <div class="u-serivceItem flex align-center p-1">
     <el-image
       class="u-serviceItem__img mr-2 flex-0"
-      :src="info.image"
+      :src="info.image | fmtWebp"
       fit="fill"
       lazy
       webp
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'serviceItem',
+  name: 'ServiceItem',
   props: {
     info: {
       type: Object,

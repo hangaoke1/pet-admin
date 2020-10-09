@@ -50,7 +50,7 @@
                   <el-image
                     class="u-sku__img"
                     style="width: 50px; height: 50px"
-                    :src="row.skuImgUrl"
+                    :src="row.skuImgUrl | fmtWebp"
                     fit="fill"
                     lazy
                     webp
@@ -106,7 +106,7 @@
                 v-if="row.productBannerImgList.length"
                 class="u-product__img flex-0"
                 style="width: 50px; height: 50px"
-                :src="row.productBannerImgList[0].imgUrl"
+                :src="row.productBannerImgList[0].imgUrl | fmtWebp"
                 fit="fill"
                 lazy
                 webp

@@ -72,7 +72,7 @@
                 <el-image
                   class="u-sku__img"
                   style="width: 50px; height: 50px"
-                  :src="item.productSku.skuImgUrl"
+                  :src="item.productSku.skuImgUrl | fmtWebp"
                   fit="fill"
                   lazy
                   webp
@@ -156,6 +156,30 @@
           @current-change="handleCurrentChange"
         ></el-pagination>
       </div>
+
+      <!-- 发货表单 -->
+      <el-dialog title="发货" :visible.sync="dialogFormVisible">
+        <el-form :model="sendForm">
+          <el-form-item label="物流选择" label-width="120px">
+            <el-select v-model="sendForm.logisticsName" placeholder="请选择物流公司">
+              <el-option
+                v-for="item in options"
+                :label="item.label"
+                :value="item.value"
+                :key="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="运单号" label-width="120px">
+            <el-input v-model="sendForm.logisticsNo" autocomplete="off"></el-input>
+          </el-form-item>
+          <div class="font-s-12 text-hui" style="margin-left: 120px">注意：非商家配送时，需填写运单号</div>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirmSend">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -171,6 +195,46 @@ export default {
   directives: { waves },
   data() {
     return {
+      options: [
+        {
+          label: '商家配送',
+          value: '商家配送'
+        },
+        {
+          label: '顺丰快递',
+          value: '顺丰快递'
+        },
+        {
+          label: '圆通快递',
+          value: '圆通快递'
+        },
+        {
+          label: '中通快递',
+          value: '中通快递'
+        },
+        {
+          label: '申通快递',
+          value: '申通快递'
+        },
+        {
+          label: '韵达快递',
+          value: '韵达快递'
+        },
+        {
+          label: '百世汇通快递',
+          value: '百世汇通快递'
+        },
+        {
+          label: '天天快递',
+          value: '天天快递'
+        }
+      ],
+      dialogFormVisible: false,
+      sendForm: {
+        orderId: '',
+        logisticsNo: '',
+        logisticsName: ''
+      },
       textMap: {
         100: '待支付',
         200: '待发货',
@@ -230,9 +294,11 @@ export default {
     this.getList()
   },
   methods: {
-    // 发货
-    sendOrder(row) {
-      const orderId = row.order.orderId
+    confirmSend() {
+      // 非商家配送 必须要单号
+      if (this.sendForm.logisticsName !== '商家配送' && !this.sendForm.logisticsNo) {
+        return this.$message.error('运单号不能为空')
+      }
       this.$confirm('该订单是否已经发货?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -240,21 +306,30 @@ export default {
       })
         .then(() => {
           shopOrderApi
-            .shipOrder({
-              orderId
-            })
+            .shipOrder(this.sendForm)
             .then(() => {
-              row.order.orderStatus = 300
               this.$message({
                 type: 'success',
                 message: '操作成功!'
               })
+              this.getList()
+              this.dialogFormVisible = false
             })
             .catch(err => {
               this.$message.error(err.message)
             })
         })
         .catch(() => {})
+    },
+    // 发货
+    sendOrder(row) {
+      const orderId = row.order.orderId
+      this.sendForm = {
+        orderId: orderId,
+        logisticsNo: '',
+        logisticsName: '商家配送'
+      }
+      this.dialogFormVisible = true
     },
     getSpecs(productSku) {
       return productSku.specs.map(s => s.name + '/' + s.value).join('/')
