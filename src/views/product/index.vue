@@ -31,7 +31,7 @@
         :data="list"
         highlight-current-row
         style="width: 100%"
-        size="mini"
+        size="small"
         header-row-class-name="u-tabel__header"
         @selection-change="handleSelectionChange"
       >

@@ -1,22 +1,28 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      id="hamburger-container"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
-    <div class="right-menu">
+    <div class="right-menu flex align-center">
       <template v-if="device!=='mobile'">
+        <div class="right-btn" type="danger" @click="goToCash">切换至收银台</div>
+
         <search id="header-search" class="right-menu-item" />
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -49,13 +55,12 @@ export default {
     Search
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar',
-      'device'
-    ])
+    ...mapGetters(['sidebar', 'avatar', 'device'])
   },
   methods: {
+    goToCash() {
+      this.$router.push('/cashier')
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -73,18 +78,31 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+  .right-btn {
+    margin-right: 20px;
+    padding: 0 16px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 16px;
+    background: #ff7013;
+    cursor: pointer;
+  }
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -116,10 +134,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }

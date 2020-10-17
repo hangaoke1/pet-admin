@@ -1,8 +1,10 @@
 import Vue from 'vue'
+import { v4 as uuidv4 } from 'uuid';
 
 import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
+import '@/styles/reset.css'
 
 import Element from 'element-ui'
 import './styles/element-variables.scss'
@@ -45,6 +47,9 @@ Vue.mixin({
     }
   },
   methods: {
+    uuid() {
+      return uuidv4()
+    },
     url2Webp(url) {
       if (url.indexOf('imageView2/format/webp') > -1) {
         return url
@@ -58,6 +63,10 @@ Vue.mixin({
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
+// 扫码枪
+import scanner from '@/lib/scanner'
+Vue.use(scanner)
 
 Vue.config.productionTip = false
 

@@ -1,50 +1,58 @@
 <template>
   <div class="g-filter border-bottom-divider">
-    <div class="flex justify-between">
-      <div class="flex flex-wrap">
-        <div style="margin-right: 5px;margin-bottom: 5px" v-for="item in options" :key="item.key">
-          <template v-if="item.remote">
-            <g-input-remote
-              v-if="item.type === 'input'"
-              :info="item"
-              :form="query"
-              :clearable="item.clearable"
-            />
-            <g-select-remote
-              v-if="item.type === 'select'"
-              :info="item"
-              :form="query"
-              :clearable="item.clearable"
-            />
-          </template>
-          <template v-else>
-            <g-input v-if="item.type === 'input'" :info="item" :form="query" />
-            <g-select
-              v-if="item.type === 'select'"
-              :info="item"
-              :form="query"
-              :clearable="item.clearable"
-            />
-            <g-date
-              v-if="item.type === 'date'"
-              :info="item"
-              :form="query"
-              :clearable="item.clearable"
-            />
-            <g-date-range
-              v-if="item.type === 'dateRange'"
-              :info="item"
-              :form="query"
-              :clearable="item.clearable"
-            />
-          </template>
+    <form @submit="hanldeSubmit">
+      <div class="flex justify-between">
+        <div class="flex flex-wrap">
+          <div style="margin-right: 5px;margin-bottom: 5px" v-for="item in options" :key="item.key">
+            <template v-if="item.remote">
+              <g-input-remote
+                @keyup.enter.native="handleInputEnter"
+                v-if="item.type === 'input'"
+                :info="item"
+                :form="query"
+                :clearable="item.clearable"
+              />
+              <g-select-remote
+                v-if="item.type === 'select'"
+                :info="item"
+                :form="query"
+                :clearable="item.clearable"
+              />
+            </template>
+            <template v-else>
+              <g-input
+                v-if="item.type === 'input'"
+                :info="item"
+                :form="query"
+                @keyup.enter.native="handleInputEnter"
+              />
+              <g-select
+                v-if="item.type === 'select'"
+                :info="item"
+                :form="query"
+                :clearable="item.clearable"
+              />
+              <g-date
+                v-if="item.type === 'date'"
+                :info="item"
+                :form="query"
+                :clearable="item.clearable"
+              />
+              <g-date-range
+                v-if="item.type === 'dateRange'"
+                :info="item"
+                :form="query"
+                :clearable="item.clearable"
+              />
+            </template>
+          </div>
+        </div>
+        <div class="flex-0">
+          <el-button size="small" type="primary" native-type="submit" @click="doSearch">查询</el-button>
+          <slot name="left"></slot>
         </div>
       </div>
-      <div class="flex-0">
-        <el-button size="small" type="primary" @click="doSearch">查询</el-button>
-        <slot name="left"></slot>
-      </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -81,6 +89,9 @@ export default {
     this.initQuery()
   },
   methods: {
+    hanldeSubmit() {
+      console.log('>>> 提交')
+    },
     initQuery() {
       this.options.map(item => {
         this.$set(this.query, item.key, item.initialValue)
@@ -89,6 +100,9 @@ export default {
     },
     doSearch() {
       this.$emit('search', _.cloneDeep(this.query))
+    },
+    handleInputEnter() {
+      this.$emit('keyup', _.cloneDeep(this.query))
     }
   }
 }

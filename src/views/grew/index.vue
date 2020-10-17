@@ -4,7 +4,7 @@
       <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
         <el-button slot="left" size="small" @click="doAdd">添加寄养</el-button>
       </g-filter>
-      <el-table size="mini" class="mt-1" :data="list" style="width: 100%" v-loading="loading">
+      <el-table size="small" class="mt-1" :data="list" style="width: 100%" v-loading="loading">
         <el-table-column prop="petName" align="center" label="宠物名称"></el-table-column>
         <el-table-column prop="petType" align="center" label="宠物类型">
           <template slot-scope="scope">

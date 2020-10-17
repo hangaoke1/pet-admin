@@ -4,7 +4,7 @@
       <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
         <el-button slot="left" size="small" @click="doAdd">添加分类</el-button>
       </g-filter>
-      <el-table size="mini" class="mt-1" :data="list" style="width: 100%" v-loading="loading">
+      <el-table size="small" class="mt-1" :data="list" style="width: 100%" v-loading="loading">
         <el-table-column prop="id" align="center" label="分类id"></el-table-column>
         <el-table-column prop="categoryName" align="center" label="分类名称"></el-table-column>
         <el-table-column prop="createTime" align="center" label="创建时间"></el-table-column>

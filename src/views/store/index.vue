@@ -1,12 +1,17 @@
 <template>
   <div class="p-2">
     <div class="bg-bai p-3">
-      <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
-        <el-button size="small" slot="left" type="primary" plain @click="doAdd">添加门店</el-button>
+      <g-filter
+        class="pb-1"
+        :options="options"
+        @refresh="handleRefresh"
+        @search="handleSearch"
+      >
+        <el-button size="small" slot="left" @click="doAdd">添加门店</el-button>
       </g-filter>
       <el-table
         class="mt-1"
-        size="mini"
+        size="small"
         :data="list"
         style="width: 100%"
         stripe

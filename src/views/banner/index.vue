@@ -7,7 +7,7 @@
       <el-table
         v-loading="loading"
         :data="list"
-        size="mini"
+        size="small"
         style="width: 100%"
         header-row-class-name="u-tabel__header"
       >

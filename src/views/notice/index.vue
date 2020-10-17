@@ -5,7 +5,7 @@
         <el-button type="primary" size="small" @click="handleAdd">新增公告</el-button>
       </div>
       <el-table
-        size="mini"
+        size="small"
         v-loading="loading"
         :data="list"
         style="width: 100%"

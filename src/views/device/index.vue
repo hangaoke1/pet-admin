@@ -34,7 +34,7 @@
         class="mt-1"
         v-loading="loading"
         :data="list"
-        size="mini"
+        size="small"
         stripe
         highlight-current-row
         style="width: 100%"

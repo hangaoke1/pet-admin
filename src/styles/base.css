@@ -385,11 +385,11 @@
 }
 
 .border-bottom-divider {
-	border-bottom: #EEEEEE 1px solid;
+	border-bottom: #f7f7fa 1px solid;
 }
 
 .border-list {
-	border-bottom: 1px solid #EEEEEE;
+	border-bottom: 1px solid #f7f7fa;
 }
 
 .border-list:nth-last-of-type(1) {
@@ -399,6 +399,10 @@
 /* flex 布局 */
 .flex {
 	display: flex;
+}
+
+.inline-flex {
+	display: inline-flex;
 }
 
 .flex-column {

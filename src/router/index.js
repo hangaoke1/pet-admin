@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import CashierLayout from '@/layout/CashierLayout'
 
 /* Router Modules */
 // import chartsRouter from './modules/charts'
@@ -52,7 +53,6 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/error-page/404'),
@@ -105,7 +105,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/notice/index'),
         name: 'Notice',
-        meta: { title: '公告管理', icon: 'star', affix: false }
+        meta: { title: '公告管理', icon: 'guide', affix: false }
       }
     ]
   },
@@ -151,7 +151,14 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/shopOrder/index'),
         name: 'ShopOrder',
-        meta: { title: '商城订单', icon: 'form', affix: false }
+        meta: { title: '商城订单', icon: 'shopping', affix: false }
+      },
+      {
+        path: 'detail',
+        component: () => import('@/views/shopOrder/detail'),
+        name: 'ShopOrderDetail',
+        hidden: true,
+        meta: { title: '订单详情', icon: '', affix: false, noCache: true }
       }
     ]
   },
@@ -164,7 +171,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/storeOrder/index'),
         name: 'StoreOrder',
-        meta: { title: '门店订单', icon: 'list', affix: false }
+        meta: { title: '门店订单', icon: 'form', affix: false }
       }
     ]
   },
@@ -177,7 +184,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/store/index'),
         name: 'Store',
-        meta: { title: '门店管理', icon: 'dianpu', affix: false }
+        meta: { title: '门店管理', icon: 'tree', affix: false }
       }
     ]
   },
@@ -190,7 +197,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/grew/index'),
         name: 'Grew',
-        meta: { title: '寄养管理', icon: 'jiyang', affix: false }
+        meta: { title: '寄养管理', icon: 'bug', affix: false }
       }
     ]
   },
@@ -203,7 +210,21 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/device/index'),
         name: 'Device',
-        meta: { title: '监控管理', icon: 'jiankong', affix: false }
+        meta: { title: '监控管理', icon: 'eye-open', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/cashier',
+    component: CashierLayout,
+    redirect: '/cashier/index',
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/cashier/index'),
+        name: 'Cashier',
+        meta: { title: '收银台', icon: '', affix: false }
       }
     ]
   },

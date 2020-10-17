@@ -1,9 +1,16 @@
 // cover some element-ui styles
-.el-table__header {
-  th {
-    background-color: #FCF2EC;
-    color: #333;
-  }
+
+// 覆盖table样式
+.el-table__header th {
+  background-color: #fafafa;
+  color: #666;
+}
+.el-table th.is-leaf, .el-table td {
+  border-color:#fafafa;
+}
+
+.el-table tr {
+  border-color:#fafafa;
 }
 
 .el-breadcrumb__inner,
@@ -58,6 +65,7 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+  border-radius: 5px;
 }
 
 // refine element ui upload
@@ -87,4 +95,37 @@
 // to fix el-date-picker css style
 .el-range-separator {
   box-sizing: content-box;
+}
+
+.el-step__title {
+  font-size: 14px;
+}
+
+.el-step__head.is-finish {
+  .el-step__icon {
+    background-color: #ff7013;
+    color: #fff;
+  }
+
+  .el-step__line {
+    background-color: #ff7013;
+  }
+}
+
+.el-step__title.is-finish {
+  color: #333;
+}
+
+.el-step__head.is-process {
+  font-weight: normal;
+  color: #ff7013;
+
+  .el-step__icon {
+    color: #ff7013;
+    border-color: #ff7013;
+  }
+}
+
+.el-step__title.is-process {
+  color: #333;
 }

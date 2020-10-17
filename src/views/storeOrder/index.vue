@@ -2,44 +2,46 @@
   <div class="u-storeOrder p-2">
     <div class="bg-bai p-3">
       <!-- 查询条件 -->
-      <div class="pb-1 border-bottom-divider">
-        <el-input
-          v-model="listQuery.orderId"
-          placeholder="请输入订单号"
-          style="width: 200px;"
-          class="filter-item"
-          clearable
-          size="small"
-          @keyup.enter.native="getList"
-        />
-        <el-select
-          v-model="listQuery.orderStatus"
-          class="filter-item"
-          placeholder="订单状态"
-          clearable
-          size="small"
-          @change="getList"
-        >
-          <el-option
-            v-for="item in statusOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <el-date-picker
-          v-model="listQuery.date"
-          class="filter-item"
-          type="datetimerange"
-          :picker-options="pickerOptions"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"
-          size="small"
-          :default-time="['00:00:00', '23:59:59']"
-          @change="getList"
-        ></el-date-picker>
+      <div class="pb-1 border-bottom-divider flex justify-between align-center">
+        <div>
+          <el-input
+            v-model="listQuery.orderId"
+            placeholder="请输入订单号"
+            style="width: 200px;"
+            class="filter-item"
+            clearable
+            size="small"
+            @keyup.enter.native="getList"
+          />
+          <el-select
+            v-model="listQuery.orderStatus"
+            class="filter-item"
+            placeholder="订单状态"
+            clearable
+            size="small"
+            @change="getList"
+          >
+            <el-option
+              v-for="item in statusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <el-date-picker
+            v-model="listQuery.date"
+            class="filter-item"
+            type="datetimerange"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            align="right"
+            size="small"
+            :default-time="['00:00:00', '23:59:59']"
+            @change="getList"
+          ></el-date-picker>
+        </div>
         <el-button
           v-waves
           class="filter-item"
@@ -54,7 +56,7 @@
       <el-table
         v-loading="loading"
         :data="list"
-        size="mini"
+        size="small"
         class="mt-1"
         highlight-current-row
         style="width: 100%"
@@ -65,16 +67,24 @@
             <span>{{ row.reserveWash.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="服务内容" width="250">
+        <el-table-column align="center" label="预约时间" width="200">
+          <template slot-scope="{row}">
+            <span>{{ fmtDate(row.reserveWash.reserveTime) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="服务内容" width="200">
           <template slot-scope="{row}">
             <div v-for="item in JSON.parse(row.reserveWash.service)" :key="item.id">
               <service-item :info="item"></service-item>
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="预约时间" width="200">
+        <el-table-column align="center" label="服务对象" width="150">
           <template slot-scope="{row}">
-            <span>{{ row.reserveWash.reserveTime }}</span>
+            <div>{{ row.petRecord.petName }} {{ sexMap[row.petRecord.sex] || '未知' }} {{ getPetYear(row.petRecord.birthday) }}</div>
+            <div>
+              <el-tag>{{ row.petRecord.petBreed }}</el-tag>
+            </div>
           </template>
         </el-table-column>
         <el-table-column align="center" label="订单金额" width="150">
@@ -100,28 +110,20 @@
             <el-tag v-else size="medium" type="danger">猫</el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="服务对象" width="150">
-          <template slot-scope="{row}">
-            <div>{{ row.petRecord.petName }} {{ sexMap[row.petRecord.sex] || '未知' }} {{ getPetYear(row.petRecord.birthday) }}</div>
-            <div>
-              <el-tag>{{ row.petRecord.petBreed }}</el-tag>
-            </div>
-          </template>
-        </el-table-column>
         <el-table-column align="center" label="预约人" width="150">
           <template slot-scope="{row}">
             <div>{{ row.user.nickName }}</div>
             <div>{{ row.reserveWash.mobile }}</div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="创建时间" width="160">
+        <el-table-column align="center" label="创建时间" min-width="160">
           <template slot-scope="{row}">
             <span>{{ row.reserveWash.createTime }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" width="200" fixed="right">
           <template slot-scope="{row}">
-            <el-button type="primary" size="mini">查看详情</el-button>
+            <el-button type="text" size="mini" style="color: #0471CA;" @click="goDetail(row)">查看详情</el-button>
             <el-button
               v-if="row.reserveWash.reserveOrderStatus == 100"
               type="warning"
@@ -225,8 +227,15 @@ export default {
     this.getList()
   },
   methods: {
+    fmtDate(v) {
+      return dayjs(v).format('YYYY-MM-DD HH:mm')
+    },
     getPetYear(br) {
       return getPetYear(br)
+    },
+    // 前往详情
+    goDetail(row) {
+      // this.$router.push('/order/detail')
     },
     // 发货
     sendOrder(row) {

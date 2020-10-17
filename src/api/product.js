@@ -9,5 +9,6 @@ export default {
   queryProductCategory: params => api.post('/admin/queryProductCategory', params),
   insertProduct: params => api.post('/admin/insertProduct', params),
   updateProduct: params => api.post('/admin/updateProduct', params),
-  deleteProduct: params => api.post('/admin/deleteProduct', params)
+  deleteProduct: params => api.post('/admin/deleteProduct', params),
+  querySkuByCode: params => api.get('/admin/querySku/byCode', params)
 }
