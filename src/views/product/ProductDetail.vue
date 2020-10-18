@@ -162,9 +162,18 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column label-class-name="u-require" label="sku条形码" width="180">
+        <el-table-column label-class-name="u-require" label="sku条形码" width="200">
           <template slot-scope="{row}">
-            <el-input v-model="row.skuCode" size="small" placeholder="请输入商品自编码"></el-input>
+            <div class="flex align-center">
+              <el-input v-model="row.skuCode" size="small" placeholder="请输入商品自编码"></el-input>
+              <el-button
+                v-if="!row.skuCode"
+                class="ml-1"
+                type="text"
+                size="mini"
+                @click="fillSkuEmpty(row)"
+              >无商品</el-button>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label-class-name="u-require" label="sku名称" width="180">
@@ -420,6 +429,18 @@ export default {
       row.skuName =
         this.form.name + (row.specs && row.specs.length && row.specs.map(v => v.value).join(' '))
     },
+    // 空商品填充
+    fillSkuEmpty(sku) {
+      sku.skuCode = 'empty_' + this.uuid();
+      sku.skuName =
+        this.form.name + (sku.specs && sku.specs.length && sku.specs.map(v => v.value).join(' '))
+      sku.skuImgUrl = ''
+      sku.price = 9999
+      sku.originPrice = 9999
+      sku.supplyPrice = 9999
+      sku.stock = 0
+      sku.hotFlag = 0
+    },
     setTagsViewTitle() {
       const title = '商品编辑'
       const route = Object.assign({}, this.tempRoute, {
@@ -558,7 +579,7 @@ export default {
           if (
             sku.skuCode === '' ||
             sku.skuName === '' ||
-            sku.skuImgUrl === '' ||
+            // sku.skuImgUrl === '' ||
             sku.price === '' ||
             sku.stock === ''
           ) {

@@ -84,35 +84,9 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/banner',
-    component: Layout,
-    redirect: '/banner/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/banner/index'),
-        name: 'Banner',
-        meta: { title: '轮播管理', icon: 'example', affix: false }
-      }
-    ]
-  },
-  {
-    path: '/notice',
-    component: Layout,
-    redirect: '/notice/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/notice/index'),
-        name: 'Notice',
-        meta: { title: '公告管理', icon: 'guide', affix: false }
-      }
-    ]
-  },
-  {
     path: '/product',
     component: Layout,
-    meta: { title: '商品管理', icon: 'star', affix: false },
+    meta: { title: '商品服务', icon: 'star', affix: false },
     children: [
       {
         path: 'list',
@@ -124,7 +98,7 @@ export const asyncRoutes = [
         path: '/product/category',
         component: () => import('@/views/category/index'),
         name: 'Category',
-        meta: { title: '分类管理', affix: false }
+        meta: { title: '商品分类', affix: false }
       },
       {
         path: 'create',
@@ -139,6 +113,12 @@ export const asyncRoutes = [
         component: () => import('@/views/product/edit'),
         name: 'ProductEdit',
         meta: { title: '商品编辑', affix: false }
+      },
+      {
+        path: '/product/service',
+        component: () => import('@/views/product/service'),
+        name: 'Service',
+        meta: { title: '服务列表', affix: false }
       }
     ]
   },
@@ -171,7 +151,20 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/storeOrder/index'),
         name: 'StoreOrder',
-        meta: { title: '门店订单', icon: 'form', affix: false }
+        meta: { title: '预约订单', icon: 'form', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/grew',
+    component: Layout,
+    redirect: '/grew/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/grew/index'),
+        name: 'Grew',
+        meta: { title: '寄养申请', icon: 'bug', affix: false }
       }
     ]
   },
@@ -185,19 +178,6 @@ export const asyncRoutes = [
         component: () => import('@/views/store/index'),
         name: 'Store',
         meta: { title: '门店管理', icon: 'tree', affix: false }
-      }
-    ]
-  },
-  {
-    path: '/grew',
-    component: Layout,
-    redirect: '/grew/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/grew/index'),
-        name: 'Grew',
-        meta: { title: '寄养管理', icon: 'bug', affix: false }
       }
     ]
   },
@@ -217,13 +197,26 @@ export const asyncRoutes = [
   {
     path: '/setting',
     component: Layout,
-    redirect: '/setting/index',
+    redirect: '/setting/notice',
+    meta: { title: '设置', icon: 'eye-open', affix: false },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/setting/index'),
-        name: 'Setting',
-        meta: { title: '设置', icon: 'eye-open', affix: false }
+        path: 'notice',
+        component: () => import('@/views/setting/notice'),
+        name: 'Notice',
+        meta: { title: '公告', icon: '', affix: false }
+      },
+      {
+        path: 'banner',
+        component: () => import('@/views/setting/banner'),
+        name: 'Banner',
+        meta: { title: '轮播', icon: '', affix: false }
+      },
+      {
+        path: 'print',
+        component: () => import('@/views/setting/print'),
+        name: 'Print',
+        meta: { title: '打印机', icon: '', affix: false }
       }
     ]
   },
