@@ -215,6 +215,19 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/setting',
+    component: Layout,
+    redirect: '/setting/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/setting/index'),
+        name: 'Setting',
+        meta: { title: '设置', icon: 'eye-open', affix: false }
+      }
+    ]
+  },
+  {
     path: '/cashier',
     component: CashierLayout,
     redirect: '/cashier/index',
