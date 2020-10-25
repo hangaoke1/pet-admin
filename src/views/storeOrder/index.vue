@@ -11,6 +11,7 @@
             class="filter-item"
             clearable
             size="small"
+            suffix-icon="el-icon-search"
             @keyup.enter.native="getList"
           />
           <el-select

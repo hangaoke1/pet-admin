@@ -53,7 +53,9 @@
         </el-form-item>
         <el-form-item label="商品轮播" prop="productImgUrl">
           <el-upload
+            accept="image/*"
             list-type="picture-card"
+            multiple
             :action="uploadUrl"
             :on-preview="handleImagePreview"
             :on-remove="handleBannerRemove"
@@ -69,7 +71,10 @@
         </el-form-item>
         <el-form-item label="商品详情" prop="productDetailImgUrl">
           <el-upload
+            accept="image/*"
             list-type="picture-card"
+            multiple
+            :before-upload="handleBeforeUpload"
             :action="uploadUrl"
             :on-preview="handleImagePreview"
             :on-remove="handleDetailRemove"
@@ -230,10 +235,11 @@
         >
           <template slot-scope="{row}">
             <el-upload
+              accept="image/*"
               :action="uploadUrl"
               :show-file-list="false"
               :on-success="handleSmallSuccess.bind(this, row)"
-              :before-upload="beforeUpload"
+              :before-upload="handleBeforeUpload"
             >
               <el-button v-if="!row.skuImgUrl" type="primary" size="mini">
                 上传图片
@@ -414,6 +420,14 @@ export default {
     next()
   },
   methods: {
+    handleBeforeUpload(file) {
+      const isLt5M = file.size / 1024 / 1024 < 0.5
+
+      if (!isLt5M) {
+        this.$message.error('上传头像图片大小不能超过 5MB!')
+      }
+      return isLt5M
+    },
     init() {
       if (this.isEdit) {
         // 编辑商品
@@ -431,7 +445,7 @@ export default {
     },
     // 空商品填充
     fillSkuEmpty(sku) {
-      sku.skuCode = 'empty_' + this.uuid();
+      sku.skuCode = 'empty_' + this.uuid()
       sku.skuName =
         this.form.name + (sku.specs && sku.specs.length && sku.specs.map(v => v.value).join(' '))
       sku.skuImgUrl = ''
@@ -592,9 +606,6 @@ export default {
     },
     handleSmallSuccess(row, res, file) {
       row.skuImgUrl = res.data
-    },
-    beforeUpload() {
-      return true
     },
     queryProductCategory() {
       productApi.queryProductCategory().then(res => {

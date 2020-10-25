@@ -5,6 +5,7 @@ export default [
     type: 'input',
     remote: false,
     placeholder: '请输入分类名称',
-    initialValue: ''
+    initialValue: '',
+    suffixIcon: 'el-icon-search'
   }
 ]

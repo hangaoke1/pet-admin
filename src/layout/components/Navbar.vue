@@ -1,17 +1,18 @@
 <template>
   <div class="navbar">
     <hamburger
+      v-if="showHideIcon"
       id="hamburger-container"
       :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
 
     <div class="right-menu flex align-center">
       <template v-if="device!=='mobile'">
-        <div class="right-btn" type="danger" @click="goToCash">切换至收银台</div>
+        <slot></slot>
 
         <search id="header-search" class="right-menu-item" />
 
@@ -40,7 +41,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
@@ -48,19 +49,22 @@ import Search from '@/components/HeaderSearch'
 
 export default {
   components: {
-    Breadcrumb,
+    // Breadcrumb,
     Hamburger,
     ErrorLog,
     Screenfull,
     Search
   },
+  props: {
+    showHideIcon: {
+      type: Boolean,
+      default: true
+    }
+  },
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'device'])
   },
   methods: {
-    goToCash() {
-      this.$router.push('/cashier')
-    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -79,19 +83,6 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-
-  .right-btn {
-    margin-right: 20px;
-    padding: 0 16px;
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    color: #fff;
-    font-size: 14px;
-    border-radius: 16px;
-    background: #ff7013;
-    cursor: pointer;
-  }
 
   .hamburger-container {
     line-height: 46px;

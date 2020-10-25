@@ -9,12 +9,16 @@
         <el-table-column prop="petType" align="center" label="宠物类型">
           <template slot-scope="scope">
             <el-tag size="medium" v-if="scope.row.petType === 1">猫咪</el-tag>
-            <el-tag size="medium" type="warning" v-else>狗狗</el-tag>
+            <el-tag size="medium" type="success" v-else>狗狗</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="startTime" align="center" label="开始时间"></el-table-column>
-        <el-table-column prop="endTime" align="center" label="结束时间"></el-table-column>
-        <el-table-column fixed="petState" align="center" label="寄养状态" width="200">
+        <el-table-column prop="startTime" align="center" label="开始时间">
+          <template slot-scope="scope">{{ scope.row.startTime.slice(0, 10) }}</template>
+        </el-table-column>
+        <el-table-column prop="endTime" align="center" label="结束时间">
+          <template slot-scope="scope">{{ scope.row.endTime.slice(0, 10) }}</template>
+        </el-table-column>
+        <el-table-column prop="petState" align="center" label="寄养状态" width="200">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.petState === 0" size="medium" type="warning">待确认</el-tag>
             <el-tag v-else-if="scope.row.petState === 1" size="medium">寄养中</el-tag>
@@ -185,7 +189,8 @@ export default {
       grewApi
         .queryList({
           pageNo: this.page.pageNo,
-          pageSize: this.page.pageSize
+          pageSize: this.page.pageSize,
+          ...this.listQuery
         })
         .then(res => {
           this.list = res.data.items

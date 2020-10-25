@@ -123,35 +123,29 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/shopOrder',
+    path: '/order',
     component: Layout,
-    redirect: '/shopOrder/index',
+    redirect: '/order/shop',
+    meta: { title: '订单管理', icon: 'shopping', affix: false },
     children: [
       {
-        path: 'index',
+        path: 'shop',
         component: () => import('@/views/shopOrder/index'),
         name: 'ShopOrder',
-        meta: { title: '商城订单', icon: 'shopping', affix: false }
+        meta: { title: '商城订单', icon: '', affix: false }
       },
       {
-        path: 'detail',
+        path: 'shopOrderDetail',
         component: () => import('@/views/shopOrder/detail'),
         name: 'ShopOrderDetail',
         hidden: true,
         meta: { title: '订单详情', icon: '', affix: false, noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/storeOrder',
-    component: Layout,
-    redirect: '/storeOrder/index',
-    children: [
+      },
       {
-        path: 'index',
+        path: 'store',
         component: () => import('@/views/storeOrder/index'),
         name: 'StoreOrder',
-        meta: { title: '预约订单', icon: 'form', affix: false }
+        meta: { title: '预约订单', icon: '', affix: false }
       }
     ]
   },

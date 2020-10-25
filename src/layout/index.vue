@@ -4,7 +4,9 @@
     <sidebar class="sidebar-container" />
     <div :class="{hasTagsView:needTagsView}" class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
+        <navbar>
+          <div class="right-btn" type="danger" @click="goToCash">切换至收银台</div>
+        </navbar>
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
@@ -50,6 +52,9 @@ export default {
     }
   },
   methods: {
+    goToCash() {
+      this.$router.push('/cashier')
+    },
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
@@ -58,45 +63,57 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@/styles/mixin.scss";
-  @import "~@/styles/variables.scss";
+@import '~@/styles/mixin.scss';
+@import '~@/styles/variables.scss';
+.right-btn {
+  margin-right: 20px;
+  padding: 0 16px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 16px;
+  background: #ff7013;
+  cursor: pointer;
+}
 
-  .app-wrapper {
-    @include clearfix;
-    position: relative;
-    height: 100%;
-    width: 100%;
+.app-wrapper {
+  @include clearfix;
+  position: relative;
+  height: 100%;
+  width: 100%;
 
-    &.mobile.openSidebar {
-      position: fixed;
-      top: 0;
-    }
-  }
-
-  .drawer-bg {
-    background: #000;
-    opacity: 0.3;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    position: absolute;
-    z-index: 999;
-  }
-
-  .fixed-header {
+  &.mobile.openSidebar {
     position: fixed;
     top: 0;
-    right: 0;
-    z-index: 9;
-    width: calc(100% - #{$sideBarWidth});
-    transition: width 0.28s;
   }
+}
 
-  .hideSidebar .fixed-header {
-    width: calc(100% - 54px)
-  }
+.drawer-bg {
+  background: #000;
+  opacity: 0.3;
+  width: 100%;
+  top: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 999;
+}
 
-  .mobile .fixed-header {
-    width: 100%;
-  }
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: calc(100% - #{$sideBarWidth});
+  transition: width 0.28s;
+}
+
+.hideSidebar .fixed-header {
+  width: calc(100% - 54px);
+}
+
+.mobile .fixed-header {
+  width: 100%;
+}
 </style>

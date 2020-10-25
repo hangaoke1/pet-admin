@@ -25,9 +25,9 @@
         <span class="u-add__btn flex-0" @click="showSkuChoose">添加商品/服务/活体</span>
         <el-input
           class="u-search"
-          size="small"
+          size="mini"
           placeholder="请输入条形码"
-          prefix-icon="el-icon-search"
+          suffix-icon="el-icon-search"
           v-model="keyword"
           @focus="isStart = false"
           @blur="isStart = true"
@@ -41,19 +41,17 @@
           element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0)"
           ref="multipleTable"
-          height="calc(100vh - 280px)"
+          height="calc(100vh - 320px)"
           :data="activeBill.list"
           style="width: 100%"
-          @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="55" align="center"></el-table-column>
-          <el-table-column prop="skuName" label="商品/服务" width="180" align="center"></el-table-column>
-          <el-table-column prop="originPrice" label="原价(元)" align="center"></el-table-column>
-          <el-table-column prop="price" label="售价(元)" align="center"></el-table-column>
+          <el-table-column prop="name" label="商品/服务" width="180" align="center"></el-table-column>
+          <!-- <el-table-column prop="originPrice" label="原价(元)" align="center"></el-table-column> -->
+          <el-table-column prop="price" label="单价(元)" align="center"></el-table-column>
           <el-table-column prop="count" label="数量" width="180" align="center">
             <template slot-scope="{row}">
               <el-input-number
-                v-model="row.count"
+                v-model="row.quantity"
                 controls-position="right"
                 size="small"
                 :min="1"
@@ -63,7 +61,7 @@
           </el-table-column>
           <el-table-column label="小计(元)" align="center">
             <template slot-scope="{row}">
-              <span>{{ (row.count * row.price).toFixed(2) }}</span>
+              <span>{{ (row.quantity * row.price).toFixed(2) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
@@ -85,7 +83,7 @@
     <!-- 底部 -->
     <div class="u-footer flex-0 flex align-center justify-between">
       <div>
-        <el-button type="primary" plain>清空列表</el-button>
+        <el-button type="primary" plain @click="doEmpty">清空列表</el-button>
       </div>
       <div>
         <button class="u-calc" @click="doSubmit">
@@ -97,13 +95,42 @@
     </div>
 
     <!-- 商品/服务/活体 选择 -->
-    <sku-choose ref="skuChoose"></sku-choose>
+    <sku-choose ref="skuChoose" @close="isStart = true" @choose="handleAddSku"></sku-choose>
   </div>
 </template>
 
 <script>
 import productApi from '@/api/product'
 import SkuChoose from './components/SkuChoose'
+
+const fmtSku = (sku, productType) => {
+  // 商品
+  if (productType === 0) {
+    return {
+      productType,
+      name: sku.skuName,
+      imgUrl: sku.skuImgUrl,
+      quantity: 1,
+      originPrice: sku.originPrice,
+      price: sku.price,
+      skuId: sku.id,
+      id: sku.id
+    }
+  }
+  // TODO: 针对会员进行优惠 服务商品
+  if (productType === 1) {
+    return {
+      productType,
+      name: sku.name + '-' + sku.mealName + '-' + sku.category,
+      imgUrl: '',
+      quantity: 1,
+      originPrice: sku.originalPrice,
+      price: sku.originalPrice,
+      skuId: '',
+      id: sku.id
+    }
+  }
+}
 export default {
   name: 'Cashier',
   components: {
@@ -125,16 +152,9 @@ export default {
     },
     billTotal() {
       const total = this.activeBill.list.reduce((t, i) => {
-        return t + i.price * i.count
+        return t + i.price * i.quantity
       }, 0)
       return total
-    }
-  },
-  watch: {
-    activeBill(bill) {
-      this.$nextTick(() => {
-        this.toggleSelection(bill.selected)
-      })
     }
   },
   created() {
@@ -153,8 +173,30 @@ export default {
     this._scanner.cancel()
   },
   methods: {
+    doEmpty() {
+      this.activeBill.list = []
+    },
+    // 选择sku，区分商品和服务
+    handleAddSku({ serviceSelect, productSelect }) {
+      productSelect = productSelect.map(v => fmtSku(v, 0))
+      serviceSelect = serviceSelect.map(v => fmtSku(v, 1))
+      const addList = [...serviceSelect]
+      const skuList = this.activeBill.list
+      productSelect.forEach(item => {
+        const sameSku = skuList.filter(v => {
+          return v.id === item.id && item.productType === v.productType
+        })[0]
+        if (sameSku) {
+          sameSku.quantity += 1
+        } else {
+          addList.push(item)
+        }
+      })
+      this.activeBill.list = [...skuList, ...addList]
+    },
     showSkuChoose() {
       this.$refs.skuChoose.show()
+      this.isStart = false
     },
     recoverData() {},
     saveData() {},
@@ -199,10 +241,16 @@ export default {
       }
       this.bills.splice(index, 1)
     },
-    // 删除商品
+    // 删除商品 或者 服务
     deleteSku(row) {
-      this.activeBill.selected = this.activeBill.selected.filter(sku => sku.skuCode !== row.skuCode)
-      this.activeBill.list = this.activeBill.list.filter(sku => sku.skuCode !== row.skuCode)
+      // 删除列表
+      this.activeBill.list = this.activeBill.list.filter(sku => {
+        if (sku.productType === row.productType) {
+          return sku.id !== row.id
+        } else {
+          return true
+        }
+      })
     },
     // 添加商品
     addSku() {
@@ -214,18 +262,20 @@ export default {
         .then(res => {
           if (res.data) {
             const skuList = this.activeBill.list
-            const sku = res.data
-            sku.count = 1
-            const sameSku = skuList.filter(v => v.skuCode === sku.skuCode)[0]
+            let sku = res.data
+            sku = fmtSku(sku, 0)
+            const sameSku = skuList.filter(v => {
+              return v.id === sku.id && sku.productType === v.productType
+            })[0]
             if (sameSku) {
               // 存在相同商品
-              sameSku.count += 1
+              sameSku.quantity += 1
             } else {
               this.activeBill.list.push(sku)
             }
             this.keyword = ''
           } else {
-            this.$message.warning('为查询到商品')
+            this.$message.warning('未查询到商品')
           }
         })
         .catch(() => {})
@@ -292,12 +342,15 @@ export default {
   }
   .u-search {
     width: 200px;
+    /deep/ .el-input__inner {
+      border-radius: 15px;
+    }
   }
   .u-footer {
-    height: 60px;
+    height: 100px;
     .u-calc {
       position: relative;
-      width: 384px;
+      width: 390px;
       height: 56px;
       background: #ff7013;
       border-radius: 30px;

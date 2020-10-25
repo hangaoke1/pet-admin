@@ -196,39 +196,39 @@ export default {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  padding: 10px 0;
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
   .tags-view-wrapper {
     .tags-view-item {
-      user-select: none;
+      box-sizing: border-box;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       position: relative;
       cursor: pointer;
-      height: 34px;
-      line-height: 34px;
-      border: 1px solid #d8dce5;
-      color: #495060;
+      height: 40px;
+      border-right: 1px solid #f6f6f6;
+      border-top: 1px solid #f6f6f6;
+      border-bottom: 1px solid #f6f6f6;
+      color: #666;
       background: #fff;
       padding: 0 15px;
       font-size: 14px;
       font-weight: bold;
-      margin-left: 5px;
-      border-radius: 2px;
+      user-select: none;
       &:first-of-type {
-        margin-left: 15px;
+        margin-left: 0;
+        border-left: none;
       }
       &:last-of-type {
-        margin-right: 15px;
+        margin-right: 0;
       }
       &.active {
-        background-color: #FF7013;
-        color: #fff;
-        border-color: #FF7013;
+        background-color: #f6f6f6;
+        color: #333;
+        border-top: 2px solid #000;
+        font-weight: bold;
       }
     }
   }

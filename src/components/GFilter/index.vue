@@ -11,6 +11,7 @@
                 :info="item"
                 :form="query"
                 :clearable="item.clearable"
+                :suffix-icon="item.suffixIcon"
               />
               <g-select-remote
                 v-if="item.type === 'select'"
@@ -25,6 +26,7 @@
                 :info="item"
                 :form="query"
                 @keyup.enter.native="handleInputEnter"
+                :suffix-icon="item.suffixIcon"
               />
               <g-select
                 v-if="item.type === 'select'"

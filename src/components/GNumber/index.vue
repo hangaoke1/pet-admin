@@ -1,5 +1,7 @@
 <template>
-  <el-input :value="value" @input="handleInput" @blur="handleBlur" :placeholder="placeholder"></el-input>
+  <el-input :size="size" :value="value" @input="handleInput" @blur="handleBlur" :placeholder="placeholder">
+    <template slot="append"><slot name="append"></slot></template>
+  </el-input>
 </template>
 
 <script>
@@ -13,6 +15,10 @@ export default {
     placeholder: {
       type: String,
       default: '请输入'
+    },
+    size: {
+      type: String,
+      default: ''
     }
   },
   methods: {

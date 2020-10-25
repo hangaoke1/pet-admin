@@ -4,7 +4,7 @@ export default [
     key: 'phone',
     type: 'input',
     remote: false,
-    placeholder: '请输入用户手机号',
+    placeholder: '手机号',
     initialValue: ''
   },
   {
@@ -12,14 +12,14 @@ export default [
     key: 'petName',
     type: 'input',
     remote: false,
-    placeholder: '请输入petName',
+    placeholder: '宠物名称',
     initialValue: ''
   },
   {
     name: '寄养时间',
     key: 'dateRange',
     type: 'dateRange',
-    placeholder: '请选择寄养时间',
+    placeholder: '寄养时间',
     remote: false,
     clearable: true
   },
@@ -27,7 +27,7 @@ export default [
     name: '宠物类型',
     key: 'petType',
     type: 'select',
-    placeholder: '请选择类型',
+    placeholder: '宠物类型',
     remote: false,
     mode: 'single',
     clearable: true,
@@ -37,7 +37,7 @@ export default [
     name: '状态',
     key: 'petState',
     type: 'select',
-    placeholder: '请选择状态',
+    placeholder: '状态',
     remote: false,
     mode: 'single',
     clearable: true,

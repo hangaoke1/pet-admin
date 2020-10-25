@@ -2,111 +2,101 @@
   <div class="u-sku-choose">
     <el-dialog
       custom-class="u-sku__dialog"
-      :visible.sync="visible"
       width="880px"
+      :visible.sync="visible"
       :show-close="false"
+      @close="handleClose"
+      destroy-on-close
     >
       <div class="flex align-center border-bottom-divider p-2" slot="title">
-        <div class="font-s-18 text-hui font-weight-bold mr-3">服务</div>
-        <div class="font-s-18 text-hui font-weight-bold mr-3">商品</div>
-        <div class="font-s-18 text-hui font-weight-bold mr-3">活体</div>
+        <div class="u-type" :class="{ 'u-type__active': type === 1}" @click="type = 1">服务</div>
+        <div class="u-type" :class="{ 'u-type__active': type === 2}" @click="type = 2">商品</div>
       </div>
-      <div class="flex border-bottom-divider">
-        <div class="u-sku__menu flex-0">
-          <el-tree :data="data" :props="defaultProps"></el-tree>
-        </div>
-        <div class="u-sku__list p-1 flex-1">
-          <div class="flex align-center justify-between py-1">
-            <div>所属分类：全部商品</div>
-            <el-input style="width: 150px" size="mini" placeholder="搜索商品"></el-input>
-          </div>
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180"></el-table-column>
-            <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-            <el-table-column prop="address" label="地址"></el-table-column>
-          </el-table>
-        </div>
-      </div>
+      <service-choose v-show="type === 1" :select.sync="serviceSelect"></service-choose>
+      <product-choose v-show="type === 2" :select.sync="productSelect"></product-choose>
       <div slot="footer" class="dialog-footer">
+        <span class="font-s-13">
+          <span class="mr-1">
+            已选服务:
+            <span class="text-main">{{ serviceSelect.length }}件</span>
+          </span>
+          <span class="mr-1">
+            已选商品:
+            <span class="text-main">{{ productSelect.length }}件</span>
+          </span>
+        </span>
         <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="visible = false">确 定</el-button>
+        <el-button type="primary" @click="handleConfirm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
+import ServiceChoose from './Service'
+import ProductChoose from './Product'
 export default {
   name: 'SkuChoose',
+  components: {
+    ServiceChoose,
+    ProductChoose
+  },
   data() {
     return {
+      serviceSelect: [],
+      productSelect: [],
       visible: false,
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }
-      ],
-      data: [
-        {
-          label: '全部服务',
-          children: []
-        },
-        {
-          label: '洗澡',
-          children: [
-            { label: '长毛犬' },
-            { label: '短毛犬' },
-            { label: '长毛猫' },
-            { label: '短毛猫' }
-          ]
-        },
-        {
-          label: '美容',
-          children: [
-            { label: '犬精修' },
-            { label: '犬清爽剃毛' },
-            { label: '猫美容' },
-            { label: '猫清爽剃毛' }
-          ]
-        }
-      ],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      }
+      type: 1 // 1: 服务选择 2: 商品选择
     }
   },
   methods: {
     show() {
       this.visible = true
+      this.serviceSelect = []
+      this.productSelect = []
+    },
+    handleConfirm() {
+      this.$emit(
+        'choose',
+        _.cloneDeep({
+          serviceSelect: this.serviceSelect,
+          productSelect: this.productSelect
+        })
+      )
+      this.visible = false
+    },
+    handleClose() {
+      this.$emit('close')
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.u-sku__menu {
-  width: 140px;
-  height: 470px;
-  overflow-y: auto;
-  border-right: 1px solid #f7f7fa;
+.u-type {
+  position: relative;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 18px;
+  color: #999;
+  margin-right: 32px;
+  cursor: pointer;
+  &__active {
+    position: relative;
+    color: #000;
+    &::after {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      content: '';
+      width: 20px;
+      height: 4px;
+      border-radius: 10px;
+      background: #ff7013;
+    }
+  }
 }
 </style>
 <style lang="less">

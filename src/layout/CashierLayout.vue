@@ -1,19 +1,22 @@
 <template>
   <div>
     <div class="u-header">
-      <h1>收银台</h1>
-      <div class="right-btn" type="danger" @click="goToHome">切换至总后台</div>
+      <h3>收银台</h3>
+      <navbar :show-hide-icon="false">
+        <div class="right-btn" type="danger" @click="goToHome">切换至总后台</div>
+      </navbar>
     </div>
     <app-main></app-main>
   </div>
 </template>
 
 <script>
-import { AppMain } from './components'
+import { AppMain, Navbar } from './components'
 export default {
   name: 'CashierLayout',
   components: {
-    AppMain
+    AppMain,
+    Navbar
   },
   methods: {
     goToHome() {
@@ -28,7 +31,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding-left: 20px;
   height: 50px;
   background: #fff;
 }

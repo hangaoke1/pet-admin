@@ -11,6 +11,7 @@
             class="filter-item"
             clearable
             size="small"
+            suffix-icon="el-icon-search"
             @keyup.enter.native="getList"
           />
           <el-select
@@ -332,7 +333,7 @@ export default {
     },
     // 前往详情
     goDetail(row) {
-      this.$router.push(`/shopOrder/detail?orderId=${row.order.orderId}`)
+      this.$router.push(`/order/shopOrderDetail?orderId=${row.order.orderId}`)
     },
     // 发货
     sendOrder(row) {

@@ -8,6 +8,7 @@
           placeholder="请输入关键字"
           style="width: 200px;"
           class="filter-item"
+          suffix-icon="el-icon-search"
           size="small"
           @keyup.enter.native="getList"
         />
