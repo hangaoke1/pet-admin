@@ -136,13 +136,14 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="primary" @click="showConfrim = false">确 定</el-button>
+        <el-button size="small" type="primary" @click="doConfirm">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { getLodop } from '@/lodop/LodopFuncs'
 import productApi from '@/api/product'
 import SkuChoose from './components/SkuChoose'
 
@@ -246,12 +247,50 @@ export default {
     },
     recoverData() {},
     saveData() {},
+    // 结算
     doSubmit() {
       if (this.activeBill.list.length === 0) {
         this.$message.warning('请先添加商品')
         return
       }
       this.showConfrim = true
+    },
+    doPrint(orderInfo) {},
+    // 下单
+    doConfirm() {
+      const LODOP = getLodop()
+      LODOP.SET_PRINT_STYLE('FontSize', 8)
+      LODOP.ADD_PRINT_HTM(0, 0, '100%', '100%', `
+        <div>
+          <h1  style="font-size: 16pt;text-align: center">小黄兜宠物店</h1>
+          <div style="margin-bottom: 2mm;font-size: 10pt;">订单号：1000000020391</div>
+          <div style="font-size: 10pt;">收银员：小黄兜宠物生活馆</div>
+          <div style="padding: 2mm 0;font-size: 10pt;">= = = = = = = = = = = = = = = = = = = = = = =</div>
+
+          <div style="display: flex">
+            <div style="width: 30mm;font-size: 10pt;">商品名称</div>
+            <div style="width: 21mm;text-align:center;font-size: 10pt;">数量</div>
+            <div style="width: 21mm;text-align:center;font-size: 10pt;">单价</div>
+          </div>
+
+          <div style="display: flex;margin-top: 2mm;">
+            <div style="width: 30mm;font-size: 10pt;">渴望猫粮15kg鳕鱼味</div>
+            <div style="width: 21mm;text-align:center;font-size: 10pt;">1</div>
+            <div style="width: 21mm;text-align:center;font-size: 10pt;">490.00</div>
+          </div>
+          <div style="display: flex;margin-top: 2mm;">
+            <div style="width: 30mm;font-size: 10pt;">渴望猫粮15kg鳕鱼味</div>
+            <div style="width: 21mm;text-align:center;font-size: 10pt;">1</div>
+            <div style="width: 21mm;text-align:center;font-size: 10pt;">490.00</div>
+          </div>
+          <div style="display: flex;margin-top: 2mm;">
+            <div style="width: 30mm;font-size: 10pt;">渴望猫粮15kg鳕鱼味</div>
+            <div style="width: 21mm;text-align:center;font-size: 10pt;">1</div>
+            <div style="width: 21mm;text-align:center;font-size: 10pt;">490.00</div>
+          </div>
+        </div>
+      `)
+      LODOP.PREVIEW()
     },
     toggleSelection(rows) {
       rows.forEach(row => {
