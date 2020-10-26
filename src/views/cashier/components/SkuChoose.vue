@@ -3,17 +3,17 @@
     <el-dialog
       custom-class="u-sku__dialog"
       width="880px"
+      :close-on-click-modal="false"
       :visible.sync="visible"
       :show-close="false"
       @close="handleClose"
-      destroy-on-close
     >
       <div class="flex align-center border-bottom-divider p-2" slot="title">
         <div class="u-type" :class="{ 'u-type__active': type === 1}" @click="type = 1">服务</div>
         <div class="u-type" :class="{ 'u-type__active': type === 2}" @click="type = 2">商品</div>
       </div>
-      <service-choose v-show="type === 1" :select.sync="serviceSelect"></service-choose>
-      <product-choose v-show="type === 2" :select.sync="productSelect"></product-choose>
+      <service-choose ref="service" v-show="type === 1" :select.sync="serviceSelect"></service-choose>
+      <product-choose ref="product" v-show="type === 2" :select.sync="productSelect"></product-choose>
       <div slot="footer" class="dialog-footer">
         <span class="font-s-13">
           <span class="mr-1">
@@ -55,6 +55,10 @@ export default {
       this.visible = true
       this.serviceSelect = []
       this.productSelect = []
+      this.$nextTick(() => {
+        this.$refs.service.clear()
+        this.$refs.product.clear()
+      })
     },
     handleConfirm() {
       this.$emit(

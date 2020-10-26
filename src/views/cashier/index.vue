@@ -96,6 +96,49 @@
 
     <!-- 商品/服务/活体 选择 -->
     <sku-choose ref="skuChoose" @close="isStart = true" @choose="handleAddSku"></sku-choose>
+
+    <!-- 订单确认 -->
+    <el-dialog
+      title="确认订单"
+      width="880px"
+      :close-on-click-modal="false"
+      :visible.sync="showConfrim"
+    >
+      <div class="flex">
+        <div class="flex-1 u-confirm__left">
+          <el-table size="mini" :data="activeBill.list" style="width: 100%" height="300">
+            <el-table-column prop="name" label="商品/服务"></el-table-column>
+            <el-table-column prop="quantity" align="center" label="数量" width="80"></el-table-column>
+            <el-table-column label="小计(元)" align="center" width="80">
+              <template slot-scope="{row}">
+                <span>{{ (row.quantity * row.price).toFixed(2) }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="flex-1 u-confirm__right">
+          <div class="u-confirm__vip">
+            <div class="font-weight-bold mb-2 font-s-2">散客</div>
+            <div class="text-right">
+              <el-checkbox size="mini" v-model="needPrint">打印小票</el-checkbox>
+              <el-input-number
+                class="ml-1"
+                v-model="printCount"
+                controls-position="right"
+                style="width: 80px"
+                size="mini"
+                :min="1"
+                :max="10"
+              ></el-input-number>
+            </div>
+          </div>
+          <div class="u-confirm__pay"></div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" type="primary" @click="showConfrim = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -138,6 +181,9 @@ export default {
   },
   data() {
     return {
+      printCount: 1,
+      needPrint: false,
+      showConfrim: false,
       visible: false,
       isStart: true,
       loading: false,
@@ -202,9 +248,10 @@ export default {
     saveData() {},
     doSubmit() {
       if (this.activeBill.list.length === 0) {
+        this.$message.warning('请先添加商品')
         return
       }
-      this.$message('订单结算')
+      this.showConfrim = true
     },
     toggleSelection(rows) {
       rows.forEach(row => {
@@ -359,6 +406,20 @@ export default {
       font-weight: 600;
       font-size: 16px;
       vertical-align: baseline;
+    }
+  }
+  .u-confirm {
+    &__left {
+      width: 440px;
+      margin-right: 20px;
+    }
+    &__right {
+      width: 440px;
+    }
+    &__vip {
+      padding: 20px;
+      border-radius: 15px;
+      background: #fafafa;
     }
   }
 }

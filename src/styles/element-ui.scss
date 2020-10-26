@@ -1,5 +1,8 @@
 // cover some element-ui styles
 
+.el-table--group::after, .el-table--border::after, .el-table::before {
+  background-color: #fafafa;
+}
 // 覆盖table样式
 .el-table__header th {
   background-color: #fafafa;

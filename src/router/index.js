@@ -86,7 +86,7 @@ export const asyncRoutes = [
   {
     path: '/product',
     component: Layout,
-    meta: { title: '商品服务', icon: 'star', affix: false },
+    meta: { title: '商品服务', icon: 'guide', affix: false },
     children: [
       {
         path: 'list',
@@ -192,25 +192,25 @@ export const asyncRoutes = [
     path: '/setting',
     component: Layout,
     redirect: '/setting/notice',
-    meta: { title: '设置', icon: 'eye-open', affix: false },
+    meta: { title: '设置', icon: 'example', affix: false },
     children: [
       {
         path: 'notice',
         component: () => import('@/views/setting/notice'),
         name: 'Notice',
-        meta: { title: '公告', icon: '', affix: false }
+        meta: { title: '公告设置', icon: '', affix: false }
       },
       {
         path: 'banner',
         component: () => import('@/views/setting/banner'),
         name: 'Banner',
-        meta: { title: '轮播', icon: '', affix: false }
+        meta: { title: '轮播设置', icon: '', affix: false }
       },
       {
         path: 'print',
         component: () => import('@/views/setting/print'),
         name: 'Print',
-        meta: { title: '打印机', icon: '', affix: false }
+        meta: { title: '打印设置', icon: '', affix: false }
       }
     ]
   },

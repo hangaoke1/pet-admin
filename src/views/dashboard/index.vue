@@ -1,7 +1,7 @@
 <template>
   <div class="p-2">
     <el-row :gutter="20" class="mb-2">
-      <el-col span="8">
+      <el-col :span="8">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-shopping">
             <svg-icon icon-class="shopping" class-name="card-panel-icon" />
@@ -12,7 +12,7 @@
           </div>
         </div>
       </el-col>
-      <el-col span="8">
+      <el-col :span="8">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -23,7 +23,7 @@
           </div>
         </div>
       </el-col>
-      <el-col span="8">
+      <el-col :span="8">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -36,7 +36,7 @@
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col span="8">
+      <el-col :span="8">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -47,7 +47,7 @@
           </div>
         </div>
       </el-col>
-      <el-col span="8">
+      <el-col :span="8">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-money">
             <svg-icon icon-class="money" class-name="card-panel-icon" />
