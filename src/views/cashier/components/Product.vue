@@ -28,6 +28,7 @@
         ref="table"
         :data="list"
         style="width: 100%"
+        height="350px"
         empty-text="暂无商品"
         row-key="id"
         @row-click="clickRow"
@@ -53,7 +54,7 @@
           small
           background
           :current-page="pageNo"
-          :page-sizes="[5, 20, 30, 50]"
+          :page-sizes="[10, 20, 30, 50]"
           :page-size="pageSize"
           layout="total, prev, pager, next"
           :total="totalCount"
@@ -76,7 +77,7 @@ export default {
     return {
       keyword: '',
       pageNo: 1,
-      pageSize: 5,
+      pageSize: 10,
       totalCount: 0,
       loading: false,
       list: [],
