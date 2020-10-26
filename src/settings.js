@@ -1,5 +1,5 @@
 module.exports = {
-  title: '有宠管理后台',
+  title: '小黄兜宠物生活馆',
 
   /**
    * @type {boolean} true | false

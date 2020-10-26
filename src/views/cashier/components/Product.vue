@@ -34,11 +34,18 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" :reserve-selection="true"></el-table-column>
+        <el-table-column prop="skuName" label="图片" align="center" width="120">
+          <template slot-scope="scope">
+            <img style="width: 40px;height:40px" :src="url2Webp(scope.row.skuImgUrl)" alt />
+          </template>
+        </el-table-column>
         <el-table-column prop="skuName" label="商品名称" align="center">
           <template slot-scope="scope">{{ scope.row.skuName }}</template>
         </el-table-column>
-        <el-table-column prop="stock" label="库存" align="center"></el-table-column>
-        <el-table-column prop="price" label="价格(元)" align="center"></el-table-column>
+        <el-table-column prop="stock" label="库存" align="center" width="100"></el-table-column>
+        <el-table-column prop="price" label="价格(元)" align="center" width="150">
+          <template slot-scope="scope">{{ scope.row.price.toFixed(2) }}</template>
+        </el-table-column>
       </el-table>
 
       <div class="u-page">
@@ -48,7 +55,7 @@
           :current-page="pageNo"
           :page-sizes="[5, 20, 30, 50]"
           :page-size="pageSize"
-          layout="total, sizes, prev, pager, next"
+          layout="total, prev, pager, next"
           :total="totalCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"

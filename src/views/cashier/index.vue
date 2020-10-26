@@ -45,23 +45,31 @@
           :data="activeBill.list"
           style="width: 100%"
         >
-          <el-table-column prop="name" label="商品/服务" width="180" align="center"></el-table-column>
-          <!-- <el-table-column prop="originPrice" label="原价(元)" align="center"></el-table-column> -->
-          <el-table-column prop="price" label="单价(元)" align="center"></el-table-column>
-          <el-table-column prop="count" label="数量" width="180" align="center">
+          <el-table-column prop="name" label="商品/服务" width="180" align="center">
+            <template slot-scope="scope">
+              <span class="font-weight-bold">{{ scope.row.name }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="count" label="数量" align="center">
             <template slot-scope="{row}">
               <el-input-number
+                style="width: 80px"
                 v-model="row.quantity"
                 controls-position="right"
-                size="small"
+                size="mini"
                 :min="1"
                 :max="99999"
               ></el-input-number>
             </template>
           </el-table-column>
+          <el-table-column prop="price" label="单价(元)" align="center">
+            <template slot-scope="{row}">
+              <span class="font-weight-bold">{{ row.price.toFixed(2) }}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="小计(元)" align="center">
             <template slot-scope="{row}">
-              <span>{{ (row.quantity * row.price).toFixed(2) }}</span>
+              <span class="font-weight-bold">{{ (row.quantity * row.price).toFixed(2) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
@@ -98,12 +106,7 @@
     <sku-choose ref="skuChoose" @close="isStart = true" @choose="handleAddSku"></sku-choose>
 
     <!-- 订单确认 -->
-    <el-dialog
-      title="确认订单"
-      width="880px"
-      :close-on-click-modal="false"
-      :visible.sync="showConfrim"
-    >
+    <el-dialog title="确认订单" width="880px" :close-on-click-modal="false" :visible.sync="showConfrim">
       <div class="flex">
         <div class="flex-1 u-confirm__left">
           <el-table size="mini" :data="activeBill.list" style="width: 100%" height="300">
@@ -135,16 +138,24 @@
           <div class="u-confirm__pay"></div>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="primary" @click="doConfirm">确 定</el-button>
+      <span slot="footer" class="flex align-center justify-end">
+        <span class="mr-2">
+          <span class="font-s-14 text-hui2">实付金额：</span>
+          <span class="font-s-14">¥</span>
+          <span class="font-s-2 font-weight-bold">{{ billTotal.toFixed(2) }}</span>
+        </span>
+        <el-button size="small" type="primary" @click="doConfirm">确认结算</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getLodop } from '@/lodop/LodopFuncs'
+import { mapState } from 'vuex'
+import dayjs from 'dayjs'
+import { getLodop, installTip } from '@/lodop/LodopFuncs'
 import productApi from '@/api/product'
+import storeOrderApi from '@/api/storeOrder'
 import SkuChoose from './components/SkuChoose'
 
 const fmtSku = (sku, productType) => {
@@ -194,6 +205,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      storeInfo: state => state.store.store
+    }),
     activeBill() {
       return this.bills.filter(v => v.id === this.billId)[0]
     },
@@ -202,6 +216,13 @@ export default {
         return t + i.price * i.quantity
       }, 0)
       return total
+    }
+  },
+  watch: {
+    needPrint(val) {
+      if (val) {
+        getLodop()
+      }
     }
   },
   created() {
@@ -255,42 +276,81 @@ export default {
       }
       this.showConfrim = true
     },
-    doPrint(orderInfo) {},
-    // 下单
-    doConfirm() {
+    doPrint(orderInfo, orderId) {
+      // 门店信息
+      const storeInfo = this.storeInfo
+      const date = dayjs().format('YYYY-MM-DD HH:mm:ss')
+      // 商品信息
+      const skuStr = orderInfo.skuJsonString
+        .map(sku => {
+          return `<div style="display: flex;margin-top: 2mm;">
+                  <div style="width: 30mm;font-size: 10pt;">${sku.name}</div>
+                  <div style="width: 21mm;text-align:center;font-size: 10pt;">${sku.quantity}</div>
+                  <div style="width: 21mm;text-align:center;font-size: 10pt;">${sku.price}</div>
+                </div>`
+        })
+        .join('')
       const LODOP = getLodop()
       LODOP.SET_PRINT_STYLE('FontSize', 8)
-      LODOP.ADD_PRINT_HTM(0, 0, '100%', '100%', `
+      LODOP.ADD_PRINT_HTM(
+        0,
+        0,
+        '100%',
+        '100%',
+        `
         <div>
-          <h1  style="font-size: 16pt;text-align: center">小黄兜宠物店</h1>
-          <div style="margin-bottom: 2mm;font-size: 10pt;">订单号：1000000020391</div>
-          <div style="font-size: 10pt;">收银员：小黄兜宠物生活馆</div>
+          <h1  style="font-size: 16pt;text-align: center">${storeInfo.storeName}</h1>
+          <div style="margin-bottom: 2mm;font-size: 10pt;">订单号：${orderId}</div>
+          <div style="font-size: 10pt;">收银员：${storeInfo.storeName}</div>
           <div style="padding: 2mm 0;font-size: 10pt;">= = = = = = = = = = = = = = = = = = = = = = =</div>
-
           <div style="display: flex">
             <div style="width: 30mm;font-size: 10pt;">商品名称</div>
             <div style="width: 21mm;text-align:center;font-size: 10pt;">数量</div>
             <div style="width: 21mm;text-align:center;font-size: 10pt;">单价</div>
           </div>
-
-          <div style="display: flex;margin-top: 2mm;">
-            <div style="width: 30mm;font-size: 10pt;">渴望猫粮15kg鳕鱼味</div>
-            <div style="width: 21mm;text-align:center;font-size: 10pt;">1</div>
-            <div style="width: 21mm;text-align:center;font-size: 10pt;">490.00</div>
-          </div>
-          <div style="display: flex;margin-top: 2mm;">
-            <div style="width: 30mm;font-size: 10pt;">渴望猫粮15kg鳕鱼味</div>
-            <div style="width: 21mm;text-align:center;font-size: 10pt;">1</div>
-            <div style="width: 21mm;text-align:center;font-size: 10pt;">490.00</div>
-          </div>
-          <div style="display: flex;margin-top: 2mm;">
-            <div style="width: 30mm;font-size: 10pt;">渴望猫粮15kg鳕鱼味</div>
-            <div style="width: 21mm;text-align:center;font-size: 10pt;">1</div>
-            <div style="width: 21mm;text-align:center;font-size: 10pt;">490.00</div>
-          </div>
+          ${skuStr}
+          <div style="padding: 2mm 0;font-size: 10pt;">= = = = = = = = = = = = = = = = = = = = = = =</div>
+          <div style="margin-bottom: 2mm;font-size: 10pt;">店铺地址：${storeInfo.address}</div>
+          <div style="margin-bottom: 2mm;font-size: 10pt;">联系方式：${storeInfo.mobile}</div>
+          <div style="margin-bottom: 2mm;font-size: 10pt;">下单时间：${date}</div>
         </div>
-      `)
+      `
+      )
       LODOP.PREVIEW()
+    },
+    // 下单
+    doConfirm() {
+      const totalFee = this.billTotal
+      const skuCount = this.activeBill.list.reduce((t, i) => {
+        return (t += i.quantity)
+      }, 0)
+      const params = {
+        uid: '',
+        storeId: this.storeInfo.id,
+        totalFee: totalFee,
+        discountFee: 0,
+        paidFee: totalFee,
+        skuCount,
+        remark: '',
+        skuJsonString: this.activeBill.list.map(v => {
+          v.discountFee = 0
+          v.paidFee = v.price * v.quantity
+          v.totalFee = v.price * v.quantity
+          return v
+        })
+      }
+      storeOrderApi.insertOrder(params).then(res => {
+        this.$notify({
+          title: '成功',
+          message: '下单完成',
+          type: 'success'
+        })
+        this.showConfrim = false
+        this.activeBill.list = []
+        if (this.needPrint) {
+          this.doPrint(params, res.data)
+        }
+      })
     },
     toggleSelection(rows) {
       rows.forEach(row => {
@@ -377,6 +437,7 @@ export default {
 .u-cash {
   height: calc(100vh - 50px);
   background: #fff;
+  color: #333;
   .u-bill {
     border-bottom: 1px solid #f5f5f5;
     &__add {

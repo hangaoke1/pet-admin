@@ -64,6 +64,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/userCenter',
+    component: () => import('@/views/user/center'),
+    hidden: true
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',

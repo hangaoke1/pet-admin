@@ -66,6 +66,7 @@ export default {
 @import '~@/styles/mixin.scss';
 @import '~@/styles/variables.scss';
 .right-btn {
+  font-weight: bold;
   margin-right: 20px;
   padding: 0 16px;
   height: 36px;

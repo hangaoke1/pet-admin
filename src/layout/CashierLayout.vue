@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="u-header">
-      <h3>收银台</h3>
+      <div class="font-weight-bold">{{ storeInfo.storeName }} - 收银台</div>
       <navbar :show-hide-icon="false">
         <div class="right-btn" type="danger" @click="goToHome">切换至总后台</div>
       </navbar>
@@ -11,12 +11,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { AppMain, Navbar } from './components'
 export default {
   name: 'CashierLayout',
   components: {
     AppMain,
     Navbar
+  },
+  computed: {
+    ...mapState({
+      storeInfo: state => state.store.store
+    })
   },
   methods: {
     goToHome() {
@@ -36,6 +42,7 @@ export default {
   background: #fff;
 }
 .right-btn {
+  font-weight: bold;
   display: inline-block;
   margin-right: 20px;
   padding: 0 16px;

@@ -1,5 +1,8 @@
 // cover some element-ui styles
-
+.el-input-number.is-controls-right .el-input__inner {
+  padding-left: 0px;
+  padding-right: 30px;
+}
 .el-table--group::after, .el-table--border::after, .el-table::before {
   background-color: #fafafa;
 }
@@ -14,6 +17,9 @@
 
 .el-table tr {
   border-color:#fafafa;
+}
+.el-table {
+  color: #333;
 }
 
 .el-breadcrumb__inner,

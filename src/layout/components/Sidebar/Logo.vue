@@ -2,18 +2,19 @@
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }} </h1>
+        <img v-if="info.logo" :src="info.logo" class="sidebar-logo" />
+        <h1 v-else class="sidebar-title">{{ info.storeName }}</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
+        <img v-if="info.logo" :src="info.logo" class="sidebar-logo" />
+        <h1 class="sidebar-title">{{ info.storeName }}</h1>
       </router-link>
     </transition>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'SidebarLogo',
   props: {
@@ -22,11 +23,10 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      title: '有宠管理平台',
-      logo: 'http://pet-agatha.oss-cn-hangzhou.aliyuncs.com/20200218/44b2d7a1c42946828ae8e220ecdc7d78.jpg'
-    }
+  computed: {
+    ...mapState({
+      info: state => state.store.store
+    })
   }
 }
 </script>
@@ -57,6 +57,7 @@ export default {
     & .sidebar-logo {
       width: 32px;
       height: 32px;
+      border-radius: 32px;
       vertical-align: middle;
       margin-right: 12px;
     }
