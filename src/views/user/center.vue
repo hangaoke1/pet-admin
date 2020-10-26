@@ -10,10 +10,11 @@
           :key="item.id"
           @click="setCurrentStore(item)"
         >
-          <img class="u-store__icon" :src="item.logo" alt />
+          <img class="u-store__logo" :src="item.logo" alt />
           <div class="u-store__name">{{ item.storeName }}</div>
           <el-tag class="u-store__status" type="success" v-if="item.storeState === 0">营业中</el-tag>
           <el-tag class="u-store__status" type="info" v-else>休息中</el-tag>
+          <i class="el-icon-edit-outline" @click.stop="doUpdate(item)"></i>
         </div>
 
         <div class="u-store__item align-center justify-center" @click="doAdd">
@@ -23,8 +24,8 @@
     </div>
 
     <!-- 添加/编辑店铺 -->
-    <el-dialog :title="editText" :visible.sync="dialogFormVisible">
-      <el-form :model="form" label-width="120px">
+    <el-dialog width="800px" :title="editText" :visible.sync="dialogFormVisible">
+      <el-form :model="form" label-width="120px" size="small">
         <el-form-item v-loading="uploadLoading" label="LOGO">
           <el-image
             v-if="form.logo"
@@ -54,6 +55,20 @@
         <el-form-item label="联系电话">
           <el-input v-model.trim="form.mobile" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="小程序二维码">
+          <el-input v-model.trim="form.qrCode" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址">
+          <el-cascader
+            v-model="form.addressList"
+            style="width: 250px"
+            :options="dateOptions"
+            placeholder="请选择地址"
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item label="地址详情">
+          <el-input v-model.trim="form.detail" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="经度">
           <el-input v-model.trim="form.lon" autocomplete="off"></el-input>
         </el-form-item>
@@ -79,10 +94,14 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import storeApi from '@/api/store'
+import { regionData, CodeToText, TextToCode } from 'element-china-area-data'
+import { array } from 'jszip/lib/support'
 export default {
   data() {
     return {
+      dateOptions: regionData,
       storeList: [],
       dialogFormVisible: false,
       uploadLoading: false,
@@ -93,7 +112,8 @@ export default {
         mobile: '',
         logo: '',
         workTime: '',
-        storeState: 0
+        storeState: 0,
+        addressList: []
       }
     }
   },
@@ -143,10 +163,18 @@ export default {
       this.dialogFormVisible = true
     },
     doUpdate(row) {
-      this.form = { ...row }
+      const addressList = [
+        _.get(TextToCode, `[${row.province}].code`),
+        _.get(TextToCode, `[${row.province}][${row.city}].code`),
+        _.get(TextToCode, `[${row.province}][${row.city}][${row.area}].code`)
+      ]
+      this.form = { ...row, addressList }
       this.dialogFormVisible = true
     },
     doSubmitAdd() {
+      this.form.province = CodeToText[this.form.addressList[0]]
+      this.form.city = CodeToText[this.form.addressList[1]]
+      this.form.area = CodeToText[this.form.addressList[2]]
       storeApi
         .saveOrUpdateStore(this.form)
         .then(() => {
@@ -181,6 +209,7 @@ export default {
       color: #ccc;
     }
     &__item {
+      position: relative;
       cursor: pointer;
       box-sizing: border-box;
       display: flex;
@@ -193,8 +222,13 @@ export default {
       margin-bottom: 20px;
       border-radius: 20px;
       background: #fff;
+      &:hover {
+        .el-icon-edit-outline {
+          display: block;
+        }
+      }
     }
-    &__icon {
+    &__logo {
       width: 70px;
       height: 70px;
       border-radius: 70px;
@@ -207,6 +241,13 @@ export default {
     }
     &__status {
       margin-top: 16px;
+    }
+    .el-icon-edit-outline {
+      display: none;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 20px;
     }
   }
 }

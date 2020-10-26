@@ -1,6 +1,6 @@
 <template>
   <div class="u-page__product p-2" v-loading="loading">
-    <div class="u-productAdd">
+    <div class="u-productAdd bg-bai">
       <h1 class="u-title">
         <span class="u-index">1</span>商品基本信息
       </h1>

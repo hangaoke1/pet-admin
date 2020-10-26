@@ -34,9 +34,7 @@
         style="width: 100%"
         size="small"
         header-row-class-name="u-tabel__header"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-table
@@ -199,8 +197,6 @@ export default {
   data() {
     return {
       config,
-      multipleSelection: [],
-      filterMore: false,
       listQuery: {
         keyword: ''
       },
@@ -233,33 +229,6 @@ export default {
         path: `/product/edit/${info.product.productId}`
       })
     },
-    // 批量删除
-    doDeleteMulti() {
-      const ids = this.multipleSelection.map(item => item.product.productId)
-      if (!ids.length) {
-        return this.$message.warning('请选择需要删除的商品')
-      }
-      this.$confirm(`此操作将删除${ids.length}个商品, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          const productId = ids.join('-')
-          productApi
-            .deleteProduct({
-              productId
-            })
-            .then(() => {
-              this.$message.success('删除成功')
-              this.getList()
-            })
-            .catch(err => {
-              this.$message.error(err.message)
-            })
-        })
-        .catch(() => {})
-    },
     doDelete(item) {
       this.$confirm(`此操作将删除商品【${item.product.name}】, 是否继续?`, '提示', {
         confirmButtonText: '确定',
@@ -291,18 +260,6 @@ export default {
     saveSkuStock(sku) {
       sku.edit = false
       sku.originalStock = Number(sku.stock)
-    },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row)
-        })
-      } else {
-        this.$refs.multipleTable.clearSelection()
-      }
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
     },
     getPrice(list) {
       const priceList = list.map(item => item.price)
