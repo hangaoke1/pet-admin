@@ -83,7 +83,8 @@ export default {
           </div>
         </div>
       `)
-      LODOP.PREVIEW()
+      LODOP.SET_PRINT_PAGESIZE(3, 720, 45, '');
+      LODOP.PRINT()
     },
     getLodop() {
       this.lodop = getLodop()
