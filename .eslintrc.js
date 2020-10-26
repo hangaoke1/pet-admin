@@ -268,6 +268,7 @@ module.exports = {
     'vue/html-self-closing': 'off',
     'vue/attributes-order': 'off',
     'vue/no-unused-vars': 'off',
-    'no-unused-vars': 'off'
+    'no-unused-vars': 'off',
+    'vue/require-default-prop': 'off'
   }
 }

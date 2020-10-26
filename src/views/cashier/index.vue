@@ -155,7 +155,7 @@ import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import { getLodop, installTip } from '@/lodop/LodopFuncs'
 import productApi from '@/api/product'
-import storeOrderApi from '@/api/storeOrder'
+import storeApi from '@/api/store'
 import SkuChoose from './components/SkuChoose'
 
 const fmtSku = (sku, productType) => {
@@ -339,7 +339,7 @@ export default {
           return v
         })
       }
-      storeOrderApi.insertOrder(params).then(res => {
+      storeApi.insertOrder(params).then(res => {
         this.$notify({
           title: '成功',
           message: '下单完成',

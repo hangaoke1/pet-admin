@@ -134,10 +134,16 @@ export const asyncRoutes = [
     meta: { title: '订单管理', icon: 'shopping', affix: false },
     children: [
       {
+        path: 'cash',
+        component: () => import('@/views/cashOrder/index'),
+        name: 'CashOrder',
+        meta: { title: '收银台订单', icon: '', affix: false }
+      },
+      {
         path: 'shop',
         component: () => import('@/views/shopOrder/index'),
         name: 'ShopOrder',
-        meta: { title: '商城订单', icon: '', affix: false }
+        meta: { title: '线上订单', icon: '', affix: false }
       },
       {
         path: 'shopOrderDetail',

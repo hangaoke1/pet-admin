@@ -26,6 +26,10 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
+      if (!store.getters.storeInfo && to.path !== '/userCenter') {
+        next('/userCenter')
+        return
+      }
       // determine whether the user has obtained his permission roles through getInfo
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {

@@ -155,7 +155,7 @@
 <script>
 import dayjs from 'dayjs'
 import waves from '@/directive/waves'
-import storeOrderApi from '@/api/storeOrder'
+import storeApi from '@/api/store'
 import getPetYear from '@/lib/getPetYear'
 import { recentWeek, recentMonth } from '@/utils/date'
 import ServiceItem from './ServiceItem.vue'
@@ -247,7 +247,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          storeOrderApi
+          storeApi
             .finishReserveWash({
               orderId
             })
@@ -272,7 +272,7 @@ export default {
         startTime = dayjs(this.listQuery.date[0]).format('YYYY-MM-DD HH:mm:ss')
         endTitme = dayjs(this.listQuery.date[1]).format('YYYY-MM-DD HH:mm:ss')
       }
-      storeOrderApi
+      storeApi
         .queryReserveWashList({
           startTime,
           endTitme,
