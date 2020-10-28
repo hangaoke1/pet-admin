@@ -64,6 +64,7 @@
               :src="form.logo | fmtWebp"
               fit="fill"
               lazy
+              webp
               :preview-src-list="[form.logo]"
             />
             <div>

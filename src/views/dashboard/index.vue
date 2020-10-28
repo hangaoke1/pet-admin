@@ -63,7 +63,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import CountTo from 'vue-count-to'
 export default {
   name: 'Dashboard',
@@ -72,15 +71,7 @@ export default {
   },
   data() {
     return {
-      currentRole: 'adminDashboard'
-    }
-  },
-  computed: {
-    ...mapGetters(['roles'])
-  },
-  created() {
-    if (!this.roles.includes('admin')) {
-      this.currentRole = 'editorDashboard'
+      current: '商品管理'
     }
   }
 }

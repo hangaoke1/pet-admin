@@ -26,28 +26,8 @@
     <!-- 添加/编辑店铺 -->
     <el-dialog width="800px" :title="editText" :visible.sync="dialogFormVisible">
       <el-form :model="form" label-width="120px" size="small">
-        <el-form-item v-loading="uploadLoading" label="LOGO">
-          <el-image
-            v-if="form.logo"
-            style="width: 100px; height: 100px"
-            :src="form.logo | fmtWebp"
-            fit="fill"
-            lazy
-            :preview-src-list="[form.logo]"
-          />
-          <div>
-            <el-upload
-              :action="uploadUrl"
-              :show-file-list="false"
-              :on-success="handleUploadSuccess"
-              :before-upload="beforeUpload"
-            >
-              <el-button type="primary" size="mini">
-                上传图片
-                <i class="el-icon-upload el-icon--right"></i>
-              </el-button>
-            </el-upload>
-          </div>
+        <el-form-item label="LOGO">
+          <yc-upload v-model="form.logo"></yc-upload>
         </el-form-item>
         <el-form-item label="门店名称">
           <el-input v-model.trim="form.storeName" autocomplete="off"></el-input>
@@ -62,7 +42,7 @@
           <el-cascader
             v-model="form.addressList"
             style="width: 250px"
-            :options="dateOptions"
+            :options="regionData"
             placeholder="请选择地址"
           ></el-cascader>
         </el-form-item>
@@ -97,11 +77,14 @@
 import _ from 'lodash'
 import storeApi from '@/api/store'
 import { regionData, CodeToText, TextToCode } from 'element-china-area-data'
-import { array } from 'jszip/lib/support'
+import YcUpload from '@/components/YcUpload'
 export default {
+  components: {
+    YcUpload
+  },
   data() {
     return {
-      dateOptions: regionData,
+      regionData,
       storeList: [],
       dialogFormVisible: false,
       uploadLoading: false,
@@ -140,14 +123,6 @@ export default {
           this.storeList = res.data
         })
         .finally(() => {})
-    },
-    handleUploadSuccess(res, file) {
-      this.uploadLoading = false
-      this.form.logo = res.data
-    },
-    beforeUpload() {
-      this.uploadLoading = true
-      return true
     },
     doAdd() {
       this.form = {

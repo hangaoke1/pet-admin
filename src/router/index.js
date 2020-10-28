@@ -123,39 +123,39 @@ export const asyncRoutes = [
         path: '/product/service',
         component: () => import('@/views/product/service'),
         name: 'Service',
-        meta: { title: '服务列表', affix: false }
+        meta: { title: '服务管理', affix: false }
       }
     ]
   },
   {
     path: '/order',
     component: Layout,
-    redirect: '/order/shop',
+    redirect: '/order/cashOrder',
     meta: { title: '订单管理', icon: 'shopping', affix: false },
     children: [
       {
-        path: 'cash',
-        component: () => import('@/views/cashOrder/index'),
+        path: 'cashOrder',
+        component: () => import('@/views/order/cashOrder'),
         name: 'CashOrder',
         meta: { title: '收银台订单', icon: '', affix: false }
       },
       {
-        path: 'shop',
-        component: () => import('@/views/shopOrder/index'),
-        name: 'ShopOrder',
+        path: 'onlineOrder',
+        component: () => import('@/views/order/onlineOrder'),
+        name: 'OnlineOrder',
         meta: { title: '线上订单', icon: '', affix: false }
       },
       {
-        path: 'shopOrderDetail',
-        component: () => import('@/views/shopOrder/detail'),
-        name: 'ShopOrderDetail',
+        path: 'onlineOrderDetail',
+        component: () => import('@/views/order/onlineOrderDetail'),
+        name: 'OnlineOrderDetail',
         hidden: true,
         meta: { title: '订单详情', icon: '', affix: false, noCache: true }
       },
       {
-        path: 'store',
-        component: () => import('@/views/storeOrder/index'),
-        name: 'StoreOrder',
+        path: 'subscribeOrder',
+        component: () => import('@/views/order/subscribeOrder'),
+        name: 'SubscribeOrder',
         meta: { title: '预约订单', icon: '', affix: false }
       }
     ]
@@ -239,29 +239,6 @@ export const asyncRoutes = [
       }
     ]
   },
-  // {
-  //   path: '/permission',
-  //   component: Layout,
-  //   redirect: '/permission/page',
-  //   alwaysShow: true, // will always show the root menu
-  //   name: 'permission',
-  //   meta: {
-  //     title: '权限管理',
-  //     icon: 'lock',
-  //     roles: ['admin', 'editor'] // you can set roles in root nav
-  //   },
-  //   children: [
-  //     {
-  //       path: 'page',
-  //       component: () => import('@/views/permission/page'),
-  //       name: 'pagePermission',
-  //       meta: {
-  //         title: '页面权限',
-  //         roles: ['admin'] // or you can only set roles in sub nav
-  //       }
-  //     }
-  //   ]
-  // },
 
   /** when your routing map is too long, you can split it into small modules **/
   // chartsRouter,

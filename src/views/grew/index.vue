@@ -57,8 +57,9 @@
               style="width: 100px; height: 100px"
               :src="form.logo"
               fit="fill"
-              lazy
               :preview-src-list="[form.logo]"
+              lazy
+              webp
             />
             <div>
               <el-upload

@@ -19,6 +19,7 @@
               :src="scope.row.imgUrl | fmtWebp"
               fit="fill"
               lazy
+              webp
               :preview-src-list="[scope.row.imgUrl]"
             />
           </template>
@@ -42,6 +43,7 @@
             :src="form.imgUrl | fmtWebp"
             fit="fill"
             lazy
+            webp
             :preview-src-list="[form.imgUrl]"
           />
           <div>

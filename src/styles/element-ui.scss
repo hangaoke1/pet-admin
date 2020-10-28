@@ -1,23 +1,32 @@
 // cover some element-ui styles
+
+// 数字输入框
 .el-input-number.is-controls-right .el-input__inner {
   padding-left: 0px;
   padding-right: 30px;
 }
-.el-table--group::after, .el-table--border::after, .el-table::before {
+
+// 覆盖table样式
+.el-table--group::after,
+.el-table--border::after,
+.el-table::before {
   background-color: #fafafa;
 }
-// 覆盖table样式
+
 .el-table__header th {
   background-color: #fafafa;
   color: #666;
 }
-.el-table th.is-leaf, .el-table td {
-  border-color:#fafafa;
+
+.el-table th.is-leaf,
+.el-table td {
+  border-color: #fafafa;
 }
 
 .el-table tr {
-  border-color:#fafafa;
+  border-color: #fafafa;
 }
+
 .el-table {
   color: #333;
 }

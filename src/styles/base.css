@@ -1,3 +1,44 @@
+/* 按钮配置 */
+.yc-btn {
+  border-radius: 20px;
+  background-color: #ffdd03;
+  border: 1px solid #ffdd03;
+  color: #333336;
+}
+
+.yc-btn:focus,
+.yc-btn:hover {
+  color: #333;
+  border-color: #ffd100;
+  background-color: #ffd100;
+}
+
+.yc-edit {
+  border-radius: 20px;
+  background-color: #ffdd03;
+  border: 1px solid #ffdd03;
+  color: #333;
+}
+
+.yc-edit:focus,
+.yc-edit:hover {
+  color: #333;
+  border-color: #ffd100;
+  background-color: #ffd100;
+}
+
+.yc-del {
+  border-radius: 20px;
+  color: #333;
+}
+
+.yc-del:focus,
+.yc-del:hover {
+  color: #333;
+  border-color: #ffdd03;
+  background-color: #fff;
+}
+
 /* padding */
 .px-1 {
   padding-left: 10px;
@@ -347,14 +388,6 @@
   color: #FF7013;
 }
 
-.main-color {
-  color: #d89614;
-}
-
-.bg-main {
-  background-color: #d89614;
-}
-
 .bg-page {
   background-color: #f6f7f9;
 }
@@ -608,12 +641,6 @@
 
 .font-s-6 {
   font-size: 60px;
-}
-
-.btn-disabled {
-  background-color: #f9e2a9;
-  color: #7e7f80;
-  pointer-events: none;
 }
 
 /* 功能 */

@@ -37,7 +37,7 @@
         <el-table-column type="selection" width="55" align="center" :reserve-selection="true"></el-table-column>
         <el-table-column prop="skuName" label="图片" align="center" width="120">
           <template slot-scope="scope">
-            <img style="width: 40px;height:40px" :src="url2Webp(scope.row.skuImgUrl)" alt />
+            <el-image style="width: 40px;height:40px" :src="url2Webp(scope.row.skuImgUrl)" webp />
           </template>
         </el-table-column>
         <el-table-column prop="skuName" label="商品名称" align="center">
@@ -70,7 +70,6 @@
 import _ from 'lodash'
 import categoryApi from '@/api/category'
 import productApi from '@/api/product'
-import category from '@/api/category'
 
 export default {
   data() {
