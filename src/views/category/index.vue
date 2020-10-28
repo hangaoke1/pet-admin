@@ -8,6 +8,12 @@
         <el-table-column prop="id" align="center" label="分类id"></el-table-column>
         <el-table-column prop="categoryName" align="center" label="分类名称"></el-table-column>
         <el-table-column prop="createTime" align="center" label="创建时间"></el-table-column>
+        <el-table-column align="center" label="操作" width="200">
+          <template slot-scope="scope">
+            <el-button class="yc-edit" @click="doEdit(scope.row)">编辑</el-button>
+            <el-button class="yc-del" @click="doDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="text-right p-1">
         <el-pagination
@@ -54,7 +60,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="doSubmitAdd">确 定</el-button>
+          <el-button type="primary" @click="doSaveOrUpdate">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -126,26 +132,53 @@ export default {
       }
       this.dialogFormVisible = true
     },
-    doUpdate(row) {
+    doEdit(row) {
       this.form = { ...row }
       this.dialogFormVisible = true
     },
-    doSubmitAdd() {
+    doSaveOrUpdate() {
       categoryApi
-        .saveOrUpdateStore(this.form)
+        .saveOrUpdate(this.form)
         .then(() => {
           this.dialogFormVisible = false
           if (this.form.id) {
-            this.$message.success('修改成功')
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success'
+            })
           } else {
-            this.$message('添加成功')
+            this.$notify({
+              title: '成功',
+              message: '添加成功',
+              type: 'success'
+            })
           }
           this.load()
         })
-        .cathc(() => {})
+        .catch(() => {})
     },
     doDelete(row) {
-      this.$message('暂不支持')
+      this.$confirm('此操作将删除该分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          categoryApi
+            .del({
+              id: row.id
+            })
+            .then(res => {
+              this.load()
+              this.$notify({
+                title: '成功',
+                message: '删除成功',
+                type: 'success'
+              })
+            })
+        })
+        .catch(() => {})
     },
     handleSearch(form) {
       this.listQuery = form

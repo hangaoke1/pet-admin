@@ -170,7 +170,7 @@ export default {
           }
           this.load()
         })
-        .cathc(() => {})
+        .catch(() => {})
     },
     doDelete(row) {
       this.$message('暂不支持')
