@@ -73,7 +73,7 @@ export default {
       this.dialogFormVisible = true
     },
     doUpdate(row) {
-      this.form = row
+      this.form = { ...row }
       this.dialogFormVisible = true
     },
     doDelete(row) {

@@ -78,7 +78,7 @@ export default {
   }
   &__tip {
     font-size: 12px;
-    color: #666;
+    color: #999;
   }
 }
 </style>
