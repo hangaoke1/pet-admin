@@ -96,6 +96,12 @@
             class="yc-del"
             @click="doRefund(row)"
           >退款</el-button>
+          <el-button
+            v-if="[1, 4].includes(row.order.warrantyStatus)"
+            size="mini"
+            class="yc-del"
+            @click="closeRefund(row)"
+          >关闭</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -229,6 +235,29 @@ export default {
     this.getList()
   },
   methods: {
+    closeRefund(row) {
+      this.$confirm('此操作将拒绝用户退款申请并关闭申请单, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          orderApi
+            .onlineRefundClose({
+              orderId: row.order.orderId,
+              warrantyStatus: row.order.warrantyStatus === 1 ? 2 : 5
+            })
+            .then(res => {
+              this.$notify({
+                title: '成功',
+                message: '审核通过',
+                type: 'success'
+              })
+              this.getList()
+            })
+        })
+        .catch(() => {})
+    },
     doRefund(row) {
       this.$confirm('此操作将同意用户退款申请, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -238,29 +267,33 @@ export default {
         .then(() => {
           // 退款
           if (row.order.warrantyStatus === 1) {
-            orderApi.onlineOrderAuditRefund({
-              orderId: row.order.orderId
-            }).then(res => {
-              this.$notify({
-                title: '成功',
-                message: '审核通过',
-                type: 'success'
+            orderApi
+              .onlineOrderAuditRefund({
+                orderId: row.order.orderId
               })
-              this.getList()
-            })
+              .then(res => {
+                this.$notify({
+                  title: '成功',
+                  message: '审核通过',
+                  type: 'success'
+                })
+                this.getList()
+              })
           }
           // 退货退款
           if (row.order.warrantyStatus === 4) {
-            orderApi.onlineOrderAuditReturn({
-              orderId: row.order.orderId
-            }).then(res => {
-              this.$notify({
-                title: '成功',
-                message: '审核通过',
-                type: 'success'
+            orderApi
+              .onlineOrderAuditReturn({
+                orderId: row.order.orderId
               })
-              this.getList()
-            })
+              .then(res => {
+                this.$notify({
+                  title: '成功',
+                  message: '审核通过',
+                  type: 'success'
+                })
+                this.getList()
+              })
           }
         })
         .catch(() => {})

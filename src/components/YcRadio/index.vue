@@ -40,23 +40,6 @@ export default {
     padding: 15px 0;
     margin-right: 20px;
     cursor: pointer;
-    &:hover {
-      font-weight: bold;
-      &::after {
-        position: absolute;
-        bottom: 6px;
-        left: 50%;
-        transform: translateX(-50%);
-        content: '';
-        width: 30px;
-        height: 4px;
-        background: #ffdd03;
-        border-radius: 5px;
-      }
-    }
-  }
-  .active {
-    font-weight: bold;
     &::after {
       position: absolute;
       bottom: 6px;
@@ -65,8 +48,21 @@ export default {
       content: '';
       width: 30px;
       height: 4px;
-      background: #ffdd03;
+      background: transparent;
       border-radius: 5px;
+      transition: background 200ms;
+    }
+    &:hover {
+      font-weight: bold;
+      &::after {
+        background: #ffdd03;
+      }
+    }
+  }
+  .active {
+    font-weight: bold;
+    &::after {
+      background: #ffdd03;
     }
   }
 }

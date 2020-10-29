@@ -1,17 +1,17 @@
 <template>
   <div class="u-serivceItem flex align-center p-1">
     <el-image
-      class="u-serviceItem__img mr-2 flex-0"
+      class="u-serviceItem__img mr-1 flex-0"
       :src="info.image | fmtWebp"
       fit="fill"
       lazy
       webp
       :preview-src-list="[info.image]"
     />
-    <div class="mr-2 font-s-14">{{ info.name }}</div>
-    <div>
-      <span class="font-s-1">¥</span>
-      <span class="font-s-12">{{ info.price }}</span>
+    <div class="flex-1 mr-1 font-s-14 font-weight-bold">{{ info.name }}</div>
+    <div class="flex-0">
+      <span class="font-s-12">¥</span>
+      <span class="font-s-14 font-weight-bold">{{ info.price.toFixed(2) }}</span>
     </div>
   </div>
 </template>

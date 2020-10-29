@@ -1,24 +1,10 @@
-import request from '@/utils/request'
+/**
+ * 用户管理
+ */
+import { api } from './index'
 
-export function login(data) {
-  return request({
-    url: '/admin/login',
-    method: 'post',
-    data
-  })
-}
-
-export function getInfo() {
-  return request({
-    url: '/admin/userInfo',
-    method: 'get'
-  })
-}
-
-export function queryUserList(data) {
-  return request({
-    url: '/admin/queryUserList',
-    method: 'post',
-    data
-  })
+export default {
+  login: params => api.post('/admin/login', params),
+  getInfo: params => api.get('/admin/userInfo', params),
+  queryUserList: params => api.post('/admin/queryUserList', params)
 }

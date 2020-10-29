@@ -10,8 +10,8 @@
         <el-table-column prop="createTime" align="center" label="创建时间"></el-table-column>
         <el-table-column align="center" label="操作" width="200">
           <template slot-scope="scope">
-            <el-button class="yc-edit" @click="doEdit(scope.row)">编辑</el-button>
-            <el-button class="yc-del" @click="doDelete(scope.row)">删除</el-button>
+            <el-button class="yc-edit" size="mini" @click="doEdit(scope.row)">编辑</el-button>
+            <el-button class="yc-del" size="mini" @click="doDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

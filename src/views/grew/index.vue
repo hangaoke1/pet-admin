@@ -1,10 +1,18 @@
 <template>
   <div class="dashboard-container p-2">
+    <yc-tabs
+      :options="[{ label: '待确认', value: 0 }, { label: '寄养中', value: 1 }, { label: '已完成', value: 2 }]"
+      v-model="petState"
+      @change="load"
+    ></yc-tabs>
     <div class="bg-bai p-3">
       <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
-        <el-button slot="left" size="small" @click="doAdd">添加寄养</el-button>
+        <el-button class="yc-del" slot="left" size="small" @click="doAdd">添加寄养</el-button>
       </g-filter>
       <el-table size="small" class="mt-1" :data="list" style="width: 100%" v-loading="loading">
+        <el-table-column prop="createTime" align="center" label="申请日期">
+          <template slot-scope="scope">{{ scope.row.createTime.slice(0, 10) }}</template>
+        </el-table-column>
         <el-table-column prop="petName" align="center" label="宠物名称"></el-table-column>
         <el-table-column prop="petType" align="center" label="宠物类型">
           <template slot-scope="scope">
@@ -12,13 +20,13 @@
             <el-tag size="medium" type="success" v-else>狗狗</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="startTime" align="center" label="开始时间">
+        <el-table-column prop="startTime" align="center" label="寄养开始">
           <template slot-scope="scope">{{ scope.row.startTime.slice(0, 10) }}</template>
         </el-table-column>
-        <el-table-column prop="endTime" align="center" label="结束时间">
+        <el-table-column prop="endTime" align="center" label="寄养结束">
           <template slot-scope="scope">{{ scope.row.endTime.slice(0, 10) }}</template>
         </el-table-column>
-        <el-table-column prop="petState" align="center" label="寄养状态" width="200">
+        <el-table-column prop="petState" align="center" label="寄养状态">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.petState === 0" size="medium" type="warning">待确认</el-tag>
             <el-tag v-else-if="scope.row.petState === 1" size="medium">寄养中</el-tag>
@@ -26,13 +34,18 @@
           </template>
         </el-table-column>
         <el-table-column prop="phone" align="center" label="手机号"></el-table-column>
-        <el-table-column prop="cameraId" align="center" label="监控Id"></el-table-column>
-        <el-table-column prop="remark" align="center" label="备注"></el-table-column>
-        <el-table-column prop="action" align="center" label="操作">
+        <el-table-column prop="cameraId" align="center" label="监控Id" width="150">
           <template slot-scope="scope">
-            <el-button size="small" type="text" @click="doDelete(scope.row)">详情</el-button>
-            <el-divider direction="vertical"></el-divider>
-            <el-button class="text-red" size="small" type="text" @click="doDelete(scope.row)">删除</el-button>
+            <span v-if="scope.row.cameraId" size="medium" type="warning">待确认</span>
+            <el-button class="yc-edit" size="mini" v-else>点击绑定</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remark" align="center" label="备注"></el-table-column>
+        <el-table-column prop="action" align="center" label="操作" width="200">
+          <template slot-scope="scope">
+            <el-button v-if="scope.row.petState === 0" class="yc-edit" size="small" @click="changePlaced(scope.row, 2)">确认到店</el-button>
+            <el-button v-if="scope.row.petState === 1" class="yc-edit" size="small" @click="changePlaced(scope.row, 0)">结束寄养</el-button>
+            <el-button class="yc-del" size="small" @click="doDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -49,76 +62,29 @@
           layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
       </div>
-      <el-dialog :title="editText" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item v-loading="uploadLoading" label="LOGO" :label-width="formLabelWidth">
-            <el-image
-              v-if="form.logo"
-              style="width: 100px; height: 100px"
-              :src="form.logo"
-              fit="fill"
-              :preview-src-list="[form.logo]"
-              lazy
-              webp
-            />
-            <div>
-              <el-upload
-                :action="uploadUrl"
-                :show-file-list="false"
-                :on-success="handleUploadSuccess"
-                :before-upload="beforeUpload"
-              >
-                <el-button type="primary" size="mini">
-                  上传图片
-                  <i class="el-icon-upload el-icon--right"></i>
-                </el-button>
-              </el-upload>
-            </div>
-          </el-form-item>
-          <el-form-item label="门店名称" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.storeName" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="联系电话" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.mobile" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="经度" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.lon" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="纬度" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.lat" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="工作时间" :label-width="formLabelWidth">
-            <el-input v-model.trim="form.workTime" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="营业状态" :label-width="formLabelWidth">
-            <el-radio-group v-model="form.storeState">
-              <el-radio :label="0">营业</el-radio>
-              <el-radio :label="1">休息</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="doSubmitAdd">确 定</el-button>
-        </div>
-      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import filterOptions from './filter-options'
 import GFilter from '@/components/GFilter'
 import grewApi from '@/api/grew'
+import { param } from '@/utils'
+import YcTabs from '@/components/YcTabs'
+import grew from '@/api/grew'
 
 export default {
   name: 'Grew',
   components: {
-    GFilter
+    GFilter,
+    YcTabs
   },
   data() {
     return {
       options: filterOptions,
+      petState: 0,
       listQuery: {},
       page: {
         pageNo: 1,
@@ -150,9 +116,56 @@ export default {
       this.uploadLoading = true
       return true
     },
-    // 新建
+    // 确认到店 确认寄养时传 2，结束寄养时传 0
+    changePlaced(row, placed) {
+      this.$confirm('确定宝贝到店, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          grewApi
+            .confirm({
+              id: row.id,
+              placed
+            })
+            .then(res => {
+              this.load()
+              this.$notify({
+                title: '成功',
+                message: '操作成功',
+                type: 'success'
+              })
+            })
+        })
+        .catch(() => {})
+    },
+    // 新建寄养
     doAdd() {
       this.$message.warning('暂不支持')
+    },
+    // 删除寄养
+    doDelete(row) {
+      this.$confirm('此操作将删除该寄养申请, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          grewApi
+            .del({
+              id: row.id
+            })
+            .then(res => {
+              this.load()
+              this.$notify({
+                title: '成功',
+                message: '删除成功',
+                type: 'success'
+              })
+            })
+        })
+        .catch(() => {})
     },
     doUpdate(row) {
       this.form = { ...row }
@@ -172,9 +185,6 @@ export default {
         })
         .catch(() => {})
     },
-    doDelete(row) {
-      this.$message('暂不支持')
-    },
     handleSearch(form) {
       this.listQuery = form
       this.page.pageNo = 1
@@ -187,12 +197,19 @@ export default {
     },
     load() {
       this.loading = true
+      const params = {
+        pageNo: this.page.pageNo,
+        pageSize: this.page.pageSize,
+        ...this.listQuery,
+        petState: this.petState
+      }
+      if (params.dateRange) {
+        params.startTime = dayjs(params.dateRange[0]).format('YYYY-MM-DD HH:mm:ss')
+        params.endTime = dayjs(params.dateRange[1]).format('YYYY-MM-DD HH:mm:ss')
+      }
+      delete params.dateRange
       grewApi
-        .queryList({
-          pageNo: this.page.pageNo,
-          pageSize: this.page.pageSize,
-          ...this.listQuery
-        })
+        .queryList(params)
         .then(res => {
           this.list = res.data.items
           this.page.total = res.data.totalCount

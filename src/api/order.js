@@ -21,6 +21,8 @@ export default {
   onlineOrderAuditReturn: (params) => api.get('/admin/auditReturn', params),
   // 审核退款
   onlineOrderAuditRefund: (params) => api.get('/admin/auditRefund', params),
+  // 关闭退货 / 退款 warrantyStatus 2退款关闭 5退货关闭
+  onlineRefundClose: (params) => api.get('/admin/close/warrantyOrder', params),
 
   /** 收银台订单 */
   cashOrderCreate: (params) => api.post('/admin/store/insertOrder', params),

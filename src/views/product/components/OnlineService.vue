@@ -102,7 +102,7 @@ export default {
         this.dialogFormVisible = false
         this.$notify({
           title: '提示',
-          message: '添加成功',
+          message: '操作成功',
           type: 'success'
         })
         this.load()

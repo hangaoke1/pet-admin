@@ -45,12 +45,14 @@
                 :info="item"
                 :form="query"
                 :clearable="item.clearable"
+                :start-placeholder="item.startPlaceholder"
+                :end-placeholder="item.endPlaceholder"
               />
             </template>
           </div>
         </div>
         <div class="flex-0">
-          <el-button size="small" type="primary" native-type="submit" @click="doSearch">查询</el-button>
+          <el-button class="yc-edit" size="small" native-type="submit" @click="doSearch">查询</el-button>
           <slot name="left"></slot>
         </div>
       </div>

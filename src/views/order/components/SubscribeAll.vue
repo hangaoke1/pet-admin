@@ -34,8 +34,8 @@
           type="daterange"
           :picker-options="pickerOptions"
           range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          start-placeholder="预约日期"
+          end-placeholder="预约日期"
           align="right"
           size="small"
           :default-time="['00:00:00', '23:59:59']"
@@ -61,13 +61,14 @@
       highlight-current-row
       style="width: 100%"
       header-row-class-name="u-tabel__header"
+      @sort-change="handleSort"
     >
       <el-table-column align="center" label="订单编号" width="150">
         <template slot-scope="{row}">
           <span>{{ row.reserveWash.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="预约时间" width="200">
+      <el-table-column align="center" prop="reserveTime" label="预约时间" width="200" sortable="custom">
         <template slot-scope="{row}">
           <span>{{ fmtDate(row.reserveWash.reserveTime) }}</span>
         </template>
@@ -128,7 +129,7 @@
             v-if="row.reserveWash.reserveOrderStatus == 100"
             type="warning"
             size="mini"
-            @click="sendOrder(row)"
+            @click="finishService(row)"
           >执行完成</el-button>
         </template>
       </el-table-column>
@@ -153,7 +154,7 @@
 <script>
 import dayjs from 'dayjs'
 import waves from '@/directive/waves'
-import storeApi from '@/api/store'
+import orderApi from '@/api/order'
 import getPetYear from '@/lib/getPetYear'
 import { recentWeek, recentMonth } from '@/utils/date'
 import ServiceItem from './ServiceItem.vue'
@@ -213,7 +214,8 @@ export default {
       filterMore: false,
       listQuery: {
         orderStatus: '',
-        date: ''
+        date: '',
+        sort: {}
       },
       pageNo: 1,
       pageSize: 20,
@@ -226,6 +228,14 @@ export default {
     this.getList()
   },
   methods: {
+    handleSort(info) {
+      if (info.order) {
+        this.listQuery.sort[info.prop] = info.order === 'ascending' ? 'asc' : 'desc'
+      } else {
+        this.listQuery.sort = {}
+      }
+      this.getList()
+    },
     fmtDate(v) {
       return dayjs(v).format('YYYY-MM-DD HH:mm')
     },
@@ -236,8 +246,8 @@ export default {
     goDetail(row) {
       // this.$router.push('/order/detail')
     },
-    // 发货
-    sendOrder(row) {
+    // 执行完成
+    finishService(row) {
       const orderId = row.reserveWash.id
       this.$confirm('该订单是否已服务完成?', '提示', {
         confirmButtonText: '确定',
@@ -245,8 +255,8 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          storeApi
-            .finishReserveWash({
+          orderApi
+            .subscribeOrderFinish({
               orderId
             })
             .then(() => {
@@ -264,30 +274,31 @@ export default {
     },
     getList() {
       this.loading = true
-      let startTime = ''
-      let endTitme = ''
+      let startReserveTime = ''
+      let endReserveTime = ''
       if (this.listQuery.date) {
-        startTime = dayjs(this.listQuery.date[0]).format('YYYY-MM-DD HH:mm:ss')
-        endTitme = dayjs(this.listQuery.date[1]).format('YYYY-MM-DD HH:mm:ss')
+        startReserveTime = dayjs(this.listQuery.date[0]).format('YYYY-MM-DD HH:mm:ss')
+        endReserveTime = dayjs(this.listQuery.date[1]).format('YYYY-MM-DD HH:mm:ss')
       }
-      storeApi
-        .queryReserveWashList({
-          startTime,
-          endTitme,
-          orderId: this.listQuery.orderId,
-          orderStatus: this.listQuery.orderStatus,
+      orderApi
+        .subscribeOrderQuery({
+          startReserveTime,
+          endReserveTime,
           pageNo: this.pageNo,
-          pageSize: this.pageSize
+          pageSize: this.pageSize,
+          orderId: this.listQuery.orderId,
+          reserveOrderStatus: this.listQuery.orderStatus,
+          sort: this.listQuery.sort
         })
         .then(res => {
-          res = res.data
-          this.loading = false
-          this.list = res.items
-          this.totalCount = res.totalCount
+          this.list = res.data.items
+          this.totalCount = res.data.totalCount
         })
         .catch(err => {
-          this.loading = false
           this.$message.error(err.message)
+        })
+        .finally(() => {
+          this.loading = false
         })
     },
     handleSizeChange(pageSize) {

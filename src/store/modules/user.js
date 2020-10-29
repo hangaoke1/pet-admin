@@ -1,7 +1,8 @@
-import { login, getInfo } from '@/api/user'
+import userApi from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
+const { login, getInfo } = userApi
 const state = {
   token: getToken(),
   name: '',
