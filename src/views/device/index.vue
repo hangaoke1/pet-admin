@@ -4,28 +4,26 @@
       <div class="flex justify-between pb-1 border-bottom-divider">
         <el-input
           v-model="listQuery.title"
-          placeholder="请输入设备编号 "
+          placeholder="请输入设备编号"
           style="width: 200px;"
           class="filter-item"
           size="small"
+          suffix-icon="el-icon-search"
         />
         <div>
           <el-button
             v-waves
-            class="filter-item"
-            type="primary"
+            class="filter-item yc-btn"
             icon="el-icon-search"
             size="small"
             @click="getDevice"
           >查询</el-button>
           <el-button
             v-waves
-            class="filter-item"
+            class="filter-item yc-del"
             style="margin-left: 10px;"
-            type="primary"
             icon="el-icon-edit"
             size="small"
-            plain
             @click="handleAddClick"
           >新增设备</el-button>
         </div>
@@ -41,19 +39,19 @@
         header-row-class-name="u-tabel__header"
       >
         <el-table-column align="center" type="index" width="50"></el-table-column>
-        <el-table-column align="center" prop="cameraNo" label="设备编号" width="180"></el-table-column>
-        <el-table-column align="center" prop="cameraName" label="设备名称" width="180">
+        <el-table-column align="center" prop="cameraNo" label="设备编号"></el-table-column>
+        <el-table-column align="center" prop="cameraName" label="设备名称">
           <template slot-scope="{row}">
             <span>{{ row.cameraName }}</span>
-            <el-button type="success" size="mini" @click="preview(row)">预览</el-button>
+            <el-button class="yc-btn" size="mini" @click="preview(row)">预览</el-button>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="url" label="设备地址"></el-table-column>
+        <el-table-column align="center" prop="url" label="设备地址（m3u8）"></el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="{row}">
-            <el-button type="primary" size="mini" @click="handleModifyStatus(row, 'edit')">编辑</el-button>
-            <el-button type="success" size="mini" @click="handleModifyStatus(row, 'manage')">管理用户</el-button>
-            <el-button type="danger" size="mini" @click="handleModifyStatus(row,'deleted')">删除</el-button>
+            <el-button class="yc-edit" size="mini" @click="handleModifyStatus(row, 'edit')">编辑</el-button>
+            <el-button class="yc-btn" size="mini" @click="handleModifyStatus(row, 'manage')">管理用户</el-button>
+            <el-button class="yc-del" size="mini" @click="handleModifyStatus(row,'deleted')">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -87,7 +85,7 @@
         <el-form-item label="设备名称" prop="cameraName">
           <el-input v-model="form.cameraName" />
         </el-form-item>
-        <el-form-item label="设备地址" prop="url">
+        <el-form-item label="设备地址（m3u8）" prop="url">
           <el-input v-model="form.url" />
         </el-form-item>
       </el-form>
@@ -98,17 +96,13 @@
     </el-dialog>
 
     <el-drawer :visible.sync="drawer" direction="rtl" :with-header="false" size="500px">
-      <div class="u-manage">
-        <div class="u-manage__title">设备管理 小黄兜1号</div>
-        <div class="u-manage__action">
-          <el-button type="success" size="mini" @click="searchVisible = true">添加用户</el-button>
-        </div>
-        <div class="u-manage__title">已绑定用户</div>
+      <div class="u-manage" v-if="currentDevice">
+        <div class="u-manage__title">设备名称： {{ currentDevice.cameraName }}</div>
         <el-table
           v-loading="bindUserListLoading"
           :data="bindUserList"
           style="width: 100%"
-          height="550px"
+          max-height="550px"
         >
           <el-table-column label="头像" align="center">
             <template slot-scope="{row}">
@@ -119,25 +113,23 @@
           <el-table-column prop="mobile" label="手机号"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="{row}">
-              <el-button type="danger" size="mini" @click="handleBindUserDebounce(row, 1)">删除</el-button>
+              <el-button class="yc-del" size="mini" @click="handleBindUserDebounce(row, 1)">解绑</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <div class="text-center mt-1">
+          <el-button class="yc-btn" size="mini" @click="searchVisible = true">添加用户</el-button>
+        </div>
       </div>
     </el-drawer>
 
-    <el-dialog title="用户搜索" :visible.sync="searchVisible" width="30%">
+    <el-dialog title="用户搜索" :visible.sync="searchVisible" width="800px">
       <div class="u-search">
         <div class="u-search__header">
-          <el-input v-model="searchKeyword" placeholder="请输入查询关键字"></el-input>
-          <el-button
-            class="u-search__btn"
-            type="primary"
-            icon="el-icon-search"
-            @click="searchUser"
-          >搜索</el-button>
+          <el-input v-model="searchKeyword" placeholder="请输入查询关键字" prefix-icon="el-icon-search"></el-input>
+          <el-button class="u-search__btn yc-btn" icon="el-icon-search" @click="searchUser">搜索</el-button>
         </div>
-        <el-table :data="searchList" style="width: 100%" height="250">
+        <el-table :data="searchList" class="mt-1" height="400">
           <el-table-column label="头像" align="center">
             <template slot-scope="{row}">
               <img class="u-manage__avatar" :src="row.wechatAvatar" :alts="row.name" />
@@ -149,7 +141,7 @@
             <template slot-scope="{row}">
               <el-button
                 v-if="!isAreadyBind(row)"
-                type="success"
+                class="yc-btn"
                 size="mini"
                 @click="handleBindUserDebounce(row, 0)"
               >绑定</el-button>
@@ -219,7 +211,7 @@ export default {
   methods: {
     preview(row) {
       if (row.url.indexOf('hls01open.ys7.com') === -1) {
-        this.$message.error('请填写正确的设备地址')
+        this.$message.error('请填写正确的设备地址（m3u8）')
       } else {
         const id = row.url.slice(34, 66)
         window.open(`https://open.ys7.com/view/h5/${id}`)
@@ -239,16 +231,15 @@ export default {
           this.bindUserListLoading = false
           this.bindUserList = res.data || []
         })
-        .catch(err => {
+        .catch(() => {
           this.bindUserListLoading = false
           this.bindUserList = []
-          console.log(err)
         })
     },
     // 绑定用户
     handleBindUser(row, bindFlag) {
       const { uid } = row
-      const { id } = this.current
+      const { id } = this.currentDevice
       deviceApi
         .bindCameraByUid({
           uid,
@@ -282,7 +273,7 @@ export default {
       // 管理用户
       if (type === 'manage') {
         this.queryBindUserList(row.id)
-        this.current = row
+        this.currentDevice = row
         this.drawer = true
       }
       // 编辑设备
@@ -420,10 +411,9 @@ export default {
 .u-manage {
   padding: 20px;
   &__title {
-    margin-bottom: 20px;
-  }
-  &__action {
-    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
   }
   &__avatar {
     width: 50px;

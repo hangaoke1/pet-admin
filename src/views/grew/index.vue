@@ -1,12 +1,17 @@
 <template>
   <div class="dashboard-container p-2">
     <yc-tabs
-      :options="[{ label: '待确认', value: 0 }, { label: '寄养中', value: 1 }, { label: '已完成', value: 2 }]"
+      :options="[{ label: '待确认', value: 1 }, { label: '寄养中', value: 2 }, { label: '已结束', value: 0 }]"
       v-model="petState"
       @change="load"
     ></yc-tabs>
     <div class="bg-bai p-3">
-      <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
+      <g-filter
+        class="pb-1"
+        :options="filterOptions"
+        @refresh="handleRefresh"
+        @search="handleSearch"
+      >
         <el-button class="yc-del" slot="left" size="small" @click="doAdd">添加寄养</el-button>
       </g-filter>
       <el-table size="small" class="mt-1" :data="list" style="width: 100%" v-loading="loading">
@@ -28,23 +33,37 @@
         </el-table-column>
         <el-table-column prop="petState" align="center" label="寄养状态">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.petState === 0" size="medium" type="warning">待确认</el-tag>
-            <el-tag v-else-if="scope.row.petState === 1" size="medium">寄养中</el-tag>
-            <el-tag v-else size="medium" type="success">已完成</el-tag>
+            <el-tag v-if="scope.row.petState === 1" size="medium" type="warning">待确认</el-tag>
+            <el-tag v-else-if="scope.row.petState === 2" size="medium">寄养中</el-tag>
+            <el-tag v-else size="medium" type="info">已结束</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="phone" align="center" label="手机号"></el-table-column>
         <el-table-column prop="cameraId" align="center" label="监控Id" width="150">
           <template slot-scope="scope">
-            <span v-if="scope.row.cameraId" size="medium" type="warning">待确认</span>
-            <el-button class="yc-edit" size="mini" v-else>点击绑定</el-button>
+            <span v-if="scope.row.cameraId">
+              <span>{{ scope.row.cameraId }}</span>
+              <el-divider direction="vertical"></el-divider>
+              <el-button type="text" size="mini" @click="unBindCamera(scope.row)">解除</el-button>
+            </span>
+            <el-button class="yc-edit" size="mini" v-else @click="doBindCamera(scope.row)">点击绑定</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="remark" align="center" label="备注"></el-table-column>
         <el-table-column prop="action" align="center" label="操作" width="200">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.petState === 0" class="yc-edit" size="small" @click="changePlaced(scope.row, 2)">确认到店</el-button>
-            <el-button v-if="scope.row.petState === 1" class="yc-edit" size="small" @click="changePlaced(scope.row, 0)">结束寄养</el-button>
+            <el-button
+              v-if="scope.row.petState === 1"
+              class="yc-edit"
+              size="small"
+              @click="changePlaced(scope.row, 2)"
+            >确认到店</el-button>
+            <el-button
+              v-if="scope.row.petState === 2"
+              class="yc-edit"
+              size="small"
+              @click="changePlaced(scope.row, 0)"
+            >完成寄养</el-button>
             <el-button class="yc-del" size="small" @click="doDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -63,6 +82,15 @@
         ></el-pagination>
       </div>
     </div>
+
+    <!-- 绑定摄像头 -->
+    <el-dialog title="选择监控" :visible.sync="showBindForm" width="700px">
+      <camera-choose v-model="bindForm.id"></camera-choose>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="yc-del" @click="showBindForm = false">取 消</el-button>
+        <el-button class="yc-btn" @click="confirmBindCamera">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -71,19 +99,22 @@ import dayjs from 'dayjs'
 import filterOptions from './filter-options'
 import GFilter from '@/components/GFilter'
 import grewApi from '@/api/grew'
+import deviceApi from '@/api/device'
 import { param } from '@/utils'
 import YcTabs from '@/components/YcTabs'
 import grew from '@/api/grew'
+import CameraChoose from './ components/CameraChoose'
 
 export default {
   name: 'Grew',
   components: {
     GFilter,
-    YcTabs
+    YcTabs,
+    CameraChoose
   },
   data() {
     return {
-      options: filterOptions,
+      filterOptions: filterOptions,
       petState: 0,
       listQuery: {},
       page: {
@@ -93,10 +124,15 @@ export default {
       },
       list: [],
       loading: false,
-      formLabelWidth: '120px',
       dialogFormVisible: false,
-      uploadLoading: false,
-      form: {}
+      form: {},
+      showBindForm: false,
+      bindForm: {
+        id: '',
+        uid: '',
+        bindFlag: 0,
+        petId: ''
+      }
     }
   },
   computed: {
@@ -108,17 +144,62 @@ export default {
     this.load()
   },
   methods: {
-    handleUploadSuccess(res, file) {
-      this.uploadLoading = false
-      this.form.logo = res.data
+    // 摄像头绑定
+    doBindCamera(row) {
+      this.bindForm.id = row.cameraId
+      this.bindForm.uid = row.uid
+      this.bindForm.bindFlag = 0
+      this.bindForm.petId = row.petId
+      this.showBindForm = true
     },
-    beforeUpload() {
-      this.uploadLoading = true
-      return true
+    unBindCamera(row) {
+      this.$confirm('解除摄像头绑定, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          deviceApi
+            .confirm({
+              id: row.cameraId,
+              uid: row.uid,
+              bindFlag: 1,
+              petId: row.petId
+            })
+            .then(res => {
+              this.load()
+              this.$notify({
+                title: '成功',
+                message: '解除成功',
+                type: 'success'
+              })
+            })
+        })
+        .catch(() => {})
+    },
+    // 确认绑定摄像头
+    confirmBindCamera() {
+      deviceApi
+        .bindCameraByUid({
+          id: this.bindForm.id,
+          uid: this.bindForm.uid,
+          bindFlag: this.bindForm.bindFlag,
+          petId: this.bindForm.petId
+        })
+        .then(res => {
+          this.showBindForm = false
+          this.$notify({
+            title: '成功',
+            message: '绑定成功',
+            type: 'success'
+          })
+          this.load()
+        })
     },
     // 确认到店 确认寄养时传 2，结束寄养时传 0
     changePlaced(row, placed) {
-      this.$confirm('确定宝贝到店, 是否继续?', '提示', {
+      const tips = placed === 2 ? '确定宝贝到店, 是否继续?' : '宝贝完成寄养，即将离店, 是否继续?'
+      this.$confirm(tips, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

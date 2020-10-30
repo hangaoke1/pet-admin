@@ -1,4 +1,5 @@
 <script>
+import { indexOf } from 'store/storages/all'
 export default {
   name: 'MenuItem',
   functional: true,
@@ -17,7 +18,13 @@ export default {
     const vnodes = []
 
     if (icon) {
-      vnodes.push(<svg-icon icon-class={icon}/>)
+      if (icon.indexOf('el-icon') > -1) {
+        vnodes.push(<i class={icon}/>)
+      } else if (icon.indexOf('yc-icon') > -1) {
+        vnodes.push(<i class={'yc-icon ' + icon} style='font-size: 18px;margin-right: 5px;' />)
+      } else {
+        vnodes.push(<svg-icon icon-class={icon}/>)
+      }
     }
 
     if (title) {

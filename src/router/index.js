@@ -77,7 +77,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'el-icon-s-home', affix: true }
       }
     ]
   }
@@ -91,7 +91,7 @@ export const asyncRoutes = [
   {
     path: '/product',
     component: Layout,
-    meta: { title: '商品服务', icon: 'guide', affix: false },
+    meta: { title: '商品服务', icon: 'el-icon-s-goods', affix: false },
     children: [
       {
         path: 'list',
@@ -131,7 +131,7 @@ export const asyncRoutes = [
     path: '/order',
     component: Layout,
     redirect: '/order/cashOrder',
-    meta: { title: '订单管理', icon: 'shopping', affix: false },
+    meta: { title: '订单管理', icon: 'el-icon-s-shop', affix: false },
     children: [
       {
         path: 'cashOrder',
@@ -169,7 +169,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/grew/index'),
         name: 'Grew',
-        meta: { title: '寄养申请', icon: 'bug', affix: false }
+        meta: { title: '寄养申请', icon: 'yc-icon-chongwu', affix: false }
       }
     ]
   },
@@ -182,7 +182,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/store/index'),
         name: 'Store',
-        meta: { title: '门店管理', icon: 'tree', affix: false }
+        meta: { title: '门店管理', icon: 'yc-icon-chongwujiyang', affix: false }
       }
     ]
   },
@@ -195,7 +195,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/device/index'),
         name: 'Device',
-        meta: { title: '监控管理', icon: 'eye-open', affix: false }
+        meta: { title: '监控管理', icon: 'yc-icon-jiankong', affix: false }
       }
     ]
   },
@@ -203,7 +203,7 @@ export const asyncRoutes = [
     path: '/setting',
     component: Layout,
     redirect: '/setting/notice',
-    meta: { title: '设置', icon: 'example', affix: false },
+    meta: { title: '设置', icon: 'el-icon-s-tools', affix: false },
     children: [
       {
         path: 'notice',
