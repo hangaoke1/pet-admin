@@ -1,13 +1,8 @@
 <template>
   <div class="p-2">
     <div class="bg-bai p-3">
-      <g-filter
-        class="pb-1"
-        :options="options"
-        @refresh="handleRefresh"
-        @search="handleSearch"
-      >
-        <el-button size="small" slot="left" @click="doAdd">添加门店</el-button>
+      <g-filter class="pb-1" :options="options" @refresh="handleRefresh" @search="handleSearch">
+        <el-button class="yc-del" size="small" slot="left" @click="doAdd">添加门店</el-button>
       </g-filter>
       <el-table
         class="mt-1"
@@ -29,15 +24,14 @@
         <el-table-column fixed="workTime" align="center" label="工作时间" width="200"></el-table-column>
         <el-table-column prop="storeState" align="center" label="营业状态">
           <template slot-scope="scope">
-            <el-tag size="medium" v-if="scope.row.storeState === 0">营业</el-tag>
-            <el-tag size="medium" type="warning" v-else>休息</el-tag>
+            <el-tag size="medium" type="success" v-if="scope.row.storeState === 0">营业</el-tag>
+            <el-tag size="medium" type="info" v-else>休息</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="storeState" align="center" label="营业状态">
+        <el-table-column prop="storeState" align="center" label="操作" width="200">
           <template slot-scope="scope">
-            <el-button size="small" type="text" @click="doUpdate(scope.row)">编辑</el-button>
-            <el-divider direction="vertical"></el-divider>
-            <el-button class="text-red" size="small" type="text" @click="doDelete(scope.row)">删除</el-button>
+            <el-button class="yc-edit" size="small" @click="doUpdate(scope.row)">编辑</el-button>
+            <el-button class="yc-del" size="small" @click="doDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

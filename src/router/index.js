@@ -77,7 +77,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: '首页', icon: 'el-icon-s-home', affix: true }
+        meta: { title: '首页', icon: 'yc-icon-shouye', affix: true }
       }
     ]
   }
@@ -91,7 +91,7 @@ export const asyncRoutes = [
   {
     path: '/product',
     component: Layout,
-    meta: { title: '商品服务', icon: 'el-icon-s-goods', affix: false },
+    meta: { title: '商品服务', icon: 'yc-icon-shangpin', affix: false },
     children: [
       {
         path: 'list',
@@ -131,7 +131,7 @@ export const asyncRoutes = [
     path: '/order',
     component: Layout,
     redirect: '/order/cashOrder',
-    meta: { title: '订单管理', icon: 'el-icon-s-shop', affix: false },
+    meta: { title: '订单管理', icon: 'yc-icon-icon', affix: false },
     children: [
       {
         path: 'cashOrder',
@@ -203,7 +203,7 @@ export const asyncRoutes = [
     path: '/setting',
     component: Layout,
     redirect: '/setting/notice',
-    meta: { title: '设置', icon: 'el-icon-s-tools', affix: false },
+    meta: { title: '设置', icon: 'yc-icon-peizhi', affix: false },
     children: [
       {
         path: 'notice',

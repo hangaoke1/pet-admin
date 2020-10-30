@@ -59,6 +59,10 @@
       margin-right: 16px;
     }
 
+    .yc-icon {
+      margin-right: 16px;
+    }
+
     .el-menu {
       border: none;
       height: 100%;
@@ -66,9 +70,10 @@
     }
 
     .el-submenu__title {
-      color: #999!important;
+      color: #999 !important;
       font-weight: bold;
     }
+
     // menu hover
     .submenu-title-noDropdown,
     .el-submenu__title {
@@ -81,9 +86,11 @@
       .el-menu-item {
         position: relative;
         font-size: 12px;
+
         span {
           padding-left: 20px;
         }
+
         &:after {
           content: '';
           position: absolute;
@@ -105,6 +112,7 @@
     // 菜单激活样式
     .el-menu-item {
       font-weight: bold;
+
       &:after {
         content: '';
         position: absolute;
@@ -120,9 +128,11 @@
         transition: transform 0.15s cubic-bezier(0.215, 0.61, 0.355, 1), opacity 0.15s;
       }
     }
+
     .el-menu-item.is-active {
       position: relative;
       background: $menuHover !important;
+
       &:after {
         transform: scaleY(1);
         opacity: 1;
@@ -162,6 +172,11 @@
         .svg-icon {
           margin-left: 20px;
         }
+
+        .yc-icon {
+          margin-left: 20px;
+        }
+        
       }
     }
 
@@ -172,6 +187,10 @@
         padding: 0 !important;
 
         .svg-icon {
+          margin-left: 20px;
+        }
+
+        .yc-icon {
           margin-left: 20px;
         }
 
@@ -233,6 +252,9 @@
 .el-menu--vertical {
   &>.el-menu {
     .svg-icon {
+      margin-right: 16px;
+    }
+    .yc-icon {
       margin-right: 16px;
     }
   }

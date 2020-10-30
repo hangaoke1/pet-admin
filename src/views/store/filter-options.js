@@ -5,7 +5,8 @@ export default [
     type: 'input',
     remote: false,
     placeholder: '请输入门店名称',
-    initialValue: ''
+    initialValue: '',
+    suffixIcon: 'el-icon-search'
   },
   {
     name: '营业状态',
