@@ -46,7 +46,13 @@
               <el-divider direction="vertical"></el-divider>
               <el-button type="text" size="mini" @click="unBindCamera(scope.row)">解除</el-button>
             </span>
-            <el-button class="yc-edit" size="mini" v-else @click="doBindCamera(scope.row)">点击绑定</el-button>
+            <el-button
+              v-else-if="scope.row.status === 2"
+              class="yc-edit"
+              size="mini"
+              @click="doBindCamera(scope.row)"
+            >点击绑定</el-button>
+            <span v-else>-</span>
           </template>
         </el-table-column>
         <el-table-column prop="remark" align="center" label="备注"></el-table-column>
@@ -115,7 +121,7 @@ export default {
   data() {
     return {
       filterOptions: filterOptions,
-      petState: 0,
+      petState: 1,
       listQuery: {},
       page: {
         pageNo: 1,
