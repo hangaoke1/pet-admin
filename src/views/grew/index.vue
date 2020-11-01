@@ -42,7 +42,7 @@
         <el-table-column prop="cameraId" align="center" label="监控Id" width="150">
           <template slot-scope="scope">
             <span v-if="scope.row.cameraId">
-              <span>{{ scope.row.cameraId }}</span>
+              <span>{{ scope.row.cameraName }}</span>
               <el-divider direction="vertical"></el-divider>
               <el-button type="text" size="mini" @click="unBindCamera(scope.row)">解除</el-button>
             </span>
@@ -158,7 +158,7 @@ export default {
       })
         .then(() => {
           deviceApi
-            .confirm({
+            .bindCameraByUid({
               id: row.id,
               cameraId: row.cameraId,
               bindFlag: 1
