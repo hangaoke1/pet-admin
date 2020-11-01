@@ -62,7 +62,7 @@
             style="height: 100%"
             class="flex align-center justify-center text-bai font-weight-bold font-s-2"
             v-if="!loading && list.length === 0"
-          >暂无预约数据哦～</div>
+          >暂无预约</div>
         </div>
       </div>
     </div>

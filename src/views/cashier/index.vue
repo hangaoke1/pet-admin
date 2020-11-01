@@ -91,7 +91,7 @@
     <!-- 底部 -->
     <div class="u-footer flex-0 flex align-center justify-between">
       <div>
-        <el-button type="primary" plain @click="doEmpty">清空列表</el-button>
+        <el-button class="yc-del" @click="doEmpty">清空列表</el-button>
       </div>
       <div>
         <button class="u-calc" @click="doSubmit">
