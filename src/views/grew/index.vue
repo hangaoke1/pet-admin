@@ -85,7 +85,7 @@
 
     <!-- 绑定摄像头 -->
     <el-dialog title="选择监控" :visible.sync="showBindForm" width="700px">
-      <camera-choose v-model="bindForm.id"></camera-choose>
+      <camera-choose v-model="bindForm.cameraId"></camera-choose>
       <span slot="footer" class="dialog-footer">
         <el-button class="yc-del" @click="showBindForm = false">取 消</el-button>
         <el-button class="yc-btn" @click="confirmBindCamera">确 定</el-button>
@@ -128,10 +128,9 @@ export default {
       form: {},
       showBindForm: false,
       bindForm: {
-        id: '',
-        uid: '',
-        bindFlag: 0,
-        petId: ''
+        id: '', // 寄养记录id
+        cameraId: '', // 摄像头id
+        bindFlag: 0
       }
     }
   },
@@ -146,10 +145,9 @@ export default {
   methods: {
     // 摄像头绑定
     doBindCamera(row) {
-      this.bindForm.id = row.cameraId
-      this.bindForm.uid = row.uid
+      this.bindForm.cameraId = row.cameraId
+      this.bindForm.id = row.id
       this.bindForm.bindFlag = 0
-      this.bindForm.petId = row.petId
       this.showBindForm = true
     },
     unBindCamera(row) {
@@ -161,10 +159,9 @@ export default {
         .then(() => {
           deviceApi
             .confirm({
-              id: row.cameraId,
-              uid: row.uid,
-              bindFlag: 1,
-              petId: row.petId
+              id: row.id,
+              cameraId: row.cameraId,
+              bindFlag: 1
             })
             .then(res => {
               this.load()
@@ -182,9 +179,8 @@ export default {
       deviceApi
         .bindCameraByUid({
           id: this.bindForm.id,
-          uid: this.bindForm.uid,
-          bindFlag: this.bindForm.bindFlag,
-          petId: this.bindForm.petId
+          cameraId: this.bindForm.cameraId,
+          bindFlag: this.bindForm.bindFlag
         })
         .then(res => {
           this.showBindForm = false
