@@ -12,23 +12,40 @@
       :key="index"
     >
       <div style="width: 80px">
-        <img v-if="item.imgUrl" style="width: 50px;height: 50px;" :src="item.imgUrl" alt="">
+        <img v-if="item.imgUrl" style="width: 50px;height: 50px;" :src="item.imgUrl" alt />
       </div>
       <div style="width: 30%">{{ item.name }}</div>
       <div style="width: 20%">{{ item.quantity }}</div>
       <div style="width: 20%">¥{{ item.paidFee.toFixed(2) }}</div>
     </div>
     <div class="u-order__footer">
+      <el-button class="yc-edit mr-1" size="small" @click="doPrint">打印小票</el-button>
       <div>总计：¥{{ info.paidFee.toFixed(2) }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { printCasherOrder } from '@/lodop/print'
 export default {
   name: 'OrderItem',
   props: {
     info: Object
+  },
+  computed: {
+    ...mapState({
+      storeInfo: state => state.store.store
+    })
+  },
+  methods: {
+    doPrint() {
+      const orderInfo = {
+        ...this.info,
+        skuJsonString: JSON.parse(this.info.skuJson)
+      }
+      printCasherOrder(this.storeInfo, orderInfo)
+    }
   }
 }
 </script>

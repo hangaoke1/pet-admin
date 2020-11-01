@@ -153,7 +153,7 @@
 <script>
 import { mapState } from 'vuex'
 import dayjs from 'dayjs'
-import { getLodop, installTip } from '@/lodop/LodopFuncs'
+import { printCasherOrder } from '@/lodop/print'
 import productApi from '@/api/product'
 import storeApi from '@/api/store'
 import SkuChoose from './components/SkuChoose'
@@ -276,51 +276,6 @@ export default {
       }
       this.showConfrim = true
     },
-    doPrint(orderInfo, orderId) {
-      // 门店信息
-      const storeInfo = this.storeInfo
-      const date = dayjs().format('YYYY-MM-DD HH:mm:ss')
-      // 商品信息
-      const skuStr = orderInfo.skuJsonString
-        .map(sku => {
-          return `
-                <div style="display: flex;margin-top: 2mm;">
-                  <div style="width: 30mm;font-size: 9pt;">${sku.name}</div>
-                  <div style="width: 21mm;text-align:center;font-size: 9pt;">${sku.quantity}</div>
-                  <div style="width: 21mm;text-align:center;font-size: 9pt;">${sku.price.toFixed(2)}</div>
-                </div>`
-        })
-        .join('\n')
-      const LODOP = getLodop()
-      LODOP.SET_PRINT_STYLE('FontSize', 8)
-      LODOP.ADD_PRINT_HTM(
-        0,
-        0,
-        '100%',
-        '100%',
-        `<div>
-          <h1  style="font-size: 16pt;text-align: center">${storeInfo.storeName}</h1>
-          <div style="margin-bottom: 2mm;font-size: 10pt;">订单号：${orderId}</div>
-          <div style="font-size: 10pt;">收银员：${storeInfo.storeName}</div>
-          <div style="padding: 2mm 0;font-size: 10pt;">= = = = = = = = = = = = = = = = = = = = = = =</div>
-          <div style="display: flex">
-            <div style="width: 30mm;font-size: 9pt;">商品名称</div>
-            <div style="width: 21mm;text-align:center;font-size: 9pt;">数量</div>
-            <div style="width: 21mm;text-align:center;font-size: 9pt;">单价</div>
-          </div>
-          ${skuStr}
-          <div style="padding: 2mm 0;font-size: 10pt;">= = = = = = = = = = = = = = = = = = = = = = =</div>
-          <div style="margin-bottom: 2mm;font-size: 10pt;">收款金额：${orderInfo.paidFee.toFixed(2)}元</div>
-          <div style="margin-bottom: 2mm;font-size: 10pt;">店铺地址：${storeInfo.address || '浙江省杭州市滨江区滨盛路1893号'}</div>
-          <div style="margin-bottom: 2mm;font-size: 10pt;">联系方式：${storeInfo.mobile}</div>
-          <div style="margin-bottom: 2mm;font-size: 10pt;">下单时间：${date}</div>
-          <img border="0" src="https://petcdd-1302550149.cos.ap-shanghai.myqcloud.com/8fa12292-f058-4c41-9be4-fa687bad38c2_gh_fe6998e56d68_258.jpg" style="width: 40mm;height:auto;" /> 
-        </div>`
-      )
-      // LODOP.ADD_PRINT_BARCODE(200, 20, 100, 100, 'QRCode', '1234567890版本7的最大值是122个字符123123');
-      LODOP.SET_PRINT_PAGESIZE(3, 720, 45, '');
-      LODOP.PRINT()
-    },
     // 下单
     doConfirm() {
       const totalFee = this.billTotal
@@ -350,8 +305,10 @@ export default {
         })
         this.showConfrim = false
         this.activeBill.list = []
+        // 打印小票
         if (this.needPrint) {
-          this.doPrint(params, res.data)
+          const orderInfo = {...params, orderId: res.data }
+          printCasherOrder(this.storeInfo, orderInfo)
         }
       })
     },
