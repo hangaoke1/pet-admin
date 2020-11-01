@@ -11,5 +11,5 @@ export default {
   // 查询设备绑定用户
   queryUserByCameraId: (params) => api.post('/admin/queryUserByCameraId', params),
   // 设备用户绑定操作 bindFlag 0表示绑定，1表示解绑
-  bindCameraByUid: (params) => api.post('/admin/bindCameraByUid', params)
+  bindCameraByUid: (params) => api.post('/admin/grew/bindCamera', params)
 };
