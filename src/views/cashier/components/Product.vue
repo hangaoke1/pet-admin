@@ -11,7 +11,7 @@
         @node-click="handleNodeClick"
       ></el-tree>
     </div>
-    <div class="u-sku__list p-1 flex-1">
+    <div class="u-sku__list p-1 flex-1" style="width: 1px">
       <div class="flex align-center justify-between pb-1">
         <div>所属分类：{{ menu.categoryName }}</div>
         <el-input

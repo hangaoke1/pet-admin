@@ -31,6 +31,7 @@ export default {
   /** 线上预约订单 */
   subscribeOrderQuery: (params) => api.post('/admin/queryReserveWashList', params),
   subscribeOrderFinish: (params) => api.post('/admin/finishReserveWash', params),
+  subscribeOrderCalendar: (params) => api.post('/admin/reserve/calendar', params),
 
   /** 线上寄养订单 */
   grewOrderQuery: params => api.post('/admin/grew/queryList', params),

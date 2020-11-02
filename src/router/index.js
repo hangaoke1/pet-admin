@@ -174,6 +174,19 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/coupons',
+    component: Layout,
+    redirect: '/coupons/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/coupons/index'),
+        name: 'Device',
+        meta: { title: '优惠券', icon: 'yc-icon-youhuiquan', affix: false }
+      }
+    ]
+  },
+  {
     path: '/store',
     component: Layout,
     redirect: '/publish/index',

@@ -21,7 +21,7 @@ export default {
       if (icon.indexOf('el-icon') > -1) {
         vnodes.push(<i class={icon} style='font-size: 18px;margin-right: 16px;' />)
       } else if (icon.indexOf('yc-icon') > -1) {
-        vnodes.push(<i class={'yc-icon ' + icon} style='font-size: 18px;margin-right: 16px;' />)
+        vnodes.push(<i class={'yc-icon ' + icon} style='font-weight: normal;font-size: 18px;margin-right: 16px;' />)
       } else {
         vnodes.push(<svg-icon icon-class={icon}/>)
       }

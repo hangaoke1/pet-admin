@@ -1,7 +1,14 @@
 <template>
   <div>
     <div class="u-wrap flex align-center justify-center">
-      <el-calendar class="u-calendar flex-0" v-model="date"></el-calendar>
+      <el-calendar class="u-calendar flex-0" style="width: 400px" v-model="date">
+        <template slot="dateCell" slot-scope="scope">
+          <div style="position: relative">
+            <span>{{ scope.date.getDate() }}</span>
+            <span class="u-count" v-if="getCount(scope.data.day)">{{ getCount(scope.data.day) }}</span>
+          </div>
+        </template>
+      </el-calendar>
       <div class="u-todo flex-0">
         <div class="u-todo__title">
           <span v-if="reserveOrderStatus === 100">预约列表</span>
@@ -95,7 +102,8 @@ export default {
       date: new Date(),
       reserveOrderStatus: 100,
       total: 0,
-      list: []
+      list: [],
+      countMap: {}
     }
   },
   watch: {
@@ -107,8 +115,29 @@ export default {
   },
   mounted() {
     this.getList()
+    this.getDateCount()
   },
   methods: {
+    getCount(day) {
+      return this.countMap[day]
+    },
+    getDateStr(v) {
+      return dayjs(v).format('YYYY-MM-DD')
+    },
+    getDateCount() {
+      const startReserveTime = dayjs().add(-1, 'month').format('YYYY-MM-DD')
+      const endReserveTime = dayjs().add(1, 'month').format('YYYY-MM-DD')
+      orderApi.subscribeOrderCalendar({
+        startReserveTime,
+        endReserveTime
+      }).then(res => {
+        const list = res.data || []
+        list.forEach(v => {
+          this.countMap[v.date] = v.count
+        })
+        this.date = new Date()
+      })
+    },
     // 执行完成
     finishService(row) {
       const orderId = row.reserveWash.id
@@ -160,6 +189,21 @@ export default {
 <style lang="less" scoped>
 .u-wrap {
   overflow-x: auto;
+}
+.u-count {
+  font-size: 10px;
+  position: absolute;
+  right: -15px;
+  bottom: -12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  background: red;
+  color: #fff;
+  font-weight: bold;
 }
 .u-calendar {
   width: 400px;
