@@ -221,7 +221,7 @@ export default {
   watch: {
     needPrint(val) {
       if (val) {
-        getLodop()
+        // getLodop()
       }
     }
   },
@@ -307,7 +307,7 @@ export default {
         this.activeBill.list = []
         // 打印小票
         if (this.needPrint) {
-          const orderInfo = {...params, orderId: res.data }
+          const orderInfo = { ...params, orderId: res.data }
           printCasherOrder(this.storeInfo, orderInfo)
         }
       })

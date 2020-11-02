@@ -44,6 +44,7 @@ export default {
         ...this.info,
         skuJsonString: JSON.parse(this.info.skuJson)
       }
+      console.log('>>>> ORDERinFO', orderInfo)
       printCasherOrder(this.storeInfo, orderInfo)
     }
   }
