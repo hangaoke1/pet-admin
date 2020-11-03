@@ -55,6 +55,25 @@
                 :info="sv"
               ></service-item>
             </div>
+            <div class="text-right font-s-12 px-2">
+              <div class="u-todo__price">
+                <span class="u-todo__price-label">应付款：</span>
+                <div class="u-todo__price-content">
+                  <span
+                    class="u-todo__price-val"
+                  >{{ (item.reserveWash.totalFee - item.reserveWash.discountFee).toFixed(2) }}</span>
+                  <span class="u-todo__price-unit">元</span>
+                </div>
+              </div>
+
+              <div class="u-todo__price">
+                <span class="u-todo__price-label">实付款：</span>
+                <div class="u-todo__price-content">
+                  <span class="u-todo__price-val">{{ item.reserveWash.paidFee.toFixed(2) }}</span>
+                  <span class="u-todo__price-unit">元</span>
+                </div>
+              </div>
+            </div>
             <div
               v-if="item.reserveWash.reserveOrderStatus === 100"
               class="u-action flex align-center justify-center"
@@ -127,16 +146,18 @@ export default {
     getDateCount() {
       const startReserveTime = dayjs().add(-1, 'month').format('YYYY-MM-DD')
       const endReserveTime = dayjs().add(1, 'month').format('YYYY-MM-DD')
-      orderApi.subscribeOrderCalendar({
-        startReserveTime,
-        endReserveTime
-      }).then(res => {
-        const list = res.data || []
-        list.forEach(v => {
-          this.countMap[v.date] = v.count
+      orderApi
+        .subscribeOrderCalendar({
+          startReserveTime,
+          endReserveTime
         })
-        this.date = new Date()
-      })
+        .then(res => {
+          const list = res.data || []
+          list.forEach(v => {
+            this.countMap[v.date] = v.count
+          })
+          this.date = new Date()
+        })
     },
     // 执行完成
     finishService(row) {
@@ -194,14 +215,14 @@ export default {
   font-size: 10px;
   position: absolute;
   right: -15px;
-  bottom: -12px;
+  top: -12px;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 15px;
   height: 15px;
   border-radius: 15px;
-  background: red;
+  background: #ff4d4f;
   color: #fff;
   font-weight: bold;
 }
@@ -261,6 +282,7 @@ export default {
     width: 100%;
     flex: 1;
     overflow: auto;
+    padding-top: 20px;
 
     &::-webkit-scrollbar {
       width: 6px;
@@ -279,6 +301,28 @@ export default {
     margin: 0 auto;
     margin-bottom: 20px;
     border-radius: 10px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    transition: all 300ms;
+    &:hover {
+      box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.1)
+    }
+  }
+  &__price {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 12px;
+    margin-bottom: 5px;
+    &-content {
+      width: 70px;
+    }
+    &-val {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    &-unit {
+      font-size: 12px;
+    }
   }
   .u-action {
     font-size: 15px;

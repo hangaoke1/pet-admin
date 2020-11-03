@@ -17,8 +17,8 @@
           <div class="row-item" v-for="s in item.children" :key="s.id">
             <div class="content-left">{{ s.name }}</div>
             <div class="content-right">
-              <el-button type="primary" round @click="editMeal(s)">价目表</el-button>
-              <el-button round>删除</el-button>
+              <el-button class="yc-edit" @click="editMeal(s)">价目表</el-button>
+              <el-button class="yc-del" @click="delMeal(s)">删除</el-button>
             </div>
           </div>
           <div class="row-item u-add">
@@ -178,7 +178,11 @@ export default {
           mealItemList: form.mealItemsList
         })
         .then(() => {
-          this.$message.success('操作成功')
+          this.$notify({
+            title: '成功',
+            message: '操作成功',
+            type: 'success'
+          })
           this.dialogVisible = false
           this.getList()
         })
@@ -202,6 +206,28 @@ export default {
         mealItemsList: _.cloneDeep(meal.mealItemsList) || []
       }
       this.dialogVisible = true
+    },
+    delMeal(meal) {
+      this.$confirm('确认删除改套餐？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          serviceApi
+            .del({
+              id: meal.id
+            })
+            .then(res => {
+              this.getList()
+              this.$notify({
+                title: '成功',
+                message: '操作成功',
+                type: 'success'
+              })
+            })
+        })
+        .catch(() => {})
     },
     addMealItems() {
       this.editMealForm.mealItemsList.push({
