@@ -3,11 +3,11 @@
   <div class="p-2">
     <div class="u-offsv">
       <div class="u-offsv__item" v-for="item in list" :key="item.id">
-        <el-image class="u-offsv__logo" :src="item.image" fit="cover" lazy webp></el-image>
+        <el-image class="u-offsv__logo" :src="item.image" fit="fill" lazy webp></el-image>
         <div class="u-offsv__name">{{ item.name }}</div>
         <div class="u-offsv__price">
           <span class="font-s-12">¥</span>
-          <span class="font-weight-bold">{{ item.price.toFixed(2) }}</span>
+          <span class="font-weight-bold f-number">{{ item.price | numFixed2 }}</span>
         </div>
         <div class="u-offsv__mask">
           <i class="el-icon-edit-outline" @click.stop="doUpdate(item)"></i>

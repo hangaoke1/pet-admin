@@ -90,12 +90,12 @@
       </el-table-column>
       <el-table-column align="center" label="订单金额" width="150">
         <template slot-scope="{row}">
-          <span>¥ {{ row.reserveWash.totalFee }}</span>
+          <span class="f-number">¥ {{ row.reserveWash.totalFee }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="实付金额" width="150">
         <template slot-scope="{row}">
-          <span>¥ {{ row.reserveWash.paidFee }}</span>
+          <span class="f-number">¥ {{ row.reserveWash.paidFee }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="订单状态" width="150">

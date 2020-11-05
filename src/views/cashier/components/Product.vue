@@ -43,9 +43,15 @@
         <el-table-column prop="skuName" label="商品名称" align="center">
           <template slot-scope="scope">{{ scope.row.skuName }}</template>
         </el-table-column>
-        <el-table-column prop="stock" label="库存" align="center" width="100"></el-table-column>
+        <el-table-column prop="stock" label="库存" align="center" width="100">
+          <template slot-scope="scope">
+            <span class="f-number">{{ scope.row.stock }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="price" label="价格(元)" align="center" width="150">
-          <template slot-scope="scope">{{ scope.row.price.toFixed(2) }}</template>
+          <template slot-scope="scope">
+            <span class="f-number">{{ scope.row.price.toFixed(2) }}</span>
+          </template>
         </el-table-column>
       </el-table>
 

@@ -41,8 +41,16 @@
         <el-table-column prop="date" label="服务类目" align="center">
           <template slot-scope="scope">{{ scope.row.category }}-{{ scope.row.mealName }}</template>
         </el-table-column>
-        <el-table-column prop="originalPrice" label="原价(元)" align="center"></el-table-column>
-        <el-table-column prop="memberPrice" label="会员价(元)" align="center"></el-table-column>
+        <el-table-column prop="originalPrice" label="原价(元)" align="center">
+          <template slot-scope="scope">
+            <span class="f-number">{{ scope.row.originalPrice.toFixed(2) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="memberPrice" label="会员价(元)" align="center">
+          <template slot-scope="scope">
+            <span class="f-number">{{ scope.row.memberPrice.toFixed(2) }}</span>
+          </template>
+        </el-table-column>
       </el-table>
 
       <div class="u-page">

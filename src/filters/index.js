@@ -74,3 +74,8 @@ export function fmtWebp(url) {
   }
   return url + `?imageView2/format/webp`
 }
+
+// 保留两位小数
+export function numFixed2(value) {
+  return Number(value).toFixed(2)
+}

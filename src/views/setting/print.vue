@@ -12,7 +12,7 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-button type="primary" size="mini" @click="doTest">打印测试</el-button>
+        <el-button class="yc-btn" size="mini" @click="doTest">打印测试</el-button>
       </div>
     </div>
   </div>

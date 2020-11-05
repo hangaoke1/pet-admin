@@ -118,17 +118,17 @@
       </el-table-column>
       <el-table-column label="sku数量" width="80" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.productSkuList.length }}</span>
+          <span class="f-number">{{ row.productSkuList.length }}</span>
         </template>
       </el-table-column>
       <el-table-column label="售价(元)" width="120" align="center">
         <template slot-scope="{row}">
-          <span>{{ getPrice(row.productSkuList) }}</span>
+          <span class="f-number">{{ getPrice(row.productSkuList) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="库存(总)" width="80" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.productSkuList.reduce((sum, item) => sum += item.originalStock, 0) }}</span>
+          <span class="f-number">{{ row.productSkuList.reduce((sum, item) => sum += item.originalStock, 0) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="商品分类" width="80" align="center">

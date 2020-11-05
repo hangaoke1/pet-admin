@@ -2,7 +2,7 @@
   <div class="p-2">
     <div class="bg-bai p-3">
       <div class="mb-2 text-left">
-        <el-button type="primary" size="small" @click="handleAdd">新增公告</el-button>
+        <el-button class="yc-btn" size="small" @click="handleAdd">新增公告</el-button>
       </div>
       <el-table
         size="small"
@@ -15,8 +15,8 @@
         <el-table-column prop="title" label="公告内容"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button class="yc-btn" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button class="yc-del" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -28,8 +28,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleSubmit">确 定</el-button>
+        <el-button class="yc-del" @click="dialogVisible = false">取 消</el-button>
+        <el-button class="yc-btn" @click="handleSubmit">确 定</el-button>
       </div>
     </el-dialog>
   </div>

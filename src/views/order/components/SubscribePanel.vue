@@ -60,7 +60,7 @@
                 <span class="u-todo__price-label">应付款：</span>
                 <div class="u-todo__price-content">
                   <span
-                    class="u-todo__price-val"
+                    class="u-todo__price-val f-number"
                   >{{ (item.reserveWash.totalFee - item.reserveWash.discountFee).toFixed(2) }}</span>
                   <span class="u-todo__price-unit">元</span>
                 </div>
@@ -69,7 +69,7 @@
               <div class="u-todo__price">
                 <span class="u-todo__price-label">实付款：</span>
                 <div class="u-todo__price-content">
-                  <span class="u-todo__price-val">{{ item.reserveWash.paidFee.toFixed(2) }}</span>
+                  <span class="u-todo__price-val f-number">{{ item.reserveWash.paidFee.toFixed(2) }}</span>
                   <span class="u-todo__price-unit">元</span>
                 </div>
               </div>
@@ -149,7 +149,8 @@ export default {
       orderApi
         .subscribeOrderCalendar({
           startReserveTime,
-          endReserveTime
+          endReserveTime,
+          reserveOrderStatus: 100
         })
         .then(res => {
           const list = res.data || []
@@ -304,7 +305,7 @@ export default {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     transition: all 300ms;
     &:hover {
-      box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.1)
+      box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.1);
     }
   }
   &__price {

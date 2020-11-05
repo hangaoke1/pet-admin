@@ -11,7 +11,7 @@
     <div class="flex-1 mr-1 font-s-14 font-weight-bold">{{ info.name }}</div>
     <div class="flex-0">
       <span class="font-s-12">¥</span>
-      <span class="font-s-14 font-weight-bold">{{ info.price.toFixed(2) }}</span>
+      <span class="font-s-14 f-number">{{ info.price.toFixed(2) }}</span>
     </div>
   </div>
 </template>

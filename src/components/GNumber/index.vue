@@ -1,6 +1,14 @@
 <template>
-  <el-input :size="size" :value="value" @input="handleInput" @blur="handleBlur" :placeholder="placeholder">
-    <template slot="append"><slot name="append"></slot></template>
+  <el-input
+    :size="size"
+    :value="value"
+    @input="handleInput"
+    @blur="handleBlur"
+    :placeholder="placeholder"
+  >
+    <template slot="append">
+      <slot name="append"></slot>
+    </template>
   </el-input>
 </template>
 
@@ -76,5 +84,4 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
 </style>

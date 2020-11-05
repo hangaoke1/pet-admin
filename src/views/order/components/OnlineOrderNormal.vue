@@ -63,7 +63,7 @@
       </el-table-column>
       <el-table-column label="订单总价(元)" width="150" align="center">
         <template slot-scope="{row}">
-          <span class="font-weight-bold font-s-14">{{ row.order.totalFee.toFixed(2) }}</span>
+          <span class="f-number font-s-14">{{ row.order.totalFee.toFixed(2) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="收货地址" min-width="300" align="center">
@@ -98,12 +98,13 @@
           <div class="u-createTime">{{ row.order.createTime }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="250" fixed="right" align="center">
+      <el-table-column label="操作" min-width="250" fixed="right" align="center">
         <template slot-scope="{row}">
           <el-button size="mini" class="yc-btn" @click="goDetail(row)">详情</el-button>
+          <el-button size="mini" class="yc-del" @click="doPrint(row)">打印小票</el-button>
           <el-button
             v-if="row.order.orderStatus == 200"
-            type="warning"
+            class="yc-del"
             size="mini"
             @click="sendOrder(row)"
           >发货</el-button>
@@ -152,8 +153,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import orderApi from '@/api/order'
+import { printOnlineOrder } from '@/lodop/print'
 import { recentWeek, recentMonth } from '@/utils/date'
 import YcRadio from '@/components/YcRadio'
 import SkuList from './SkuList'
@@ -268,10 +271,18 @@ export default {
       list: []
     }
   },
+  computed: {
+    ...mapState({
+      storeInfo: state => state.store.store
+    })
+  },
   beforeMount() {
     this.getList()
   },
   methods: {
+    doPrint(orderInfo) {
+      printOnlineOrder({ storeInfo: this.storeInfo, orderInfo })
+    },
     confirmSend() {
       // 非商家配送 必须要单号
       if (this.sendForm.logisticsName !== '商家配送' && !this.sendForm.logisticsNo) {
@@ -290,7 +301,7 @@ export default {
                 title: '成功',
                 message: '发货成功',
                 type: 'success'
-              });
+              })
               this.getList()
               this.dialogFormVisible = false
             })

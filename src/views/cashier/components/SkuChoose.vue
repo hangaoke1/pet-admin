@@ -25,8 +25,8 @@
             <span class="text-main">{{ productSelect.length }}件</span>
           </span>
         </span>
-        <el-button @click="visible = false">取 消</el-button>
-        <el-button type="primary" @click="handleConfirm">确 定</el-button>
+        <el-button class="yc-del" @click="visible = false">取 消</el-button>
+        <el-button class="yc-btn" @click="handleConfirm">确 定</el-button>
       </div>
     </el-dialog>
   </div>

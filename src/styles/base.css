@@ -1,4 +1,13 @@
+@font-face {
+  font-family: NumberFont;
+  src: url(https://hgkcdn.oss-cn-shanghai.aliyuncs.com/test/NumberMedium.2736700f.ttf);
+}
+
 /* 按钮配置 */
+.yc-input .el-input__inner {
+  border-radius: 15px;
+}
+
 .yc-btn {
   border-radius: 20px;
   background-color: #ffdd03;
@@ -393,7 +402,7 @@
 }
 
 .bg-card {
-  background-color: #f7f8fa;
+  background-color: #fafafa;
 }
 
 .bg-hui {
@@ -409,6 +418,10 @@
 }
 
 .text-center {
+  text-align: center;
+}
+
+.text-center .el-input__inner {
   text-align: center;
 }
 
@@ -568,7 +581,7 @@
 }
 
 .box-shadow {
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
 }
 
 .border-hui {
@@ -579,7 +592,19 @@
   border: #FFFFFF solid 1px;
 }
 
+.f-number {
+  font-family: NumberFont;
+}
+
+.f-number .el-input__inner {
+  font-family: NumberFont;
+}
+
 .font-weight-bold {
+  font-weight: bold;
+}
+
+.font-weight-bold .el-input__inner {
   font-weight: bold;
 }
 
@@ -645,7 +670,7 @@
 
 /* 功能 */
 .ellipsis-1 {
-	overflow: hidden;
+  overflow: hidden;
   display: -webkit-box;
   text-overflow: ellipsis;
   -webkit-line-clamp: 1;
@@ -655,7 +680,7 @@
 }
 
 .ellipsis-2 {
-	overflow: hidden;
+  overflow: hidden;
   display: -webkit-box;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;

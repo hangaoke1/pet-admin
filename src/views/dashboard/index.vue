@@ -8,7 +8,12 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">商城订单</div>
-            <count-to :start-val="0" :end-val="32" :duration="1500" class="card-panel-num" />
+            <count-to
+              :start-val="0"
+              :end-val="32"
+              :duration="1500"
+              class="card-panel-num f-number"
+            />
           </div>
         </div>
       </el-col>
@@ -19,7 +24,12 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">门店订单</div>
-            <count-to :start-val="0" :end-val="12" :duration="1500" class="card-panel-num" />
+            <count-to
+              :start-val="0"
+              :end-val="12"
+              :duration="1500"
+              class="card-panel-num f-number"
+            />
           </div>
         </div>
       </el-col>
@@ -30,7 +40,7 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">服务预约</div>
-            <count-to :start-val="0" :end-val="5" :duration="1500" class="card-panel-num" />
+            <count-to :start-val="0" :end-val="5" :duration="1500" class="card-panel-num f-number" />
           </div>
         </div>
       </el-col>
@@ -43,7 +53,12 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">寄养申请</div>
-            <count-to :start-val="0" :end-val="32" :duration="1500" class="card-panel-num" />
+            <count-to
+              :start-val="0"
+              :end-val="32"
+              :duration="1500"
+              class="card-panel-num f-number"
+            />
           </div>
         </div>
       </el-col>
@@ -54,7 +69,12 @@
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">营业额</div>
-            <count-to :start-val="0" :end-val="12" :duration="1500" class="card-panel-num" />
+            <count-to
+              :start-val="0"
+              :end-val="12"
+              :duration="1500"
+              class="card-panel-num f-number"
+            />
           </div>
         </div>
       </el-col>

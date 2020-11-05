@@ -22,14 +22,14 @@
       </el-table-column>
       <el-table-column prop="price" label="是否有效" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.indate === 0" type="success" size="small">有效</el-tag>
+          <el-tag v-if="scope.row.enableFlag === 0" type="success" size="small">有效</el-tag>
           <el-tag v-else type="info" size="small">失效</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注" align="center"></el-table-column>
       <el-table-column prop="price" label="操作" align="center" width="200">
         <template slot-scope="scope">
-          <el-button class="yc-edit" size="small" @click="showGiven">发放</el-button>
+          <el-button class="yc-edit" size="small" @click="showGiven(scope.row)">发放</el-button>
           <el-button class="yc-del" size="small" @click="showEdit(scope.row)">修改</el-button>
         </template>
       </el-table-column>
@@ -73,10 +73,10 @@
         </el-form-item>
         <el-form-item label="是否有效：" :label-width="formLabelWidth">
           <el-switch
-            v-model="form.indate"
+            v-model="form.enableFlag"
             active-color="#13ce66"
-            active-value="0"
-            inactive-value="1"
+            :active-value="0"
+            :inactive-value="1"
           ></el-switch>
         </el-form-item>
         <el-form-item label="备注：" :label-width="formLabelWidth">
@@ -92,8 +92,8 @@
     <!-- 发放 -->
     <el-dialog :show-close="false" :visible.sync="showGivenForm" width="700px">
       <div class="text-center" slot="title">发放</div>
-      <el-form :model="givenForm">
-        <el-form-item label="有效日期：" :label-width="formLabelWidth">
+      <el-form :model="givenForm" :rules="rules" ref="form">
+        <el-form-item prop="dateRange" label="有效日期：" :label-width="formLabelWidth">
           <el-date-picker
             type="daterange"
             size="small"
@@ -111,34 +111,47 @@
             <el-radio :label="1">指定用户</el-radio>
           </el-radio-group>
         </el-form-item>
-
-        <el-form-item v-if="givenForm.sendType === 1" label="指定用户：" :label-width="formLabelWidth">
-          <el-table :data="[]" style="width: 100%" size="mini">
-            <el-table-column prop="date" label="用户名称" width="180"></el-table-column>
-            <el-table-column prop="name" label="用户等级" width="180"></el-table-column>
-            <el-table-column prop="address" label="操作">
+        <template v-if="givenForm.sendType === 1">
+          <el-table :data="givenForm.userList" style="width: 100%" size="mini" row-key="uid">
+            <el-table-column prop="avatar" label="头像" align="center">
               <template slot-scope="scope">
-                <el-button class="yc-edit" size="mini">删除</el-button>
+                <el-avatar :src="scope.row.avatar"></el-avatar>
+              </template>
+            </el-table-column>
+            <el-table-column prop="nickname" label="用户名称" align="center"></el-table-column>
+            <el-table-column prop="vipName" label="用户等级" align="center"></el-table-column>
+            <el-table-column prop="mobile" label="联系方式" align="center"></el-table-column>
+            <el-table-column prop="address" label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button class="yc-edit" size="mini" @click="delUser(scope.row)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
           <div class="p-1 flex align-center justify-center">
-            <el-button class="yc-btn" size="small">添加用户</el-button>
+            <el-button class="yc-btn" size="small" @click="showUserChoose">添加用户</el-button>
           </div>
-        </el-form-item>
+        </template>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="showGivenForm = false">取 消</el-button>
-        <el-button type="primary" @click="showGivenForm = false">确 定</el-button>
+        <el-button class="yc-del" @click="showGivenForm = false">取 消</el-button>
+        <el-button class="yc-btn" @click="confirmGiven">发 放</el-button>
       </span>
     </el-dialog>
+
+    <!-- 用户选择 -->
+    <yc-user-choose ref="userChoose" v-model="givenForm.userList"></yc-user-choose>
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import couponsApi from '@/api/coupons'
+import YcUserChoose from '@/components/YcUserChoose'
 export default {
   name: 'Coupons',
+  components: {
+    YcUserChoose
+  },
   data() {
     return {
       list: [],
@@ -152,8 +165,11 @@ export default {
       givenForm: {
         sendType: 0,
         couponsId: '',
-        date: null,
+        dateRange: null,
         userList: []
+      },
+      rules: {
+        dateRange: [{ required: true, message: '请选择有效日期', trigger: 'change' }]
       }
     }
   },
@@ -166,7 +182,52 @@ export default {
     this.getList()
   },
   methods: {
-    showGiven() {
+    // 执行发卡
+    confirmGiven() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          if (this.givenForm.sendType === 1 && this.givenForm.userList.length === 0) {
+            return this.$message.warning('请添加发放会员对象')
+          }
+          const params = {
+            couponsId: this.givenForm.id,
+            userId:
+              this.givenForm.sendType === 0
+                ? ''
+                : this.givenForm.userList.map(v => v.uid).join(','),
+            startTime: dayjs(this.givenForm.dateRange[0]).format('YYYY-MM-DD'),
+            endTime: dayjs(this.givenForm.dateRange[1]).format('YYYY-MM-DD')
+          }
+          couponsApi.give(params).then(() => {
+            this.$notify({
+              title: '成功',
+              message: '赠送完成',
+              type: 'success'
+            })
+            this.showGivenForm = false
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    // 删除选中会员
+    delUser(row) {
+      this.givenForm.userList = this.givenForm.userList.filter(v => row.uid !== v.uid)
+    },
+    // 展示会员选择
+    showUserChoose() {
+      this.$refs.userChoose.show()
+    },
+    // 展示发卡弹窗
+    showGiven(row) {
+      this.givenForm = {
+        id: row.id,
+        sendType: 0,
+        couponsId: '',
+        dateRange: null,
+        userList: []
+      }
       this.showGivenForm = true
     },
     // 新增优惠券
@@ -175,7 +236,7 @@ export default {
         name: '',
         required: '',
         remark: '',
-        indate: 0,
+        enableFlag: 0,
         value: ''
       }
       this.showForm = true

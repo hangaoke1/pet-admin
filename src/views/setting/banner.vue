@@ -2,17 +2,21 @@
   <div class="p-2">
     <div class="bg-bai p-3">
       <div class="mb-2 text-left">
-        <el-button type="primary" size="small" @click="handleAdd">新增轮播</el-button>
+        <el-button class="yc-btn" @click="handleAdd">新增轮播</el-button>
       </div>
+      <yc-radio
+        :options="['首页轮播', '商城轮播'].map(v=> ({ label: v, value: v}))"
+        v-model="listType"
+      ></yc-radio>
       <el-table
+        class="mt-1"
         v-loading="loading"
-        :data="list"
+        :data="showList"
         size="small"
         style="width: 100%"
         header-row-class-name="u-tabel__header"
       >
-        <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column prop="name" label="图片">
+        <el-table-column prop="name" label="图片" align="center">
           <template slot-scope="scope">
             <el-image
               style="width: 187px; height: 100px"
@@ -24,11 +28,17 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="detail" label="描述"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="类型" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-tag size="mini" v-if="scope.row.bannerType === 0">首页</el-tag>
+            <el-tag size="mini" v-else>商城</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="detail" label="描述" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button class="yc-btn" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button class="yc-del" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -57,6 +67,7 @@
                 上传图片
                 <i class="el-icon-upload el-icon--right"></i>
               </el-button>
+              <span class="ml-1 font-s-12 text-hui">温馨提示：{{ tip }}</span>
             </el-upload>
           </div>
         </el-form-item>
@@ -75,8 +86,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleSubmit">确 定</el-button>
+        <el-button class="yc-del" @click="dialogVisible = false">取 消</el-button>
+        <el-button class="yc-btn" @click="handleSubmit">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -84,9 +95,13 @@
 
 <script>
 import _ from 'lodash'
+import YcRadio from '@/components/YcRadio'
 import bannerApi from '@/api/banner'
 export default {
   name: 'Banner',
+  components: {
+    YcRadio
+  },
   data() {
     return {
       type: 'add',
@@ -95,6 +110,7 @@ export default {
       loading: true,
       uploadLoading: false,
       list: [],
+      listType: '首页轮播',
       options: [
         {
           value: 0,
@@ -105,6 +121,22 @@ export default {
           label: '商城'
         }
       ]
+    }
+  },
+  computed: {
+    tip() {
+      if (this.form.bannerType === 0) {
+        return '建议尺寸750x540'
+      } else {
+        return '建议尺寸710x268'
+      }
+    },
+    showList() {
+      if (this.listType === '首页轮播') {
+        return this.list.filter(v => v.bannerType === 0)
+      } else {
+        return this.list.filter(v => v.bannerType === 1)
+      }
     }
   },
   mounted() {

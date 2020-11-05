@@ -189,24 +189,30 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="sku原价" width="150" align="center">
+        <!-- <el-table-column label="sku原价" width="150" align="center">
           <template slot-scope="{row}">
             <g-number v-model="row.originPrice"></g-number>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="sku进货价" width="150" align="center">
           <template slot-scope="{row}">
-            <g-number v-model="row.supplyPrice"></g-number>
+            <g-number class="text-center f-number" v-model="row.supplyPrice"></g-number>
           </template>
         </el-table-column>
-        <el-table-column label-class-name="u-require" label="sku价格" width="150" align="center">
+        <el-table-column label-class-name="u-require" label="sku零售价" width="150" align="center">
           <template slot-scope="{row}">
-            <g-number v-model="row.price"></g-number>
+            <g-number class="text-center f-number" v-model="row.price"></g-number>
+          </template>
+        </el-table-column>
+        <el-table-column label="sku会员价" width="150" align="center">
+          <template slot-scope="{row}">
+            <g-number class="text-center f-number" v-model="row.memberPrice"></g-number>
           </template>
         </el-table-column>
         <el-table-column label-class-name="u-require" label="sku库存" width="150" align="center">
           <template slot-scope="{row}">
             <el-input-number
+              class="text-center f-number"
               v-model="row.stock"
               controls-position="right"
               :min="0"

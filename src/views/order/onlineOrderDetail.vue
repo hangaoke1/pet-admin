@@ -25,8 +25,12 @@
         <div class="u-title">基本信息</div>
         <div class="u-table">
           <el-table :data="[orderInfo.order]">
-            <el-table-column prop="orderId" label="订单号" align="center"></el-table-column>
-            <el-table-column prop="nickName" label="用户账号" align="center">
+            <el-table-column prop="orderId" label="订单号" align="center">
+              <template slot-scope="{row}">
+                <span class="f-number">{{ row.orderId }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="nickName" label="微信昵称" align="center">
               <template>
                 <span>{{ orderInfo.user.nickName }}</span>
               </template>
@@ -37,7 +41,11 @@
               </template>
             </el-table-column>
             <el-table-column prop="logisticsName" label="物流公司" align="center"></el-table-column>
-            <el-table-column prop="logisticsNo" label="物流单号" align="center"></el-table-column>
+            <el-table-column prop="logisticsNo" label="物流单号" align="center">
+              <template slot-scope="{row}">
+                <span class="f-number">{{ row.logisticsNo }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="sellerMemo" label="备注" align="center"></el-table-column>
           </el-table>
         </div>
@@ -45,7 +53,11 @@
         <div class="u-table">
           <el-table :data="[orderInfo.userAddress]">
             <el-table-column prop="contact" label="收货人" align="center"></el-table-column>
-            <el-table-column prop="mobile" label="手机号" align="center"></el-table-column>
+            <el-table-column prop="mobile" label="手机号" align="center">
+              <template slot-scope="{row}">
+                <span class="f-number">{{ row.mobile }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="address" label="收货地址" align="center">
               <template slot-scope="{row}">
                 <span>{{ row.province }}</span>
@@ -60,7 +72,9 @@
         <div class="u-table">
           <el-table :data="orderInfo.orderItemList">
             <el-table-column prop="skuCode" label="商品编号" align="center">
-              <template slot-scope="{row}">{{ row.productSku.skuCode }}</template>
+              <template slot-scope="{row}">
+                <span class="f-number">{{ row.productSku.skuCode }}</span>
+              </template>
             </el-table-column>
             <el-table-column prop="name" label="商品图片" align="center">
               <template slot-scope="{row}">
@@ -84,13 +98,17 @@
             </el-table-column>
             <el-table-column label="价格" align="center">
               <template slot-scope="{row}">
-                <span>{{ row.productSku.price.toFixed(2) }}</span>
+                <span class="f-number">{{ row.productSku.price.toFixed(2) }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="quantity" label="数量" align="center"></el-table-column>
+            <el-table-column prop="quantity" label="数量" align="center">
+              <template slot-scope="{row}">
+                <span class="f-number">{{ row.quantity }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="totalFee" label="小计(元)" align="center">
               <template slot-scope="{row}">
-                <span>{{ row.totalFee.toFixed(2) }}</span>
+                <span class="f-number">{{ row.totalFee.toFixed(2) }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -100,27 +118,27 @@
           <el-table :data="[orderInfo.order]">
             <el-table-column prop="totalFee" label="商品合计" align="center">
               <template slot-scope="{row}">
-                <span>{{ row.totalFee.toFixed(2) }}</span>
+                <span class="f-number">{{ row.totalFee.toFixed(2) }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="postFee" label="运费" align="center">
               <template slot-scope="{row}">
-                <span>{{ row.postFee.toFixed(2) }}</span>
+                <span class="f-number">{{ row.postFee.toFixed(2) }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="discountFee" label="优惠券" align="center">
               <template slot-scope="{row}">
-                <span>{{ row.discountFee.toFixed(2) }}</span>
+                <span class="f-number">{{ row.discountFee.toFixed(2) }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="totalFee" label="订单总金额" align="center">
               <template slot-scope="{row}">
-                <span>{{ row.totalFee.toFixed(2) }}</span>
+                <span class="f-number">{{ row.totalFee.toFixed(2) }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="paidFee" label="应付款金额" align="center">
               <template slot-scope="{row}">
-                <span>{{ row.paidFee.toFixed(2) }}</span>
+                <span class="f-number">{{ row.paidFee.toFixed(2) }}</span>
               </template>
             </el-table-column>
           </el-table>

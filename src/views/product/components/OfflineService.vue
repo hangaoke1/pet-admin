@@ -57,7 +57,7 @@
           <el-table-column prop="originalPrice" label="原价" align="center">
             <template slot-scope="scope">
               <div class="flex align-center justify-center p-1">
-                <g-number class="u-bold" size="small" v-model="scope.row.originalPrice"></g-number>
+                <g-number class="f-number" size="small" v-model="scope.row.originalPrice"></g-number>
                 <span class="ml-1">元</span>
               </div>
             </template>
@@ -65,7 +65,7 @@
           <el-table-column prop="memberPrice" label="会员价" align="center">
             <template slot-scope="scope">
               <div class="flex align-center justify-center p-1">
-                <g-number class="u-bold" size="small" v-model="scope.row.memberPrice"></g-number>
+                <g-number class="f-number" size="small" v-model="scope.row.memberPrice"></g-number>
                 <span class="ml-1">元</span>
               </div>
             </template>
@@ -92,8 +92,8 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveOrUpdate">确 定</el-button>
+        <el-button class="yc-del" @click="dialogVisible = false">取 消</el-button>
+        <el-button class="yc-btn" @click="saveOrUpdate">确 定</el-button>
       </span>
     </el-dialog>
   </div>

@@ -17,11 +17,11 @@
       <div class="u-sku__info">
         <div class="u-sku__price">
           <span class="font-s-1">¥</span>
-          <span class="font-s-13 font-weight-bold">{{ item.productSku.price }}</span>
+          <span class="font-s-13 f-number">{{ item.productSku.price }}</span>
         </div>
-        <div class="u-sku__quantity font-weight-bold">
+        <div class="u-sku__quantity">
           <span class="el-icon-close font-s-1"></span>
-          <span class="font-s-13 font-weight-bold">{{ item.quantity }}</span>
+          <span class="font-s-13 f-number">{{ item.quantity }}</span>
         </div>
       </div>
     </div>

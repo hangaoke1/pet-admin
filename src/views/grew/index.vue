@@ -47,7 +47,7 @@
               <el-button type="text" size="mini" @click="unBindCamera(scope.row)">解除</el-button>
             </span>
             <el-button
-              v-else-if="scope.row.status === 2"
+              v-else-if="scope.row.petState === 2"
               class="yc-edit"
               size="mini"
               @click="doBindCamera(scope.row)"

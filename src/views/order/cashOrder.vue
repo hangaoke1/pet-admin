@@ -5,7 +5,7 @@
         <div style="width: 80px">图片</div>
         <div style="width: 30%">名称</div>
         <div style="width: 20%">数量</div>
-        <div style="width: 20%">小计</div>
+        <div style="width: 20%">单价</div>
       </div>
       <order-item v-for="item in list" :key="item.orderId" :info="item"></order-item>
     </div>
@@ -59,7 +59,8 @@ export default {
         .then(res => {
           this.list = res.data.items
           this.page.total = res.data.totalCount
-        }).finally(() => {
+        })
+        .finally(() => {
           this.loading = false
         })
     },
